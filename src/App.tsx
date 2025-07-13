@@ -1,16 +1,16 @@
 import React from 'react';
-import { ThemeProviderWrapper } from './lib/context/ThemeContext';
 import AppLayout from './app/page';
-import DashboardContent from './components/dashboard/layout/DashboardContent';
+import { ThemeRegistry } from './components/theme/ThemeRegistry';
+import HomePage from './app/home/page';
 
 
 const App: React.FC = () => {
   return (
-    <ThemeProviderWrapper>
+    <ThemeRegistry>
       <AppLayout>
-        <DashboardContent />
+        <HomePage />
       </AppLayout>
-    </ThemeProviderWrapper>
+    </ThemeRegistry>
   );
 };
 
