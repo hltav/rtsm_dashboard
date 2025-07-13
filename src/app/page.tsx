@@ -1,26 +1,5 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-"use client";
-import React from "react";
-import { Box, CssBaseline } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import HomePage from "./home/page";
+import { redirect } from "next/navigation";
 
-interface AppLayoutProps {
-  children: React.ReactNode;
+export default function RootRedirect() {
+  redirect("/home");
 }
-
-const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
-
-  return (
-    <Box>
-      <CssBaseline />
-      <HomePage />
-      {children}
-    </Box>
-  );
-};
-
-export default AppLayout;

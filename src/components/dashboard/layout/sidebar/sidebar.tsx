@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
+'use client';
 import React from "react";
 import { Drawer, useTheme } from "@mui/material";
 import useSidebar from "@/hooks/useSidebar";

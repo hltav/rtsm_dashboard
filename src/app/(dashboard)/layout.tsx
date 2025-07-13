@@ -1,21 +1,11 @@
-'use client';
-import React from 'react';
-import DashboardContent from '@/components/dashboard/layout/DashboardContent';
-import { CssBaseline, ThemeProvider, createTheme } from '@mui/material';
+import { ReactNode } from 'react';
+import DashboardPageLayout from '@/components/dashboard/layout/DashboardPageLayout';
+import MuiClientThemeProvider from '@/components/theme/MuiClientThemeProvider';
 
-const theme = createTheme();
-
-export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="pt-BR">
-      <body>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <DashboardContent>
-            {children}
-          </DashboardContent>
-        </ThemeProvider>
-      </body>
-    </html>
+    <MuiClientThemeProvider>
+      <DashboardPageLayout>{children}</DashboardPageLayout>
+    </MuiClientThemeProvider>
   );
 }

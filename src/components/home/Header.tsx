@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   AppBar,
@@ -21,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
       color="primary"
       sx={{ boxShadow: "none", borderRadius: 0 }}
     >
-      <Toolbar sx={{ justifyContent: "space-between", flexWrap: "wrap" }}>
+      <Toolbar sx={{ justifyContent: "space-between", flexWrap: "nowrap" }}>
         <Typography
           variant="h6"
           component="div"
@@ -37,6 +38,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
               borderRadius: 0,
               display: "block",
               marginRight: 7,
+              "@media (max-width:400px)": {
+                marginRight: 3, // menor margem para telas pequenas
+              },
             }}
           />
           RT Sports Manager
@@ -70,6 +74,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
           >
             Login
           </Button>
+          <ThemeToggle />
         </Box>
 
         <IconButton
@@ -81,7 +86,9 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
         >
           <MenuIcon />
         </IconButton>
-        <ThemeToggle />
+        <Box sx={{ display: { xs: "flex", md: "none" }, ml: 0 }}>
+          <ThemeToggle />
+        </Box>
       </Toolbar>
     </AppBar>
   );
