@@ -1,20 +1,40 @@
 "use client";
-import React from "react";
-import { ThemeProvider } from "@mui/material/styles";
+import React, { createContext, useContext, useState, useMemo } from "react";
+import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useTheme } from "next-themes";
-import { darkTheme } from "./dark-theme";
 import { lightTheme } from "./light-theme";
+import { darkTheme } from "./dark-theme";
+
+interface ThemeModeContextType {
+  toggleThemeMode: () => void;
+  mode: "light" | "dark";
+}
+
+const ThemeModeContext = createContext<ThemeModeContextType>({
+  toggleThemeMode: () => {},
+  mode: "light",
+});
+
+export const useThemeMode = () => useContext(ThemeModeContext);
 
 export function ThemeRegistry({ children }: { children: React.ReactNode }) {
-  const { resolvedTheme } = useTheme();
+  const [mode, setMode] = useState<"light" | "dark">("light");
 
-  const currentTheme = resolvedTheme === "dark" ? darkTheme : lightTheme;
+  const toggleThemeMode = () => {
+    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+  };
+
+  const theme = useMemo(
+    () => (mode === "light" ? lightTheme : darkTheme),
+    [mode]
+  );
 
   return (
-    <ThemeProvider theme={currentTheme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
+    <ThemeModeContext.Provider value={{ toggleThemeMode, mode }}>
+      <MuiThemeProvider theme={theme}>
+        <CssBaseline />
+        {children}
+      </MuiThemeProvider>
+    </ThemeModeContext.Provider>
   );
 }

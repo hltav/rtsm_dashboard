@@ -1,18 +1,17 @@
 "use client";
-
 import React from "react";
 import { Box, Container, Paper } from "@mui/material";
 import { ThemeRegistry } from "@/components/theme/ThemeRegistry";
-import RegisterMarketing from "@/components/register/RegisterMarketing";
-import RegisterForm from "@/components/register/RegisterForm";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
+import ForgotPasswordMarketing from "@/components/forgot-password/ForgotPasswordMarketing";
+import ForgotPasswordForm from "@/components/forgot-password/ForgotPasswordForm";
 
-const RegisterPage: React.FC = () => {
-  const handleRegister = () => {
-    console.log(
-      "Botão de Cadastro clicado. Lógica de validação e envio removida para este layout."
+const ForgotPasswordPage: React.FC = () => {
+  const handleResetPassword = (email: string) => {
+    console.log("Solicitação de redefinição de senha para:", email);
+    alert(
+      "Se o email estiver registrado, um link de redefinição será enviado!"
     );
-    // Adicionar lógica de registro aqui
+    // Lógica de API viria aqui
   };
 
   return (
@@ -27,17 +26,6 @@ const RegisterPage: React.FC = () => {
           p: { xs: 2, sm: 3, md: 0 },
         }}
       >
-        {/* ThemeToggle posicionado no canto superior direito */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 16,
-            right: 16,
-            zIndex: 1, // Garante que fique acima de outros elementos
-          }}
-        >
-          <ThemeToggle />
-        </Box>
         <Container
           disableGutters
           maxWidth={false}
@@ -57,13 +45,13 @@ const RegisterPage: React.FC = () => {
               borderRadius: 3,
               overflow: "hidden",
               width: "95%",
-              maxWidth: { xs: "95%", sm: "700px", md: "900px" },
+              maxWidth: { xs: "95%", sm: "600px", md: "800px" },
               maxHeight: { xs: "unset", md: "calc(90vh - 40px)" },
               margin: { xs: "0 auto", md: "20px auto" },
             }}
           >
-            <RegisterMarketing />
-            <RegisterForm onRegister={handleRegister} />
+            <ForgotPasswordMarketing />
+            <ForgotPasswordForm onSubmit={handleResetPassword} />
           </Paper>
         </Container>
       </Box>
@@ -71,4 +59,4 @@ const RegisterPage: React.FC = () => {
   );
 };
 
-export default RegisterPage;
+export default ForgotPasswordPage;

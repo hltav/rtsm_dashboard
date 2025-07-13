@@ -8,7 +8,7 @@ import {
   Box,
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-
+import { ThemeToggle } from "../theme/theme-toggle";
 
 interface HeaderProps {
   onMenuToggle: () => void;
@@ -36,7 +36,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
               height: 50,
               borderRadius: 0,
               display: "block",
-              marginRight: 7
+              marginRight: 7,
             }}
           />
           RT Sports Manager
@@ -81,6 +81,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
         >
           <MenuIcon />
         </IconButton>
+        <ThemeToggle />
       </Toolbar>
     </AppBar>
   );
