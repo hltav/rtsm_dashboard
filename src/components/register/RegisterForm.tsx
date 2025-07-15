@@ -1,54 +1,84 @@
-import React, { useState } from 'react';
+"use client";
+
+import React, { useState } from "react";
+import { Box, Button, TextField } from "@mui/material";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { PasswordInput } from "./PasswordInput";
+import { RegisterHeader } from "./RegisterHeader";
+import { RegisterFooter } from "./RegisterFooter";
 import {
-  Box,
-  Typography,
-  Button,
-  TextField,
-  Link,
-  IconButton,
-  InputAdornment,
-} from '@mui/material';
-import Visibility from '@mui/icons-material/Visibility';
-import VisibilityOff from '@mui/icons-material/VisibilityOff';
+  RegisterFormProps,
+  SignUpFormData,
+  SignUpSchema,
+} from "@/modules/auth/schemas/signup.schemas";
+import { useNotification } from "../Providers/NotificationSnackbar";
 
-interface RegisterFormProps {
-  onRegister: () => void;
-}
+type ApiError = {
+  message?: string;
+  errors?: Record<keyof SignUpFormData, string>;
+};
 
-const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
+export const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const { showNotification } = useNotification();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+    setError,
+  } = useForm<SignUpFormData>({
+    resolver: zodResolver(SignUpSchema),
+  });
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
-  const handleClickShowConfirmPassword = () => setShowConfirmPassword((prev) => !prev);
+  const handleClickShowConfirmPassword = () =>
+    setShowConfirmPassword((prev) => !prev);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    onRegister();
+  const onSubmit = async (data: SignUpFormData) => {
+    try {
+      await onRegister(data);
+    } catch (error) {
+      const apiError = error as ApiError;
+
+      if (apiError.errors) {
+        (
+          Object.entries(apiError.errors) as Array<
+            [keyof SignUpFormData, string]
+          >
+        ).forEach(([field, message]) => {
+          setError(field, {
+            type: "server",
+            message,
+          });
+          showNotification(message, "warning");
+        });
+      } else {
+        showNotification(
+          apiError.message || "Erro ao processar o registro",
+          "error"
+        );
+      }
+    }
   };
 
   return (
     <Box
       component="form"
-      onSubmit={handleSubmit}
+      onSubmit={handleSubmit(onSubmit)}
       sx={{
         flex: 1,
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "center",
         p: { xs: 3, sm: 4, md: 6 },
-        bgcolor: 'background.paper',
+        bgcolor: "background.paper",
       }}
+      noValidate
     >
-      <Typography
-        variant="h4"
-        component="h1"
-        gutterBottom
-        textAlign="center"
-        sx={{ mb: 4, fontWeight: 600 }}
-      >
-        Crie sua conta grátis
-      </Typography>
+      <RegisterHeader />
 
       <TextField
         label="Nome"
@@ -56,24 +86,33 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
         fullWidth
         margin="normal"
         size="small"
-        sx={{ mb: 1 }}
+        error={!!errors.firstname}
+        helperText={errors.firstname?.message}
+        {...register("firstname")}
       />
+
       <TextField
         label="Sobrenome"
         variant="outlined"
         fullWidth
         margin="normal"
         size="small"
-        sx={{ mb: 1 }}
+        error={!!errors.lastname}
+        helperText={errors.lastname?.message}
+        {...register("lastname")}
       />
+
       <TextField
         label="Nome de Usuário"
         variant="outlined"
         fullWidth
         margin="normal"
         size="small"
-        sx={{ mb: 1 }}
+        error={!!errors.nickname}
+        helperText={errors.nickname?.message}
+        {...register("nickname")}
       />
+
       <TextField
         label="Email"
         variant="outlined"
@@ -81,53 +120,27 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
         margin="normal"
         type="email"
         size="small"
-        sx={{ mb: 1 }}
+        error={!!errors.email}
+        helperText={errors.email?.message}
+        {...register("email")}
       />
-      <TextField
+
+      <PasswordInput
         label="Senha"
-        variant="outlined"
-        type={showPassword ? 'text' : 'password'}
-        fullWidth
-        margin="normal"
-        size="small"
-        sx={{ mb: 1 }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                edge="end"
-                size="small"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
+        showPassword={showPassword}
+        onToggleVisibility={handleClickShowPassword}
+        error={!!errors.password}
+        helperText={errors.password?.message}
+        {...register("password")}
       />
-      <TextField
+
+      <PasswordInput
         label="Confirme a Senha"
-        variant="outlined"
-        type={showConfirmPassword ? 'text' : 'password'}
-        fullWidth
-        margin="normal"
-        size="small"
-        sx={{ mb: 2 }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle confirm password visibility"
-                onClick={handleClickShowConfirmPassword}
-                edge="end"
-                size="small"
-              >
-                {showConfirmPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
+        showPassword={showConfirmPassword}
+        onToggleVisibility={handleClickShowConfirmPassword}
+        error={!!errors.confirmPassword}
+        helperText={errors.confirmPassword?.message}
+        {...register("confirmPassword")}
       />
 
       <Button
@@ -137,20 +150,12 @@ const RegisterForm: React.FC<RegisterFormProps> = ({ onRegister }) => {
         fullWidth
         size="large"
         sx={{ py: 1.5, mb: 2 }}
+        disabled={isSubmitting}
       >
-        Cadastrar
+        {isSubmitting ? "Cadastrando..." : "Cadastrar"}
       </Button>
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', mt: 1 }}>
-        <Typography variant="body2" color="text.secondary">
-          Já tem uma conta?{' '}
-          <Link href="/login" variant="body2" color="primary" sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
-            Faça Login
-          </Link>
-        </Typography>
-      </Box>
+      <RegisterFooter />
     </Box>
   );
 };
-
-export default RegisterForm;

@@ -2,17 +2,40 @@
 
 import React from "react";
 import { Box, Container, Paper } from "@mui/material";
-import { ThemeRegistry } from "@/components/theme/ThemeRegistry";
 import RegisterMarketing from "@/components/register/RegisterMarketing";
-import RegisterForm from "@/components/register/RegisterForm";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import { RegisterForm } from "@/components/register/RegisterForm";
+import { SignUpFormData } from "@/modules/auth/schemas/signup.schemas";
+import { useRouter } from "next/navigation";
+import { createUserApi } from "@/modules/auth/services/createUser-api";
+import { useNotification } from "@/components/Providers/NotificationSnackbar";
+import { ThemeRegistry } from "@/components/Providers/ThemeRegistry";
 
 const RegisterPage: React.FC = () => {
-  const handleRegister = () => {
-    console.log(
-      "Botão de Cadastro clicado. Lógica de validação e envio removida para este layout."
-    );
-    // Adicionar lógica de registro aqui
+  const router = useRouter();
+  const { showNotification } = useNotification();
+
+  const handleRegister = async (data: SignUpFormData): Promise<void> => {
+    try {
+      const result = await createUserApi.createUser(data);
+
+      if (result.success) {
+        showNotification("Usuário criado com sucesso!", "success");
+        // Redireciona após 2 segundos para dar tempo do usuário ver a mensagem
+        setTimeout(() => router.push("/login"), 3000);
+      } else {
+        // Verifica o tipo de erro para mostrar a severidade correta
+        const severity =
+          result.status !== undefined && result.status >= 500
+            ? "error"
+            : "warning";
+
+        showNotification(result.message || "Erro ao criar usuário", severity);
+      }
+    } catch (error) {
+      showNotification("Erro inesperado no servidor", "error");
+      console.error("Registration error:", error);
+    }
   };
 
   return (

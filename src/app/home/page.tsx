@@ -1,7 +1,6 @@
 'use client';
 import React, { useState } from 'react';
 import { Box, Drawer } from '@mui/material';
-import { ThemeRegistry } from '@/components/theme/ThemeRegistry';
 import Header from '@/components/home/Header';
 import MobileMenu from '@/components/home/MobileMenu';
 import HeroSection from '@/components/home/HeroSection';
@@ -9,6 +8,7 @@ import FeaturesSection from '@/components/home/FeaturesSection';
 import HowItWorks from '@/components/home/HowItWorks';
 import CtaSection from '@/components/home/CtaSection';
 import Footer from '@/components/home/Footer';
+import { ThemeRegistry } from '@/components/Providers/ThemeRegistry';
 
 export default function HomePage() {
   const [mobileOpen, setMobileOpen] = useState(false);

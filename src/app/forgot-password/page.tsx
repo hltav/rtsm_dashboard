@@ -1,9 +1,9 @@
 "use client";
 import React from "react";
 import { Box, Container, Paper } from "@mui/material";
-import { ThemeRegistry } from "@/components/theme/ThemeRegistry";
 import ForgotPasswordMarketing from "@/components/forgot-password/ForgotPasswordMarketing";
 import ForgotPasswordForm from "@/components/forgot-password/ForgotPasswordForm";
+import { ThemeRegistry } from "@/components/Providers/ThemeRegistry";
 
 const ForgotPasswordPage: React.FC = () => {
   const handleResetPassword = (email: string) => {

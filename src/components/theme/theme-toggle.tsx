@@ -1,7 +1,7 @@
 import { IconButton } from "@mui/material";
-import Brightness4Icon from "@mui/icons-material/Brightness4"; 
+import Brightness4Icon from "@mui/icons-material/Brightness4";
 import Brightness7Icon from "@mui/icons-material/Brightness7";
-import { useThemeMode } from "@/components/theme/ThemeRegistry"; // Atualize o caminho
+import { useThemeMode } from "../Providers/ThemeRegistry";
 
 export const ThemeToggle: React.FC = () => {
   const { mode, toggleThemeMode } = useThemeMode();
