@@ -25,7 +25,8 @@ const LoginMarketing: React.FC = () => {
         gutterBottom
         sx={{ fontWeight: 700 }}
       >
-        Bem-vindo ao RT Sports Manager!
+        Bem-vindo ao <span translate="no">RT Sports Manager</span>
+!
       </Typography>
       <Typography variant="h6" component="p" sx={{ opacity: 0.9, mb: 2 }}>
         Analise, otimize e transforme seus palpites em conhecimento.

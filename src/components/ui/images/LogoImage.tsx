@@ -9,7 +9,8 @@ interface LogoImageProps extends BoxProps {
   src?: string;
   /**
    * Texto alternativo para a imagem
-   * @default "RT Sports Manager Logo"
+   * @default "<span translate="no">RT Sports Manager</span>
+ Logo"
    */
   alt?: string;
   /**
@@ -31,7 +32,8 @@ interface LogoImageProps extends BoxProps {
 
 const LogoImage: React.FC<LogoImageProps> = ({
   src = "/myimages/RTSMlogo.svg",
-  alt = "RT Sports Manager Logo",
+  alt = "<span translate="no">RT Sports Manager</span>
+ Logo",
   fallbackSrc = "https://placehold.co/400x250/1A2B42/E0A800?text=Logo+RT",
   maxWidth = "60%",
   marginBottom = "20px",

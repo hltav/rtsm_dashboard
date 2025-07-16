@@ -23,7 +23,8 @@ const HowItWorks: React.FC = () => {
           gutterBottom
           sx={{ mb: { xs: 4, md: 6 } }}
         >
-          Como o RT Sports Manager Pode te Ajudar?
+          Como o <span translate="no">RT Sports Manager</span>
+ Pode te Ajudar?
         </Typography>
         <Grid container spacing={{ xs: 2, md: 4 }} alignItems="center">
           <Grid item xs={12} md={6}>

@@ -32,10 +32,11 @@ export const MarketingSide = () => {
         gutterBottom
         sx={{ fontWeight: 700 }}
       >
-        Bem-vindo ao RT Sports Manager!
+        Bem-vindo ao <span translate="no">RT Sports Manager</span>!
       </Typography>
       <Typography variant="body1" sx={{ opacity: 0.9 }}>
-         Sua conta foi ativada com sucesso. Prepare-se para otimizar suas análises de apostas!
+        Sua conta foi ativada com sucesso. Prepare-se para otimizar suas
+        análises de apostas!
       </Typography>
     </Box>
   );

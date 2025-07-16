@@ -36,7 +36,8 @@ const FeaturesSection: React.FC = () => {
     <Box sx={{ py: { xs: 4, md: 8 }, bgcolor: 'background.default' }}>
       <Container>
         <Typography variant="h2" component="h2" textAlign="center" gutterBottom sx={{ mb: { xs: 4, md: 6 } }}>
-          Por que o RT Sports Manager?
+          Por que o <span translate="no">RT Sports Manager</span>
+?
         </Typography>
         <Grid container spacing={{ xs: 2, md: 4 }} justifyContent="center">
           {features.map((feature, index) => (

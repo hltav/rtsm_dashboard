@@ -34,7 +34,8 @@ const Footer: React.FC = () => {
           </IconButton>
         </Box>
         <Typography variant="caption" color="text.secondary">
-          © 2025 RT Sports Manager. Todos os direitos reservados.
+          © 2025 <span translate="no">RT Sports Manager</span>
+. Todos os direitos reservados.
         </Typography>
       </Container>
     </Box>

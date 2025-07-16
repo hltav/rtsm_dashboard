@@ -30,7 +30,8 @@ const HeroSection: React.FC = () => {
       >
         <Box sx={{ flex: 1 }}>
           <Typography variant="h1" component="h1" gutterBottom>
-            RT Sports Manager: Sua Jornada de Apostas Otimizada
+            <span translate="no">RT Sports Manager</span>
+: Sua Jornada de Apostas Otimizada
           </Typography>
           <Typography variant="h5" component="p" sx={{ mb: 4, opacity: 0.9 }}>
             Seus palpites, seus dados, seus resultados. A ferramenta definitiva

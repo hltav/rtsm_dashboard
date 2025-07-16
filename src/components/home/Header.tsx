@@ -43,7 +43,8 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
               },
             }}
           />
-          RT Sports Manager
+          <span translate="no"><span translate="no">RT Sports Manager</span>
+</span>
         </Typography>
 
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
