@@ -1,9 +1,10 @@
+// app/api/auth/confirm-email/route.ts
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    // Verifica se o token foi fornecido
     const { token } = await req.json();
+    
     if (!token) {
       return NextResponse.json(
         { error: "Token não fornecido" },
@@ -11,15 +12,17 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Chama a API externa de confirmação
     const apiUrl = `${process.env.NEXT_PUBLIC_API_URL}/auth/confirm-email`;
     const res = await fetch(apiUrl, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: { 
+        "Content-Type": "application/json",
+        // Adicione headers de CORS se necessário
+        "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_FRONTEND_URL || "*"
+      },
       body: JSON.stringify({ token }),
     });
 
-    // Se a resposta não for OK, retorna o erro da API
     if (!res.ok) {
       const errorData = await res.json();
       return NextResponse.json(
@@ -28,7 +31,6 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Retorna sucesso
     const data = await res.json();
     return NextResponse.json(data, { status: 200 });
 

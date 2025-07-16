@@ -1,11 +1,11 @@
 import { ReactNode } from 'react';
 import DashboardPageLayout from '@/components/dashboard/layout/DashboardPageLayout';
-import MuiClientThemeProvider from '@/components/theme/MuiClientThemeProvider';
+import { ThemeRegistry } from '@/components/Providers/ThemeRegistry';
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
-    <MuiClientThemeProvider>
+    <ThemeRegistry>
       <DashboardPageLayout>{children}</DashboardPageLayout>
-    </MuiClientThemeProvider>
+    </ThemeRegistry>
   );
 }
