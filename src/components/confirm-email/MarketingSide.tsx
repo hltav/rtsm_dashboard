@@ -1,24 +1,13 @@
 "use client";
 
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import LogoImage from "../ui/images/LogoImage";
+import { CenteredContainer } from "../ui/layout/CenteredContainer";
 
 export const MarketingSide = () => {
   return (
-    <Box
-      sx={{
-        flex: 1,
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        textAlign: "center",
-        p: { xs: 2, sm: 4, md: 6 },
-        backgroundImage: "linear-gradient(135deg, #1A2B42 0%, #0A1B2C 100%)",
-        color: "white",
-        gap: 2,
-      }}
-    >
+    <CenteredContainer>
+      {" "}
       <LogoImage
         sx={{
           maxWidth: "80%",
@@ -38,6 +27,6 @@ export const MarketingSide = () => {
         Sua conta foi ativada com sucesso. Prepare-se para otimizar suas
         análises de apostas!
       </Typography>
-    </Box>
+    </CenteredContainer>
   );
 };

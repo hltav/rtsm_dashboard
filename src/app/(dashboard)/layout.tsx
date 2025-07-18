@@ -1,11 +1,11 @@
-import { ReactNode } from 'react';
-import DashboardPageLayout from '@/components/dashboard/layout/DashboardPageLayout';
-import { ThemeRegistry } from '@/components/Providers/ThemeRegistry';
+import { ReactNode } from "react";
+import { ThemeRegistry } from "@/components/Providers/ThemeRegistry";
+import DashboardPage from "@/components/dashboard/layout/DashboardPage";
 
 export default function DashboardLayout({ children }: { children: ReactNode }) {
   return (
     <ThemeRegistry>
-      <DashboardPageLayout>{children}</DashboardPageLayout>
+      <DashboardPage>{children}</DashboardPage>
     </ThemeRegistry>
   );
 }

@@ -1,7 +1,9 @@
+import MainContent from "@/components/dashboard/layout/MainContent";
+
 export default function DashboardPage() {
   return (
     <div>
-      Página principal do dashboard
+      <MainContent />
     </div>
   );
 }
