@@ -4,7 +4,8 @@ import { Box, BoxProps } from '@mui/material';
 interface LogoImageProps extends BoxProps {
   /**
    * Caminho para a imagem do logo
-   * @default "/myimages/RTSMlogo.svg"
+   * @default "/images
+/RTSMlogo.svg"
    */
   src?: string;
   /**
@@ -31,7 +32,7 @@ interface LogoImageProps extends BoxProps {
 }
 
 const LogoImage: React.FC<LogoImageProps> = ({
-  src = "/myimages/RTSMlogo.svg",
+  src = "/images/RTSMlogo.svg",
   alt = "RT Sports Manager Logo",
   fallbackSrc = "https://placehold.co/400x250/1A2B42/E0A800?text=Logo+RT",
   maxWidth = "60%",

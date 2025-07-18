@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { Box, Container, Paper } from "@mui/material";
-import ForgotPasswordMarketing from "@/components/forgot-password/ForgotPasswordMarketing";
-import ForgotPasswordForm from "@/components/forgot-password/ForgotPasswordForm";
+import ForgotPasswordMarketing from "@/components/auth/forgot-password/ForgotPasswordMarketing";
+import ForgotPasswordForm from "@/components/auth/forgot-password/ForgotPasswordForm";
 import { ThemeRegistry } from "@/components/Providers/ThemeRegistry";
 
 const ForgotPasswordContent: React.FC = () => {

@@ -12,7 +12,8 @@ import {
   SignUpFormData,
   SignUpSchema,
 } from "@/modules/auth/schemas/signup.schemas";
-import { useNotification } from "../Providers/NotificationSnackbar";
+import { useNotification } from "@/components/Providers/NotificationSnackbar";
+
 
 type ApiError = {
   message?: string;

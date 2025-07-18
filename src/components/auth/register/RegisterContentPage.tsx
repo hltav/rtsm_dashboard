@@ -1,15 +1,14 @@
 "use client";
-
 import React from "react";
 import { Box, Container, Paper } from "@mui/material";
-import RegisterMarketing from "@/components/register/RegisterMarketing";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
-import { RegisterForm } from "@/components/register/RegisterForm";
 import { SignUpFormData } from "@/modules/auth/schemas/signup.schemas";
 import { useRouter } from "next/navigation";
 import { createUserApi } from "@/modules/auth/services/createUser-api";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import { ThemeRegistry } from "@/components/Providers/ThemeRegistry";
+import { RegisterForm } from "./RegisterForm";
+import RegisterMarketing from "./RegisterMarketing";
 
 const RegisterContentPage: React.FC = () => {
   const router = useRouter();

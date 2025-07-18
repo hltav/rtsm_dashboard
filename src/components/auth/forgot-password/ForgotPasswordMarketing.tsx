@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
 import { Typography } from "@mui/material";
-import LogoImage from "../ui/images/LogoImage";
-import { CenteredContainer } from "../ui/layout/CenteredContainer";
+import LogoImage from "../../ui/images/LogoImage";
+import { CenteredContainer } from "../../ui/layout/CenteredContainer";
 
 const ForgotPasswordMarketing: React.FC = () => {
   return (

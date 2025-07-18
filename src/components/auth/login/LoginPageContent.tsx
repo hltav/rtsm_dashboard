@@ -1,8 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { Box, Container, Paper } from "@mui/material";
-import LoginMarketing from "@/components/login/LoginMarketing";
-import LoginForm from "@/components/login/LoginForm";
+import LoginMarketing from "@/components/auth/login/LoginMarketing";
+import LoginForm from "@/components/auth/login/LoginForm";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 const LoginContentPage: React.FC = () => {

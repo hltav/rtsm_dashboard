@@ -1,5 +1,4 @@
 "use client";
-
 import { ConfirmationSideProps } from "@/modules/auth/schemas/confirmationSideProps.schema";
 import { Box, Typography, Button } from "@mui/material";
 

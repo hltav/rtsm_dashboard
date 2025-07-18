@@ -46,7 +46,8 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({
 
         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
           <img
-            src="/myimages/rtsmlogo02.png"
+            src="/images
+/rtsmlogo02.png"
             alt="RT Sports Manager Logo"
             style={{
               height: "30px",

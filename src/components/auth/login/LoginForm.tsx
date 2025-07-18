@@ -1,17 +1,6 @@
+// components/LoginForm.tsx
 import React, { useState } from "react";
-import {
-  Box,
-  Typography,
-  Button,
-  TextField,
-  Link,
-  FormControlLabel,
-  Checkbox,
-  IconButton,
-  InputAdornment,
-} from "@mui/material";
-import Visibility from "@mui/icons-material/Visibility";
-import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import { Box, Button, TextField } from "@mui/material";
 import z from "zod";
 import {
   LoginResponse,
@@ -19,21 +8,24 @@ import {
 } from "@/modules/user/schemas/loginResponse.schema";
 import { LoginFormProps } from "@/modules/user/props/loginForm.props";
 import { useRouter } from "next/navigation";
+import RememberMeCheckbox from "./RememberMeCheckbox";
+import LoginFooterLinks from "./LoginFooterLinks";
+import LoginFormTitle from "./LoginFormTitle";
+import LoginFormError from "./LoginFormError";
+import LoginPasswordInput from "./LoginPasswordInput";
+
 
 const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
   initialUsername = "",
   initialRememberMe = false,
 }) => {
-  const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(initialRememberMe);
   const [username, setUsername] = useState(initialUsername);
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
-  const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
   const handleRememberMeChange = (
     event: React.ChangeEvent<HTMLInputElement>
@@ -96,15 +88,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         bgcolor: "background.paper",
       }}
     >
-      <Typography
-        variant="h4"
-        component="h1"
-        gutterBottom
-        textAlign="center"
-        sx={{ mb: 4, fontWeight: 600 }}
-      >
-        Acesse sua conta
-      </Typography>
+      <LoginFormTitle title="Acesse sua conta" />
 
       <TextField
         label="Email ou Nome de Usuário"
@@ -117,50 +101,23 @@ const LoginForm: React.FC<LoginFormProps> = ({
         sx={{ mb: 1 }}
       />
 
-      <TextField
+      <LoginPasswordInput
         label="Senha"
         variant="outlined"
-        type={showPassword ? "text" : "password"}
         fullWidth
         margin="normal"
         size="small"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         sx={{ mb: 1 }}
-        InputProps={{
-          endAdornment: (
-            <InputAdornment position="end">
-              <IconButton
-                aria-label="toggle password visibility"
-                onClick={handleClickShowPassword}
-                edge="end"
-                size="small"
-              >
-                {showPassword ? <VisibilityOff /> : <Visibility />}
-              </IconButton>
-            </InputAdornment>
-          ),
-        }}
       />
 
-      <FormControlLabel
-        control={
-          <Checkbox
-            checked={rememberMe}
-            onChange={handleRememberMeChange}
-            color="primary"
-            size="small"
-          />
-        }
-        label="Lembrar-me"
-        sx={{ mb: 2 }}
+      <RememberMeCheckbox
+        checked={rememberMe}
+        onChange={handleRememberMeChange}
       />
 
-      {error && (
-        <Typography color="error" variant="body2" sx={{ mb: 2 }}>
-          {error}
-        </Typography>
-      )}
+      <LoginFormError message={error} />
 
       <Button
         type="submit"
@@ -174,37 +131,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
         {loading ? "Entrando..." : "Entrar"}
       </Button>
 
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexWrap: "wrap",
-          mt: 1,
-        }}
-      >
-        <Link
-          href="/forgot-password"
-          variant="body2"
-          color="primary"
-          sx={{
-            textDecoration: "none",
-            "&:hover": { textDecoration: "underline" },
-          }}
-        >
-          Esqueceu a senha?
-        </Link>
-        <Link
-          href="/register"
-          variant="body2"
-          color="primary"
-          sx={{
-            textDecoration: "none",
-            "&:hover": { textDecoration: "underline" },
-          }}
-        >
-          Não tem uma conta? Cadastre-se
-        </Link>
-      </Box>
+      <LoginFooterLinks />
     </Box>
   );
 };

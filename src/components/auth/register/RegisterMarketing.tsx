@@ -1,9 +1,9 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import LogoImage from "../ui/images/LogoImage";
-import { CenteredContainer } from "../ui/layout/CenteredContainer";
+import { CenteredContainer } from "@/components/ui/layout/CenteredContainer";
+import LogoImage from "@/components/ui/images/LogoImage";
 
-const LoginMarketing: React.FC = () => {
+const RegisterMarketing: React.FC = () => {
   return (
     <CenteredContainer>
       {" "}
@@ -14,16 +14,17 @@ const LoginMarketing: React.FC = () => {
         gutterBottom
         sx={{ fontWeight: 700 }}
       >
-        Bem-vindo ao <span translate="no">RT Sports Manager</span>!
+        Junte-se ao <span translate="no">RT Sports Manager</span>!
       </Typography>
       <Typography variant="h6" component="p" sx={{ opacity: 0.9, mb: 2 }}>
-        Analise, otimize e transforme seus palpites em conhecimento.
+        Comece a analisar suas apostas e aprimore suas estratégias.
       </Typography>
       <Typography variant="body1" sx={{ maxWidth: "400px", opacity: 0.8 }}>
-        Sua plataforma para gerenciar apostas esportivas, sem riscos reais.
+        Gerencie seus palpites, entenda seus resultados e evolua como apostador,
+        sem riscos reais.
       </Typography>
     </CenteredContainer>
   );
 };
 
-export default LoginMarketing;
+export default RegisterMarketing;

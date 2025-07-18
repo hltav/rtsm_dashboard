@@ -56,7 +56,8 @@ const NewDashboardAppBar: React.FC<DashboardAppBarProps> = ({
 
           <Box
             component="img"
-            src="/myimages/rtsmlogo02.png"
+            src="/images
+/rtsmlogo02.png"
             alt="Logo"
             sx={{
               width: 80,
