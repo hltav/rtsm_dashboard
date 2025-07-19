@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState, ReactNode } from "react";
 import { useMediaQuery } from "@mui/material";
 import { lightTheme } from "@/components/theme/light-theme";

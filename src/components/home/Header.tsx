@@ -30,8 +30,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
         >
           <Box
             component="img"
-            src="images
-/RTSMlogo.svg"
+            src="images/RTSMlogo.svg"
             alt="Logo"
             sx={{
               width: 50,
