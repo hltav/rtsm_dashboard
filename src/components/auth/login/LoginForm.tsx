@@ -91,7 +91,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
       <LoginFormTitle title="Acesse sua conta" />
 
       <TextField
-        label="Email ou Nome de Usuário"
+        label="Email"
         variant="outlined"
         fullWidth
         margin="normal"

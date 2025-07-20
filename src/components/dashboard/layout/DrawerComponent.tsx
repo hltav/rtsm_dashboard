@@ -49,8 +49,9 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
         <IconButton
           onClick={handleDrawerToggle}
           sx={{
-            color: "white",
+            color: "#FFC83D",
             display: { xs: "none", md: "flex", justifyContent: "right" },
+            
           }}
         >
           {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
