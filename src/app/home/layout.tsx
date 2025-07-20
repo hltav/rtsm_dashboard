@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-'use client';
+"use client";
 import React from "react";
 import { Box, CssBaseline } from "@mui/material";
 import { useTheme } from "@mui/material/styles";

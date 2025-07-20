@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
+      credentials: 'include' // isso para enviar cookies para o backend, se precisar
     });
 
     const data = await res.json();
@@ -28,7 +29,16 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    return NextResponse.json(data, { status: 200 });
+    // Criar NextResponse com o JSON do corpo
+    const response = NextResponse.json(data, { status: 200 });
+
+    // Repassar o cookie Set-Cookie do backend para o cliente
+    const setCookie = res.headers.get("set-cookie");
+    if (setCookie) {
+      response.headers.set("set-cookie", setCookie);
+    }
+
+    return response;
 
   } catch (error) {
     console.error("Erro no login:", error);

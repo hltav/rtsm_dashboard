@@ -27,12 +27,12 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
   return (
     <Box
       sx={{
-        width: open ? 240 : 60,
+        width: open ? 5 : 10,
         bgcolor: "primary.main",
         height: "100%",
         display: "flex",
         flexDirection: "column",
-        borderRadius: 0, 
+        borderRadius: 0,
       }}
     >
       <Divider sx={{ bgcolor: "primary.light" }} />
@@ -41,7 +41,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
           <Typography
             variant="h6"
             noWrap
-            sx={{ color: "white", fontWeight: 700 }}
+            sx={{ color: "#FFC83D", fontWeight: 700 }}
           >
             {" "}
           </Typography>
@@ -49,7 +49,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
         <IconButton
           onClick={handleDrawerToggle}
           sx={{
-            color: "#FFC83D",
+            color: "white",
             display: { xs: "none", md: "flex", justifyContent: "right" },
           }}
         >
@@ -67,6 +67,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
                 justifyContent: "center",
                 px: 2.5,
                 "&:hover": { bgcolor: "primary.dark" },
+                marginLeft:"10px"
               }}
             >
               <ListItemIcon
@@ -84,6 +85,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
                 sx={{
                   opacity: open ? 1 : 0,
                   color: "white",
+                  whiteSpace: "nowrap",
                 }}
               />
             </ListItemButton>
