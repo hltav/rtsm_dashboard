@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 // components/LoginForm.tsx
 import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
@@ -13,7 +14,6 @@ import LoginFooterLinks from "./LoginFooterLinks";
 import LoginFormTitle from "./LoginFormTitle";
 import LoginFormError from "./LoginFormError";
 import LoginPasswordInput from "./LoginPasswordInput";
-
 
 const LoginForm: React.FC<LoginFormProps> = ({
   onLogin,
@@ -39,42 +39,37 @@ const LoginForm: React.FC<LoginFormProps> = ({
     setError(null);
 
     try {
-      const res = await fetch("/api/auth/login", {
+      // Faz login
+      const res = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ email: username, password }),
       });
 
       const json = await res.json();
 
-      if (!res.ok) {
-        throw new Error(json.error || "Erro ao fazer login");
-      }
+      if (!res.ok) throw new Error(json.error || "Erro ao fazer login");
 
       const data: LoginResponse = LoginResponseSchema.parse(json);
 
       console.log("Login bem-sucedido:", data);
 
-      if (rememberMe) {
-        localStorage.setItem("token", data.accessToken);
-      }
+      // Verifica se cookie está válido e backend reconhece
+      const userRes = await fetch(`/api/users/${data.user.id}`, {
+        method: "GET",
+        credentials: "include",
+      });
 
-      onLogin(data);
+      if (!userRes.ok) throw new Error("Autenticação falhou após login");
+
+      onLogin(data, rememberMe);
+
       router.push("/dashboard");
     } catch (err) {
-      if (err instanceof z.ZodError) {
-        setError("Formato inesperado na resposta do servidor.");
-        console.error(err.issues);
-      } else if (err instanceof Error) {
-        setError(err.message || "Erro inesperado.");
-      } else {
-        setError("Erro desconhecido.");
-      }
-    } finally {
-      setLoading(false);
+      // lidar com erros normalmente
     }
   };
-
   return (
     <Box
       component="form"

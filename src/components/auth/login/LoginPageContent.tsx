@@ -17,14 +17,17 @@ const LoginContentPage: React.FC = () => {
     }
   }, []);
 
-  const handleLogin = (loginResponse: {
-    accessToken: string;
-    user: { id: number; email: string };
-  }) => {
+  const handleLogin = (
+    loginResponse: {
+      accessToken: string;
+      user: { id: number; email: string };
+    },
+    rememberMe: boolean
+  ) => {
     const { accessToken, user } = loginResponse;
-    const username = user.email; 
+    const username = user.email;
 
-    if (initialRememberMe) {
+    if (rememberMe) {
       localStorage.setItem("lastLoggedInUser", username);
     } else {
       localStorage.removeItem("lastLoggedInUser");
@@ -33,7 +36,7 @@ const LoginContentPage: React.FC = () => {
     console.log("Login bem-sucedido:", {
       accessToken,
       user,
-      rememberMe: initialRememberMe,
+      rememberMe,
     });
 
     // Lógica de autenticação aqui

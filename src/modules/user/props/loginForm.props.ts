@@ -1,7 +1,10 @@
 import { LoginResponse } from "../schemas/loginResponse.schema";
 
-export type LoginFormProps = {
-  onLogin: (user: LoginResponse) => void;
+export interface LoginFormProps {
+  onLogin: (
+    loginResponse: LoginResponse,
+    rememberMe: boolean
+  ) => void;
   initialUsername?: string;
   initialRememberMe?: boolean;
-};
+}
