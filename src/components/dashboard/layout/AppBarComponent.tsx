@@ -1,33 +1,31 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
-
 import React from "react";
 import { AppBar, Toolbar, Typography, Box, IconButton } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
-
+import Image from "next/image";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { ProfileAvatar } from "./navbar/profile-avatar";
 
 interface AppBarComponentProps {
   handleDrawerToggle: () => void;
-  handleProfileMenuToggle: () => void;
 }
 
 const AppBarComponent: React.FC<AppBarComponentProps> = ({
   handleDrawerToggle,
 }) => {
+  const logoSrc = "/images/rtsmlogo02.png";
   return (
     <AppBar
       position="fixed"
       sx={{
         borderRadius: 0,
-        width: "100vw", 
-        maxWidth: "100%", 
+        width: "100vw",
+        maxWidth: "100%",
         left: 0,
         right: 0,
         margin: 0,
         padding: 0,
-        overflow: "hidden", 
+        overflow: "hidden",
         "@media (max-width:600px)": {
           minWidth: "100vw",
         },
@@ -45,17 +43,15 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({
         </IconButton>
 
         <Box sx={{ display: "flex", alignItems: "center", flexGrow: 1 }}>
-          <img
-            src="/images/rtsmlogo02.png"
+          {/* Use o componente Image */}
+          <Image
+            src={logoSrc}
             alt="RT Sports Manager Logo"
+            width={30}
+            height={30}
             style={{
-              height: "30px",
               borderRadius: "4px",
               marginRight: "10px",
-            }}
-            onError={(e) => {
-              e.currentTarget.src =
-                "https://placehold.co/30x30/1A2B42/E0A800?text=Logo";
             }}
           />
           <Typography

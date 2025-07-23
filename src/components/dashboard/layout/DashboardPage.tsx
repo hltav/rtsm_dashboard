@@ -32,10 +32,6 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
     setDarkMode(!darkMode);
   };
 
-  const handleProfileMenuToggle = () => {
-    setProfileMenuOpen((prev) => !prev);
-  };
-
   const handleLogout = () => {
     console.log("Usuário deslogado!");
     setProfileMenuOpen(false);
@@ -43,10 +39,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
 
   return (
     <DashboardLayout darkMode={darkMode}>
-      <AppBarComponent
-        handleDrawerToggle={handleDrawerToggle}
-        handleProfileMenuToggle={handleProfileMenuToggle}
-      />
+      <AppBarComponent handleDrawerToggle={handleDrawerToggle} />
 
       <ProfileMenu
         open={profileMenuOpen}

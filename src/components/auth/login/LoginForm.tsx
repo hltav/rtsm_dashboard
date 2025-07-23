@@ -1,37 +1,24 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-// components/LoginForm.tsx
 import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
 import z from "zod";
-import {
-  LoginResponse,
-  LoginResponseSchema,
-} from "@/modules/user/schemas/loginResponse.schema";
-import { LoginFormProps } from "@/modules/user/props/loginForm.props";
+import { LoginResponseSchema } from "@/modules/user/schemas/loginResponse.schema";
 import { useRouter } from "next/navigation";
 import RememberMeCheckbox from "./RememberMeCheckbox";
 import LoginFooterLinks from "./LoginFooterLinks";
 import LoginFormTitle from "./LoginFormTitle";
 import LoginFormError from "./LoginFormError";
 import LoginPasswordInput from "./LoginPasswordInput";
+import { useAuth } from "@/components/Providers/AuthContext";
+import { GetUserSchema } from "@/modules/user/schemas/user.schema";
 
-const LoginForm: React.FC<LoginFormProps> = ({
-  onLogin,
-  initialUsername = "",
-  initialRememberMe = false,
-}) => {
-  const [rememberMe, setRememberMe] = useState(initialRememberMe);
-  const [username, setUsername] = useState(initialUsername);
+export const LoginForm: React.FC = () => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-
-  const handleRememberMeChange = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRememberMe(event.target.checked);
-  };
+  const { login } = useAuth();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -39,37 +26,54 @@ const LoginForm: React.FC<LoginFormProps> = ({
     setError(null);
 
     try {
-      // Faz login
       const res = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ email: username, password }),
+        body: JSON.stringify({ email: username, password, rememberMe }),
       });
 
       const json = await res.json();
 
-      if (!res.ok) throw new Error(json.error || "Erro ao fazer login");
+      if (!res.ok) {
+        throw new Error(json.error || "Erro desconhecido ao fazer login.");
+      }
 
-      const data: LoginResponse = LoginResponseSchema.parse(json);
+      const data = LoginResponseSchema.parse(json);
 
-      console.log("Login bem-sucedido:", data);
-
-      // Verifica se cookie está válido e backend reconhece
       const userRes = await fetch(`/api/users/${data.user.id}`, {
         method: "GET",
         credentials: "include",
       });
 
-      if (!userRes.ok) throw new Error("Autenticação falhou após login");
+      const userData = await userRes.json();
 
-      onLogin(data, rememberMe);
+      if (!userRes.ok) {
+        throw new Error(
+          userData?.error ||
+            "Falha na autenticação após login ou dados do usuário não encontrados."
+        );
+      }
+
+      const validatedUserData = GetUserSchema.parse(userData);
+      login(validatedUserData);
 
       router.push("/dashboard");
-    } catch (err) {
-      // lidar com erros normalmente
+    } catch (err: unknown) {
+      if (err instanceof z.ZodError) {
+        console.error("Erro de validação de esquema:", err.issues);
+        setError("Dados inválidos recebidos do servidor.");
+      } else if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Ocorreu um erro inesperado. Por favor, tente novamente.");
+        console.error("Erro inesperado:", err);
+      }
+    } finally {
+      setLoading(false);
     }
   };
+
   return (
     <Box
       component="form"
@@ -109,7 +113,7 @@ const LoginForm: React.FC<LoginFormProps> = ({
 
       <RememberMeCheckbox
         checked={rememberMe}
-        onChange={handleRememberMeChange}
+        onChange={(e) => setRememberMe(e.target.checked)}
       />
 
       <LoginFormError message={error} />
