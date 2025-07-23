@@ -1,47 +1,11 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Box, Container, Paper } from "@mui/material";
 import LoginMarketing from "@/components/auth/login/LoginMarketing";
 import LoginForm from "@/components/auth/login/LoginForm";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
 
 const LoginContentPage: React.FC = () => {
-  const [initialUsername, setInitialUsername] = useState("");
-  const [initialRememberMe, setInitialRememberMe] = useState(false);
-
-  useEffect(() => {
-    const savedUsername = localStorage.getItem("lastLoggedInUser");
-    if (savedUsername) {
-      setInitialUsername(savedUsername);
-      setInitialRememberMe(true);
-    }
-  }, []);
-
-  const handleLogin = (
-    loginResponse: {
-      accessToken: string;
-      user: { id: number; email: string };
-    },
-    rememberMe: boolean
-  ) => {
-    const { accessToken, user } = loginResponse;
-    const username = user.email;
-
-    if (rememberMe) {
-      localStorage.setItem("lastLoggedInUser", username);
-    } else {
-      localStorage.removeItem("lastLoggedInUser");
-    }
-
-    console.log("Login bem-sucedido:", {
-      accessToken,
-      user,
-      rememberMe,
-    });
-
-    // Lógica de autenticação aqui
-  };
-
   return (
     <Box
       sx={{
@@ -89,11 +53,7 @@ const LoginContentPage: React.FC = () => {
           }}
         >
           <LoginMarketing />
-          <LoginForm
-            onLogin={handleLogin}
-            initialUsername={initialUsername}
-            initialRememberMe={initialRememberMe}
-          />
+          <LoginForm />
         </Paper>
       </Container>
     </Box>
