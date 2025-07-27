@@ -1,21 +1,22 @@
-'use client';
-import React from 'react';
-import { Dialog, DialogContent } from '@mui/material';
-import CompleteProfilePage from '../complete-profile/CompleteProfile';
-
+"use client";
+import React from "react";
+import { Dialog, DialogContent } from "@mui/material";
+import CompleteProfilePage from "../complete-profile/CompleteProfile";
 
 interface CompleteProfileModalProps {
   open: boolean;
   onClose: () => void;
 }
 
-const CompleteProfileModal: React.FC<CompleteProfileModalProps> = ({ open, onClose }) => {
+const CompleteProfileModal: React.FC<CompleteProfileModalProps> = ({
+  open,
+  onClose,
+}) => {
   return (
     <Dialog
       open={open}
       onClose={(event, reason) => {
-        // Impede fechamento por ESC ou clique fora
-        if (reason !== 'backdropClick' && reason !== 'escapeKeyDown') {
+        if (reason !== "backdropClick" && reason !== "escapeKeyDown") {
           onClose();
         }
       }}

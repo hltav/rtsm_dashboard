@@ -31,7 +31,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const profileImageUrl = user?.clientData?.image ?? null;
 
-  // Função para verificar se o perfil está incompleto
   const checkProfileCompletion = useCallback((userData: GetUser | null) => {
     const isIncomplete =
       userData &&
@@ -46,7 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setLoading(true);
 
-      const res = await fetch("/api/users/me", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
         method: "GET",
         credentials: "include",
       });
@@ -73,14 +72,14 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, [checkAuthStatus]);
 
   const login = (userData: GetUser, token: string) => {
-  setUser(userData);
-  setToken(token);
-  checkProfileCompletion(userData);
-};
+    setUser(userData);
+    setToken(token);
+    checkProfileCompletion(userData);
+  };
 
   const logout = async () => {
     try {
-      await fetch("/api/auth/logout", {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/logout`, {
         method: "POST",
         credentials: "include",
       });
@@ -102,11 +101,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         loading,
         hasIncompleteProfile,
         checkAuthStatus,
-        token, 
+        token,
         updateUser,
-        profileImageUrl, 
-
-      }} 
+        profileImageUrl,
+      }}
     >
       {children}
     </AuthContext.Provider>

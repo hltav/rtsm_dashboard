@@ -16,7 +16,6 @@ export async function POST(req: NextRequest) {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
-        // Adicione headers de CORS se necessário
         "Access-Control-Allow-Origin": process.env.NEXT_PUBLIC_FRONTEND_URL || "*"
       },
       body: JSON.stringify({ token }),

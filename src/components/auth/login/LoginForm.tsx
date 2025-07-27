@@ -43,7 +43,7 @@ export const LoginForm: React.FC = () => {
       const accessToken = data.accessToken;
 
       const userRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${data.user.id}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/users/${data.user.id}`,
         {
           method: "GET",
           credentials: "include",
