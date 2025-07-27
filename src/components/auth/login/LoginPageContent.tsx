@@ -23,7 +23,7 @@ const LoginContentPage: React.FC = () => {
           position: "absolute",
           top: 16,
           right: 16,
-          zIndex: 1, // Garante que fique acima de outros elementos
+          zIndex: 1,
         }}
       >
         <ThemeToggle />

@@ -11,14 +11,14 @@ const nextConfig = {
   images: {
     domains: ["placehold.co"],
   },
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*', // Todas as requisições para /api serão redirecionadas
-        destination: 'https://rtsmanager.duckdns.org/api/:path*', // Para o seu backend
-      },
-    ];
-  },
+  // async rewrites() {
+  //   return [
+  //     {
+  //       source: '/:path*', // Todas as requisições para /api serão redirecionadas
+  //       destination: 'https://apirtsmanager.duckdns.org/:path*', // Para o seu backend
+  //     },
+  //   ];
+  // },
 };
 
 export default nextConfig;

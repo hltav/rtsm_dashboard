@@ -40,8 +40,9 @@ export const LoginForm: React.FC = () => {
       }
 
       const data = LoginResponseSchema.parse(json);
+      const accessToken = data.accessToken;
 
-      const userRes = await fetch(`/api/users/${data.user.id}`, {
+      const userRes = await fetch(`/users/${data.user.id}`, {
         method: "GET",
         credentials: "include",
       });
@@ -56,7 +57,7 @@ export const LoginForm: React.FC = () => {
       }
 
       const validatedUserData = GetUserSchema.parse(userData);
-      login(validatedUserData);
+      login(validatedUserData, accessToken);
 
       router.push("/dashboard");
     } catch (err: unknown) {
