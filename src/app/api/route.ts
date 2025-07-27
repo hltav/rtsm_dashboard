@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse } from "next/server";
 
 export async function GET() {
   try {
@@ -9,7 +9,10 @@ export async function GET() {
     });
 
     if (!response.ok) {
-      return NextResponse.json({ error: 'Erro na API externa' }, { status: response.status });
+      return NextResponse.json(
+        { error: "Erro na API externa" },
+        { status: response.status }
+      );
     }
 
     const data = await response.json();
@@ -17,6 +20,6 @@ export async function GET() {
     return NextResponse.json(data);
   } catch (error) {
     console.error(error);
-    return NextResponse.json({ error: 'Erro interno' }, { status: 500 });
+    return NextResponse.json({ error: "Erro interno" }, { status: 500 });
   }
 }
