@@ -26,7 +26,7 @@ export const LoginForm: React.FC = () => {
     setError(null);
 
     try {
-      const res = await fetch(`/auth/login`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -42,10 +42,13 @@ export const LoginForm: React.FC = () => {
       const data = LoginResponseSchema.parse(json);
       const accessToken = data.accessToken;
 
-      const userRes = await fetch(`/users/${data.user.id}`, {
-        method: "GET",
-        credentials: "include",
-      });
+      const userRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_BASE_URL}/users/${data.user.id}`,
+        {
+          method: "GET",
+          credentials: "include",
+        }
+      );
 
       const userData = await userRes.json();
 
