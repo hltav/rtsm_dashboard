@@ -9,30 +9,15 @@ import {
   TextField,
   CircularProgress,
 } from "@mui/material";
-
-interface EditableUserInfoProps {
-  cpf: string;
-  gender: string;
-  phone: string;
-  neighborhood: string;
-  city: string;
-  state: string;
-  onCpfChange: (value: string) => void;
-  onGenderChange: (value: string) => void;
-  onPhoneChange: (value: string) => void;
-  onNeighborhoodChange: (value: string) => void;
-  onCityChange: (value: string) => void;
-  onStateChange: (value: string) => void;
-}
-
-interface IBGEState {
-  sigla: string;
-  nome: string;
-}
-
-interface IBGECity {
-  nome: string;
-}
+import {
+  EditableUserInfoProps,
+  IBGECity,
+  IBGEState,
+} from "@/modules/user/schemas/editableUserInfoProps.schema";
+import { cpfSchema } from "@/utils/validateCpf";
+import { phoneSchema } from "@/utils/phoneValidator";
+import { formatCPFInput } from "@/utils/formatCpf";
+import { formatPhone } from "@/utils/formatPhone";
 
 const EditableUserInfo: React.FC<EditableUserInfoProps> = ({
   cpf,
@@ -52,6 +37,8 @@ const EditableUserInfo: React.FC<EditableUserInfoProps> = ({
   const [cities, setCities] = useState<IBGECity[]>([]);
   const [loadingStates, setLoadingStates] = useState(true);
   const [loadingCities, setLoadingCities] = useState(false);
+  const [cpfError, setCpfError] = useState<string | null>(null);
+  const [phoneError, setPhoneError] = useState<string | null>(null);
 
   // Carrega estados do IBGE
   useEffect(() => {
@@ -111,9 +98,19 @@ const EditableUserInfo: React.FC<EditableUserInfoProps> = ({
           variant="outlined"
           fullWidth
           value={cpf}
-          onChange={(e) => onCpfChange(e.target.value)}
-          placeholder="000.000.000-00"
-          sx={{ mb: { xs: 2, sm: 0 } }}
+          onChange={(e) => {
+            const formattedValue = formatCPFInput(e.target.value);
+            onCpfChange(formattedValue);
+            setCpfError(null);
+          }}
+          onBlur={() => {
+            const result = cpfSchema.safeParse(cpf);
+            if (!result.success) {
+              setCpfError(result.error.issues[0].message);
+            }
+          }}
+          error={!!cpfError}
+          helperText={cpfError}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -140,9 +137,19 @@ const EditableUserInfo: React.FC<EditableUserInfoProps> = ({
           variant="outlined"
           fullWidth
           value={phone}
-          onChange={(e) => onPhoneChange(e.target.value)}
-          placeholder="(XX) XXXXX-XXXX"
-          sx={{ mb: { xs: 2, sm: 0 } }}
+          onChange={(e) => {
+            const formattedValue = formatPhone(e.target.value);
+            onPhoneChange(formattedValue);
+            setPhoneError(null); // limpa erro enquanto digita
+          }}
+          onBlur={() => {
+            const result = phoneSchema.safeParse(phone);
+            if (!result.success) {
+              setPhoneError(result.error.issues[0].message); // exibe erro do Zod
+            }
+          }}
+          error={!!phoneError}
+          helperText={phoneError}
         />
       </Grid>
       <Grid item xs={12} sm={6}>
@@ -155,9 +162,7 @@ const EditableUserInfo: React.FC<EditableUserInfoProps> = ({
             label="Estado"
             disabled={loadingStates}
             endAdornment={
-              loadingStates && (
-                <CircularProgress color="inherit" size={20} />
-              )
+              loadingStates && <CircularProgress color="inherit" size={20} />
             }
           >
             <MenuItem value="">
@@ -181,9 +186,7 @@ const EditableUserInfo: React.FC<EditableUserInfoProps> = ({
             label="Cidade"
             disabled={!state || loadingCities}
             endAdornment={
-              loadingCities && (
-                <CircularProgress color="inherit" size={20} />
-              )
+              loadingCities && <CircularProgress color="inherit" size={20} />
             }
           >
             <MenuItem value="">

@@ -48,6 +48,8 @@ export const ProfileAvatar: React.FC = () => {
       0
     )}${user.lastname.charAt(0)}`;
 
+    console.log(userAvatarUrl)
+
   return (
     <React.Fragment>
       <IconButton

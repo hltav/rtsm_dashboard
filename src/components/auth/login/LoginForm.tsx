@@ -26,7 +26,7 @@ export const LoginForm: React.FC = () => {
     setError(null);
 
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
+      const res = await fetch(`/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
@@ -46,6 +46,9 @@ export const LoginForm: React.FC = () => {
         `${process.env.NEXT_PUBLIC_API_URL}/users/${data.user.id}`,
         {
           method: "GET",
+          headers: {
+            Authorization: `Bearer ${accessToken}`, // <- aqui está o segredo
+          },
           credentials: "include",
         }
       );
