@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       setLoading(true);
 
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/me`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/users/{user.id}`, {
         method: "GET",
         credentials: "include",
       });
