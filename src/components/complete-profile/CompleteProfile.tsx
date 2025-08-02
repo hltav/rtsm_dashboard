@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useState, useEffect } from "react";
 import {
@@ -18,7 +17,6 @@ import PageHeader from "./PageHeader";
 import ProfileImageUploader from "./ProfileImageUploader";
 import axios from "axios";
 import { useAuth } from "../Providers/AuthContext";
-import { ClientData } from "@/modules/client-data/client-data.schema";
 
 interface CompleteProfilePageProps {
   onComplete?: () => void;
@@ -105,6 +103,7 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
             city: data.address?.city,
             state: data.address?.state,
           },
+          image: data.image || undefined,
         });
 
         if (data.image) {
@@ -210,7 +209,7 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
     const profileDataToSave = {
       ...clientData,
       userId,
-     
+      image: clientData.image,
     };
 
     console.log("Dados a serem enviados:", profileDataToSave);
@@ -230,6 +229,18 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
       console.log("Resposta da API (salvar perfil):", response.data);
       setProfileSaveMessage("Perfil atualizado com sucesso!");
       setIsProfileSaveError(false);
+
+      // Atualiza o usuário no context/local
+      if (updateUser && user) {
+        updateUser({
+          ...user,
+          clientData: {
+            ...(user.clientData || {}),
+            ...clientData,
+            image: clientData.image,
+          },
+        });
+      }
 
       if (onComplete) {
         onComplete();
@@ -257,6 +268,7 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
       setIsSavingProfile(false);
     }
   };
+
   if (isLoadingInitialData) {
     return (
       <Box

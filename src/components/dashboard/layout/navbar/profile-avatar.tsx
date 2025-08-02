@@ -42,13 +42,11 @@ export const ProfileAvatar: React.FC = () => {
 
   const userName = `${user.firstname} ${user.lastname}`;
   const userEmail = user.email;
-  const userAvatarUrl =
-    user.clientData?.image ||
-    `https://placehold.co/32x32/d1d1d1/000000?text=${user.firstname.charAt(
-      0
-    )}${user.lastname.charAt(0)}`;
-
-    console.log(userAvatarUrl)
+  const fallbackAvatar = `https://placehold.co/32x32/d1d1d1/000000?text=${user.firstname.charAt(
+    0
+  )}${user.lastname.charAt(0)}`;
+  const userAvatarUrl = user.clientData?.image || fallbackAvatar;
+  console.log(userAvatarUrl);
 
   return (
     <React.Fragment>
@@ -63,7 +61,7 @@ export const ProfileAvatar: React.FC = () => {
         <Avatar
           src={userAvatarUrl}
           alt={userName}
-          sx={{ width: 32, height: 32 }}
+          sx={{ width: 50, height: 50 }}
         />
       </IconButton>
       <Menu

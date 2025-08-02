@@ -2,8 +2,8 @@
 "use client";
 import React, { useRef, useState } from "react";
 import { Box, Button, Typography, CircularProgress } from "@mui/material";
-import axios from "axios";
 import { ProfileImageUploaderProps } from "@/modules/complete-profile/interface/profileImageUploaderProps";
+import { uploadRtsmImage } from "@/lib/api/uploadImage";
 
 const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
   imagePreview,
@@ -27,13 +27,9 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
   const [isImageUploadError, setIsImageUploadError] = useState(false);
   const imageContainerRef = useRef<HTMLDivElement>(null);
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files ? event.target.files[0] : null;
-    onImageChange(file);
-  };
-
   const handleZoomIn = () => onScaleChange(Math.min(imageScale + 10, 200));
   const handleZoomOut = () => onScaleChange(Math.max(imageScale - 10, 100));
+
   const handleMouseDown = (e: React.MouseEvent) => {
     if (!imagePreview) return;
     setIsDragging(true);
@@ -46,10 +42,8 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
 
   const handleMouseMove = (e: React.MouseEvent) => {
     if (!isDragging || !imagePreview || !imageContainerRef.current) return;
-
     const deltaX = e.clientX - startDragX;
     const deltaY = e.clientY - startDragY;
-
     const containerSize = imageContainerRef.current.offsetWidth;
     const percentagePerPixel = 100 / containerSize;
 
@@ -76,7 +70,6 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
 
     const deltaX = e.touches[0].clientX - startDragX;
     const deltaY = e.touches[0].clientY - startDragY;
-
     const containerSize = imageContainerRef.current.offsetWidth;
     const percentagePerPixel = 100 / containerSize;
 
@@ -88,52 +81,7 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
 
   const handleTouchEnd = () => setIsDragging(false);
 
-  // Função para fazer o upload da imagem
-  const uploadImageToServer = async (file: File) => {
-    setIsUploading(true);
-    const formData = new FormData();
-    formData.append("file", file);
-
-    // --- ADICIONE ESTE LOG PARA DEPURAR ---
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
-    console.log("Valor de NEXT_PUBLIC_API_URL:", apiBaseUrl);
-    console.log("UserID para upload:", userId); // Verifique também o userId
-
-    if (!apiBaseUrl) {
-      console.error("Erro: NEXT_PUBLIC_API_URL não definido.");
-      onUploadError("Erro de configuração: URL da API não definida.");
-      setIsImageUploadError(true);
-      setIsUploading(false);
-      return;
-    }
-
-    try {
-      const response = await axios.post(
-        `${apiBaseUrl}/users/${userId}/avatar`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
-
-      console.log("Resposta completa da API:", response.data.imageUrl);
-
-      const fullImageUrl = `${apiBaseUrl}${response.data.imageUrl}`;
-     
-      onUploadSuccess(fullImageUrl);
-
-      console.log(onUploadSuccess);
-    } catch (error: unknown) {
-      // ... (seu tratamento de erro)
-    } finally {
-      setIsUploading(false);
-    }
-  };
-
-  const handleImageChangeWithUploadPreparation = (
+  const handleImageChangeWithUploadPreparation = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const file = event.target.files ? event.target.files[0] : null;
@@ -141,8 +89,22 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
     onOffsetChange(50, 50);
     onScaleChange(100);
 
-    if (file) {
-      uploadImageToServer(file);
+    if (!file) return;
+
+    try {
+      setIsUploading(true);
+      const urls = await uploadRtsmImage(event);
+      if (urls.length > 0) {
+        onUploadSuccess(urls[0]);
+      } else {
+        throw new Error("Nenhuma imagem foi enviada.");
+      }
+    } catch (error) {
+      console.error("Erro ao enviar imagem para o Google Drive:", error);
+      onUploadError("Erro ao enviar imagem.");
+      setIsImageUploadError(true);
+    } finally {
+      setIsUploading(false);
     }
   };
 
