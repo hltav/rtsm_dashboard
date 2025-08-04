@@ -1,0 +1,9 @@
+# Custom Dictionary Words
+arredondada
+Borda
+estilo
+fonte
+maiúsculas
+Manter
+Sombra
+texto

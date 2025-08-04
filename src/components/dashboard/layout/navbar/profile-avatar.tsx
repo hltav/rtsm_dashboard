@@ -46,7 +46,6 @@ export const ProfileAvatar: React.FC = () => {
     0
   )}${user.lastname.charAt(0)}`;
   const userAvatarUrl = user.clientData?.image || fallbackAvatar;
-  console.log(userAvatarUrl);
 
   return (
     <React.Fragment>

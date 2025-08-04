@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   FormControl,
   Grid,
@@ -9,15 +9,12 @@ import {
   TextField,
   CircularProgress,
 } from "@mui/material";
-import {
-  EditableUserInfoProps,
-  IBGECity,
-  IBGEState,
-} from "@/modules/user/schemas/editableUserInfoProps.schema";
+import { EditableUserInfoProps } from "@/modules/user/schemas/editableUserInfoProps.schema";
 import { cpfSchema } from "@/utils/validateCpf";
 import { phoneSchema } from "@/utils/phoneValidator";
 import { formatCPFInput } from "@/utils/formatCpf";
 import { formatPhone } from "@/utils/formatPhone";
+import { useIBGELocations } from "@/hooks/useIBGELocations";
 
 const EditableUserInfo: React.FC<EditableUserInfoProps> = ({
   cpf,
@@ -33,61 +30,15 @@ const EditableUserInfo: React.FC<EditableUserInfoProps> = ({
   onCityChange,
   onStateChange,
 }) => {
-  const [states, setStates] = useState<IBGEState[]>([]);
-  const [cities, setCities] = useState<IBGECity[]>([]);
-  const [loadingStates, setLoadingStates] = useState(true);
-  const [loadingCities, setLoadingCities] = useState(false);
   const [cpfError, setCpfError] = useState<string | null>(null);
   const [phoneError, setPhoneError] = useState<string | null>(null);
-
-  // Carrega estados do IBGE
-  useEffect(() => {
-    const fetchStates = async () => {
-      try {
-        const response = await fetch(
-          "https://servicodados.ibge.gov.br/api/v1/localidades/estados?orderBy=nome"
-        );
-        const data = await response.json();
-        setStates(data);
-      } catch (error) {
-        console.error("Erro ao carregar estados:", error);
-      } finally {
-        setLoadingStates(false);
-      }
-    };
-
-    fetchStates();
-  }, []);
-
-  // Carrega cidades quando estado muda
-  useEffect(() => {
-    const fetchCities = async () => {
-      if (!state) {
-        setCities([]);
-        return;
-      }
-
-      try {
-        setLoadingCities(true);
-        const response = await fetch(
-          `https://servicodados.ibge.gov.br/api/v1/localidades/estados/${state}/municipios`
-        );
-        const data = await response.json();
-        setCities(data);
-      } catch (error) {
-        console.error("Erro ao carregar cidades:", error);
-      } finally {
-        setLoadingCities(false);
-      }
-    };
-
-    fetchCities();
-  }, [state]);
+  const { states, cities, loadingStates, loadingCities } =
+    useIBGELocations(state);
 
   const handleStateChange = (value: string) => {
     onStateChange(value);
-    onCityChange(""); // Reseta a cidade quando muda o estado
-    onNeighborhoodChange(""); // Reseta o bairro
+    onCityChange("");
+    onNeighborhoodChange("");
   };
 
   return (

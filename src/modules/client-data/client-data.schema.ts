@@ -8,7 +8,7 @@ export const ClientDataSchema = z.object({
   image: z.string().optional(),
   phone: z.string().optional(),
   userId: z.number().optional(),
-  address: AddressSchema,
+  address: AddressSchema.optional(),
   createdAt: z.coerce.date().optional(),
   updatedAt: z.coerce.date().optional(),
 });

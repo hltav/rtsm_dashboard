@@ -13,21 +13,23 @@ import {
 } from "@mui/material";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { menuItems } from "./icons/MenuItems";
+import { MenuItem, menuItems } from "./icons/MenuItems";
 
 interface DrawerComponentProps {
   open: boolean;
   handleDrawerToggle: () => void;
+  onMenuItemClick: (key: string) => void;
 }
 
 const DrawerComponent: React.FC<DrawerComponentProps> = ({
   open,
   handleDrawerToggle,
+  onMenuItemClick,
 }) => {
   return (
     <Box
       sx={{
-        width: open ? 5 : 10,
+        width: "100%",
         bgcolor: "primary.main",
         height: "100%",
         display: "flex",
@@ -51,24 +53,26 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
           sx={{
             color: "#FFC83D",
             display: { xs: "none", md: "flex", justifyContent: "right" },
-            
           }}
         >
           {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
-        {menuItems.map((item) => (
+        {menuItems.map((item: MenuItem) => (
           <Tooltip
             key={item.text}
             title={!open ? item.text : ""}
             placement="right"
           >
             <ListItemButton
+              onClick={() => {
+                onMenuItemClick(item.key);
+              }}
               sx={{
                 minHeight: 48,
                 justifyContent: "center",
                 px: 2.5,
                 "&:hover": { bgcolor: "primary.dark" },
-                marginLeft:"10px"
+                marginLeft: "10px",
               }}
             >
               <ListItemIcon

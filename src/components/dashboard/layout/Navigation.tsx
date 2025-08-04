@@ -1,27 +1,17 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-
 import React from "react";
 import { Box, Drawer } from "@mui/material";
 import DrawerComponent from "./DrawerComponent";
-
-interface NavigationProps {
-  open: boolean;
-  mobileOpen: boolean;
-  darkMode: boolean;
-  isDesktop: boolean;
-  handleDrawerToggle: () => void;
-  handleThemeToggle: () => void;
-}
+import { useDashboard } from "@/components/Providers/DashboardContext";
+import { NavigationProps } from "@/modules/user/props/navigation.props";
 
 export const NavigationBar: React.FC<NavigationProps> = ({
   open,
   mobileOpen,
-  darkMode,
-  isDesktop,
   handleDrawerToggle,
-  handleThemeToggle,
 }) => {
+  const { setSelectedPage } = useDashboard();
+
   return (
     <Box
       component="nav"
@@ -32,7 +22,7 @@ export const NavigationBar: React.FC<NavigationProps> = ({
         borderRadius: 0,
       }}
     >
-      {/* Drawer Mobile */}
+      Drawer Mobile
       <Drawer
         variant="temporary"
         open={mobileOpen}
@@ -47,29 +37,48 @@ export const NavigationBar: React.FC<NavigationProps> = ({
             height: "calc(100% - 64px)",
             borderRadius: 0,
           },
-          
         }}
       >
-        <DrawerComponent open={true} handleDrawerToggle={handleDrawerToggle} />
+        <DrawerComponent
+          open={true}
+          handleDrawerToggle={handleDrawerToggle}
+          onMenuItemClick={setSelectedPage}
+        />
       </Drawer>
-
       {/* Drawer Desktop */}
       <Drawer
         variant="permanent"
         sx={{
           display: { xs: "none", md: "block" },
+          flexShrink: 0,
+          whiteSpace: "nowrap",
+          width: open ? 240 : 60,
+          transition: (theme) =>
+            theme.transitions.create("width", {
+              easing: theme.transitions.easing.sharp,
+              duration: theme.transitions.duration.enteringScreen,
+            }),
           "& .MuiDrawer-paper": {
             width: open ? 240 : 60,
             bgcolor: "primary.main",
             mt: "64px",
-            height: "calc(100% - 64px)",
+            height: "calc(100% - 30px)",
             overflowX: "hidden",
+            transition: (theme) =>
+              theme.transitions.create("width", {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.enteringScreen,
+              }),
             borderRight: "none",
             borderRadius: 0,
           },
         }}
       >
-        <DrawerComponent open={open} handleDrawerToggle={handleDrawerToggle} />
+        <DrawerComponent
+          open={open}
+          handleDrawerToggle={handleDrawerToggle}
+          onMenuItemClick={setSelectedPage}
+        />
       </Drawer>
     </Box>
   );
