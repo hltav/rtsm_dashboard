@@ -16,9 +16,6 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "RT Sports Manager",
   description: "Seu App de Gestão Esportiva",
-  icons: {
-    icon: '/public/favicon.ico'
-  }
 };
 
 export default function RootLayout({
