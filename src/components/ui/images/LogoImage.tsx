@@ -32,7 +32,7 @@ interface LogoImageProps extends BoxProps {
 }
 
 const LogoImage: React.FC<LogoImageProps> = ({
-  src = "/images/RTSM.jpeg",
+  src = "/RTSM.png",
   alt = "RT Sports Manager Logo",
   fallbackSrc = "https://placehold.co/400x250/1A2B42/E0A800?text=Logo+RT",
   maxWidth = "60%",
