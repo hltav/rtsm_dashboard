@@ -17,7 +17,7 @@ export const metadata: Metadata = {
   title: "RT Sports Manager",
   description: "Seu App de Gestão Esportiva",
   icons: {
-    icon: '/images/RT SPORTS MANAGER favicon.png'
+    icon: '/public/favicon.ico'
   }
 };
 
