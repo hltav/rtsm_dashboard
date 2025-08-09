@@ -22,6 +22,7 @@ export const darkTheme = createTheme({
     text: {
       primary: "#E0E0E0",
       secondary: "#B0B0B0",
+      tertiary: "#fff"
     },
   },
   typography: {

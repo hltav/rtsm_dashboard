@@ -22,7 +22,9 @@ export const lightTheme = createTheme({
     text: {
       primary: "#333",
       secondary: "#555",
+      tertiary: "#fff"
     },
+    
   },
   typography: {
     fontFamily: "Inter, sans-serif", // Usando Inter como fonte padrão

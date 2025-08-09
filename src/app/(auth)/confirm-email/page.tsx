@@ -1,4 +1,4 @@
-import ConfirmEmailContent from "@/components/auth/confirm-email/ConfirmEmailContent";
+import ConfirmEmailContent from "@/modules/auth/confirm-email/ConfirmEmailContent";
 import { Suspense } from "react";
 
 export default function ConfirmEmailPage() {

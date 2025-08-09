@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { Dialog, DialogContent } from "@mui/material";
-import CompleteProfilePage from "../complete-profile/CompleteProfile";
+import CompleteProfilePage from "../../modules/complete-profile/CompleteProfile";
 
 interface CompleteProfileModalProps {
   open: boolean;
