@@ -16,7 +16,7 @@ const AppLayout: React.FC<AppLayoutProps> = ({ children }) => {
   return (
     <Box>
       <CssBaseline />
-      {children} {/* Isso já será sua página, como HomePage */}
+      {children}
     </Box>
   );
 };
