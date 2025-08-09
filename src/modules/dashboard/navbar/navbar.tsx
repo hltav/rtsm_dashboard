@@ -1,8 +1,9 @@
 import React from "react";
 import { AppBar, Toolbar, Box } from "@mui/material";
-import { SearchInput } from "./search-input";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
-import { ProfileAvatar } from "../../../../modules/dashboard/navbar/profile-avatar";
+import { SearchInput } from "./search-input";
+import { ProfileAvatar } from "./profile-avatar";
+
 
 interface DashboardNavbarProps {
   carousel: React.ReactNode;

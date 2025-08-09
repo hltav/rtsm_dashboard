@@ -1,20 +1,18 @@
-import { Search } from "@mui/icons-material"
+import { Search } from "@mui/icons-material";
 import { StyledInputBase } from "@/components/ui/styled-input-base";
-import SearchIcon from '@mui/icons-material/Search';
-import { SearchIconWrapper } from "../icons/search-icon-wrapper";
-
+import SearchIcon from "@mui/icons-material/Search";
+import { SearchIconWrapper } from "./search-icon-wrapper";
 
 export const SearchInput: React.FC = () => {
   return (
     <Search>
-    <SearchIconWrapper>
-    <SearchIcon />
-    </SearchIconWrapper>
-    < StyledInputBase
-        placeholder = "Pesquisar…"
-  inputProps = {{ 'aria-label': 'pesquisar' }
-}
-/>
-  </Search>
+      <SearchIconWrapper>
+        <SearchIcon />
+      </SearchIconWrapper>
+      <StyledInputBase
+        placeholder="Pesquisar…"
+        inputProps={{ "aria-label": "pesquisar" }}
+      />
+    </Search>
   );
 };
