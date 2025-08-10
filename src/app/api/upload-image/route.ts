@@ -58,7 +58,7 @@ export async function POST(req: NextRequest) {
     const response = await drive.files.create({
       requestBody: fileMetadata,
       media: media,
-      fields: "id, webViewLink",
+      fields: "id, webViewLink, thumbnailLink",
     });
 
     if (response.data.id) {
@@ -70,7 +70,7 @@ export async function POST(req: NextRequest) {
         },
       });
 
-      return NextResponse.json({ url: response.data.webViewLink });
+      return NextResponse.json({ url: response.data.thumbnailLink });
     }
 
     throw new Error("Upload do arquivo falhou.");
