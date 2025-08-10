@@ -42,9 +42,6 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
   const [profileImagePreview, setProfileImagePreview] = useState<string>(
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
   );
-  const [imageOffsetX, setImageOffsetX] = useState(50);
-  const [imageOffsetY, setImageOffsetY] = useState(50);
-  const [imageScale, setImageScale] = useState(100);
   const [imageUploadMessage, setImageUploadMessage] = useState<string | null>(
     null
   );
@@ -109,10 +106,6 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
         if (data.image) {
           setProfileImagePreview(data.image);
         }
-
-        setImageOffsetX(data.imageOffsetX || 50);
-        setImageOffsetY(data.imageOffsetY || 50);
-        setImageScale(data.imageScale || 100);
       } catch (error) {
         console.error("Erro ao carregar dados do perfil inicial:", error);
       } finally {
@@ -129,15 +122,6 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
       setImageUploadMessage(null);
       setIsImageUploadError(false);
     }
-  };
-
-  const handleOffsetChange = (x: number, y: number) => {
-    setImageOffsetX(x);
-    setImageOffsetY(y);
-  };
-
-  const handleScaleChange = (scale: number) => {
-    setImageScale(scale);
   };
 
   const handleProfileImageUploadSuccess = (imageUrl: string) => {
@@ -402,11 +386,6 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
               <ProfileImageUploader
                 imagePreview={profileImagePreview}
                 onImageChange={handleImageChange}
-                imageOffsetX={imageOffsetX}
-                imageOffsetY={imageOffsetY}
-                imageScale={imageScale}
-                onOffsetChange={handleOffsetChange}
-                onScaleChange={handleScaleChange}
                 userId={userId}
                 authToken={authToken}
                 onUploadSuccess={handleProfileImageUploadSuccess}
