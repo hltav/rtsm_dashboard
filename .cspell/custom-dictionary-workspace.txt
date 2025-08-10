@@ -31,6 +31,7 @@ aprender
 aprendizado
 aprimore
 arredondada
+autorizar
 banca
 Banca
 bancas
@@ -61,9 +62,11 @@ coluna
 Comece
 concretos
 condicionalmente
+configuradas
 continuar
 contínuo
 contraste
+Converta
 Copa
 cópia
 crescimento
@@ -140,6 +143,7 @@ Início
 Inteligente
 Inteligentes
 interatividade
+interna
 Internacional
 interromper
 intuição

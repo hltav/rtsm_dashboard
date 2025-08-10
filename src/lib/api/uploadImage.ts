@@ -35,59 +35,37 @@
 // };
 
 import { ChangeEvent } from "react";
-import { uploadImage } from "upload-image-gdrive";
+import axios from "axios";
 
-type UploadImageResult = string | { url: string } | { error: string };
-
-export const uploadRtsmImage = async (
-  event: ChangeEvent<HTMLInputElement>
-): Promise<string[]> => {
-  const folderId = process.env.NEXT_PUBLIC_FOLDER_ID;
-  const clientId = process.env.NEXT_PUBLIC_CLIENT_ID;
-  const privateKey = process.env.NEXT_PUBLIC_PRIVATE_KEY;
-  const clientEmail = process.env.NEXT_PUBLIC_CLIENT_EMAIL;
-
-  if (!folderId || !clientId || !privateKey || !clientEmail) {
-    throw new Error(
-      "Google Drive environment variables not configured correctly."
-    );
-  }
-
-  const params = {
-    folderId,
-    clientId,
-    privateKey,
-    clientEmail,
-  };
-
+export const uploadRtsmImage = async (event: ChangeEvent<HTMLInputElement>): Promise<string[]> => {
   const files = event.target.files;
-  if (!files || files.length === 0) {
-    return [];
-  }
+  if (!files || files.length === 0) return [];
 
   const fileArray = Array.from(files);
 
   const imageUrls = await Promise.all(
     fileArray.map(async (file) => {
       try {
-        const result = (await uploadImage({ ...params, file })) as UploadImageResult;
+        const formData = new FormData();
+        formData.append('file', file);
 
-        if (typeof result === "string") {
-          return result;
-        } else if (result && typeof result === "object" && "url" in result) {
-          return result.url;
-        } else {
-          // Se o resultado não for uma URL válida, lançamos um erro
-          // para interromper o processo de criação no backend.
-          throw new Error("Formato de retorno do upload inválido.");
+        const response = await axios.post('/api/upload-image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (response.data.url) {
+          return response.data.url;
         }
+
+        throw new Error("Erro no upload da imagem.");
       } catch (err) {
-        // Logamos o erro detalhado e o relançamos
-        console.error("Erro no upload da imagem:", err);
-        throw err; // Isso vai fazer o Promise.all rejeitar
+        console.error("Erro no upload:", err);
+        throw err;
       }
     })
   );
 
-  return imageUrls; 
+  return imageUrls.filter((url): url is string => !!url);
 };

@@ -18,11 +18,11 @@
     "@mui/material": "^5.17.1",
     "@mui/system": "^5.17.1",
     "axios": "^1.11.0",
+    "googleapis": "^155.0.1",
     "next": "^15.4.1",
     "next-themes": "^0.4.6",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "upload-image-gdrive": "^1.1.4",
     "zod": "^4.0.5"
   },
   "devDependencies": {
