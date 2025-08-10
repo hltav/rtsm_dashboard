@@ -89,5 +89,5 @@ export const uploadRtsmImage = async (
     })
   );
 
-  return imageUrls; // Não precisamos mais filtrar, pois a promessa falhará se houver um erro
+  return imageUrls; 
 };
