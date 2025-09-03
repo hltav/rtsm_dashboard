@@ -3,10 +3,8 @@ import { z } from "zod";
 export const BankrollSchema = z.object({
   id: z.string().uuid({ message: "ID inválido" }),
   name: z.string().min(1, { message: "Nome é obrigatório" }),
-  balance: z.number().nonnegative({ message: "Saldo não pode ser negativo" }),
-  unidValue: z
-    .number()
-    .positive({ message: "Valor da unidade deve ser maior que zero" }),
+  balance: z.coerce.number().nonnegative({ message: "Saldo não pode ser negativo" }),
+  unidValue: z.coerce.number().positive({ message: "Valor da unidade deve ser maior que zero" }),
   bookmaker: z.string().min(1, { message: "Casa de apostas é obrigatória" }),
 });
 

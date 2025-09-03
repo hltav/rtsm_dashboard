@@ -8,13 +8,13 @@ export const ProfileImageEditor: React.FC<ProfileImageEditorProps> = ({
   onImageChange,
 }) => {
   return (
-    <Box sx={{ mb: 2, textAlign: 'center' }}>
+    <Box sx={{ mb: 2, textAlign: "center" }}>
       <Typography variant="body1" color="text.tertiary" sx={{ mb: 1 }}>
         Foto de Perfil
       </Typography>
       <input
         accept="image/*"
-        style={{ display: 'none' }}
+        style={{ display: "none" }}
         id="profile-image-upload"
         type="file"
         onChange={onImageChange}
@@ -24,22 +24,22 @@ export const ProfileImageEditor: React.FC<ProfileImageEditorProps> = ({
         sx={{
           width: 150,
           height: 150,
-          borderRadius: '50%',
-          margin: '0 auto 16px',
-          cursor: isEditing ? 'pointer' : 'default',
-          border: '2px solid',
-          borderColor: 'primary.main',
-          boxShadow: '0px 4px 10px rgba(0,0,0,0.1)',
-          backgroundImage: profileImage ? `url(${profileImage})` : 'none',
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-          bgcolor: 'grey.200',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          overflow: 'hidden',
-          '&:hover': {
+          borderRadius: "50%",
+          margin: "0 auto 16px",
+          cursor: isEditing ? "pointer" : "default",
+          border: "2px solid",
+          borderColor: "primary.main",
+          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+          backgroundImage: profileImage ? `url(${profileImage})` : "none",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          bgcolor: "grey.200",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          "&:hover": {
             opacity: isEditing ? 0.8 : 1,
           },
         }}
@@ -53,7 +53,7 @@ export const ProfileImageEditor: React.FC<ProfileImageEditorProps> = ({
       {isEditing && (
         <label htmlFor="profile-image-upload">
           <Button variant="outlined" component="span" color="secondary">
-            {profileImage ? 'Alterar Imagem' : 'Carregar Imagem'}
+            {profileImage ? "Alterar Imagem" : "Carregar Imagem"}
           </Button>
         </label>
       )}

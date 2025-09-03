@@ -11,15 +11,15 @@ export const initialBankrolls: BankrollDto[] = [
   {
     id: "2",
     name: "Banca de Teste",
-    balance: 250.0,
-    unidValue: 2.5,
+    balance: "250.0",
+    unidValue: "2.5",
     bookmaker: "Sportingbet",
   },
   {
     id: "3",
     name: "Banca de Cripto",
-    balance: 500.0,
-    unidValue: 5.0,
+    balance: "500.0",
+    unidValue: "5.0",
     bookmaker: "Stake",
   },
   {

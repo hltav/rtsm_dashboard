@@ -29,7 +29,6 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
   const [open, setOpen] = useState(isDesktop);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const [profileMenuOpen, setProfileMenuOpen] = useState(false);
   const [showModalTemp, setShowModalTemp] = useState(false);
 
   useEffect(() => {
@@ -58,12 +57,6 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
     setDarkMode(!darkMode);
   };
 
-  const handleLogout = () => {
-    console.log("Usuário deslogado via contexto!");
-    setProfileMenuOpen(false);
-    logout();
-  };
-
   if (loading) {
     return (
       <DashboardLayout darkMode={darkMode}>
@@ -76,7 +69,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
             width: "100vw",
             bgcolor: "background.default",
             color: "text.primary",
-          }}
+            }}
         >
           <CircularProgress />
           <p style={{ marginLeft: "16px" }}>Carregando perfil...</p>
@@ -120,7 +113,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
         handleThemeToggle={handleThemeToggle}
       />
 
-      <main >{children || <MenuContent />}</main>
+      <main>{children || <MenuContent />}</main>
 
       <CompleteProfileModal
         open={hasIncompleteProfile}

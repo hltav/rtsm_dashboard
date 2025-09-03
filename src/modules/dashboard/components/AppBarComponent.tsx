@@ -13,10 +13,11 @@ interface AppBarComponentProps {
 const AppBarComponent: React.FC<AppBarComponentProps> = ({
   handleDrawerToggle,
 }) => {
-  const logoSrc = "/rtsm.svg"; 
+  const logoSrc = "/rtsm.svg";
   return (
     <AppBar
       position="fixed"
+      elevation={0}
       sx={{
         borderRadius: 0,
         width: "100vw",
@@ -26,6 +27,7 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({
         margin: 0,
         padding: 0,
         overflow: "hidden",
+        backgroundColor:"#1A2B42",
         "@media (max-width:600px)": {
           minWidth: "100vw",
         },

@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Box, Drawer } from "@mui/material";
-
 import { useDashboard } from "@/components/Providers/DashboardContext";
 import { NavigationProps } from "@/modules/user/props/navigation.props";
 import DrawerComponent from "./DrawerComponent";

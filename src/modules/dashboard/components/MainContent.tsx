@@ -5,7 +5,7 @@ import { Box, Paper, Typography } from "@mui/material";
 
 const MainContent: React.FC = () => {
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+    <Box component="main" sx={{ flexGrow: 1, p: 3, mt:4 }}>
       <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
         Visão Geral do Dashboard
       </Typography>

@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Box, Button, TextField } from "@mui/material";
-import z from "zod";
-import { LoginResponseSchema } from "@/modules/user/schemas/loginResponse.schema";
 import { useRouter } from "next/navigation";
 import RememberMeCheckbox from "./RememberMeCheckbox";
 import LoginFooterLinks from "./LoginFooterLinks";
@@ -9,7 +7,6 @@ import LoginFormTitle from "./LoginFormTitle";
 import LoginFormError from "./LoginFormError";
 import LoginPasswordInput from "./LoginPasswordInput";
 import { useAuth } from "@/components/Providers/AuthContext";
-import { GetUserSchema } from "@/modules/user/schemas/user.schema";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 
 export const LoginForm: React.FC = () => {
@@ -28,60 +25,15 @@ export const LoginForm: React.FC = () => {
     setError(null);
 
     try {
-      const res = await fetch(`/api/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({ email: username, password, rememberMe }),
-      });
-
-      const json = await res.json();
-
-      if (!res.ok) {
-        throw new Error(json.error || "Erro desconhecido ao fazer login.");
-      }
-
-      const data = LoginResponseSchema.parse(json);
-      const accessToken = data.accessToken;
-
-      const userRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/users/${data.user.id}`,
-        {
-          method: "GET",
-          headers: {
-            Authorization: `Bearer ${accessToken}`,
-          },
-          credentials: "include",
-        }
-      );
-
-      const userData = await userRes.json();
-
-      if (!userRes.ok) {
-        throw new Error(
-          userData?.error ||
-            "Falha na autenticação após login ou dados do usuário não encontrados."
-        );
-      }
-
-      const validatedUserData = GetUserSchema.parse(userData);
-      login(validatedUserData, accessToken);
-
+      await login({ email: username, password, rememberMe });
       showNotification("Login realizado com sucesso!", "success");
-
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1000);
+      router.push("/dashboard");
     } catch (err: unknown) {
-      if (err instanceof z.ZodError) {
-        console.error("Erro de validação de esquema:", err.issues);
-        setError("Dados inválidos recebidos do servidor.");
-      } else if (err instanceof Error) {
-        setError(err.message);
-      } else {
-        setError("Ocorreu um erro inesperado. Por favor, tente novamente.");
-        console.error("Erro inesperado:", err);
-      }
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Ocorreu um erro inesperado. Por favor, tente novamente."
+      );
     } finally {
       setLoading(false);
     }

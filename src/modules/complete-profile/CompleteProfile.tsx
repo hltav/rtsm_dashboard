@@ -25,7 +25,7 @@ interface CompleteProfilePageProps {
 const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
   onComplete,
 }) => {
-  const { user, token, updateUser } = useAuth();
+  const { user, updateUser } = useAuth();
   const [clientData, setClientData] = useState<{
     gender?: string;
     cpf?: string;
@@ -54,16 +54,11 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
   const [isLoadingInitialData, setIsLoadingInitialData] = useState(true);
 
   const userId = user?.id;
-  const authToken = token;
 
   useEffect(() => {
     const fetchUserProfileData = async () => {
-      const apiBaseUrl = process.env.NEXT_PUBLIC_API_URL;
-
-      if (!apiBaseUrl || !authToken || !userId) {
-        console.warn(
-          "Dados básicos insuficientes (URL, token ou userId). Abortando busca de perfil."
-        );
+      if (!userId) {
+        console.warn("ID do usuário ausente. Abortando busca de perfil.");
         setIsLoadingInitialData(false);
         return;
       }
@@ -81,11 +76,9 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
       setIsLoadingInitialData(true);
       try {
         const response = await axios.get(
-          `${apiBaseUrl}/users/${userId}/client-data/${currentClientDataId}`,
+          `/api/users/${userId}/client-data/${currentClientDataId}`,
           {
-            headers: {
-              Authorization: `Bearer ${authToken}`,
-            },
+            withCredentials: true,
           }
         );
 
@@ -114,31 +107,37 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
     };
 
     fetchUserProfileData();
-  }, [userId, authToken, user]);
-
+  }, [userId, user]);
   const handleImageChange = (file: File | null) => {
     if (file) {
       setProfileImagePreview(URL.createObjectURL(file));
+
       setImageUploadMessage(null);
+
       setIsImageUploadError(false);
     }
   };
 
   const handleProfileImageUploadSuccess = (imageUrl: string) => {
     setProfileImagePreview(imageUrl);
+
     setImageUploadMessage("Foto de perfil atualizada com sucesso!");
+
     setIsImageUploadError(false);
 
     setClientData((prev) => ({
       ...prev,
+
       image: imageUrl,
     }));
 
     if (updateUser && user) {
       updateUser({
         ...user,
+
         clientData: {
           ...user.clientData,
+
           image: imageUrl,
         },
       });
@@ -147,6 +146,7 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
 
   const handleProfileImageUploadError = (error: string) => {
     setImageUploadMessage(`Erro ao carregar foto de perfil: ${error}`);
+
     setIsImageUploadError(true);
   };
 
@@ -154,22 +154,27 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
     K extends keyof Omit<typeof clientData, "address">
   >(
     field: K,
+
     value: (typeof clientData)[K]
   ) => {
     setClientData((prev) => ({
       ...prev,
+
       [field]: value,
     }));
   };
 
   const handleAddressFieldChange = (
     field: keyof NonNullable<typeof clientData.address>,
+
     value: string | null
   ) => {
     setClientData((prev) => ({
       ...prev,
+
       address: {
         ...prev.address,
+
         [field]: value,
       },
     }));
@@ -178,10 +183,8 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    if (!userId || !authToken) {
-      setProfileSaveMessage(
-        "Erro: ID do usuário ou token de autenticação ausentes."
-      );
+    if (!userId) {
+      setProfileSaveMessage("Erro: ID do usuário ausente.");
       setIsProfileSaveError(true);
       return;
     }
@@ -199,22 +202,14 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
     console.log("Dados a serem enviados:", profileDataToSave);
 
     try {
-      const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_API_URL}/client-data`,
-        profileDataToSave,
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${authToken}`,
-          },
-        }
-      );
+      const response = await axios.post("/api/client-data", profileDataToSave, {
+        withCredentials: true,
+      });
 
       console.log("Resposta da API (salvar perfil):", response.data);
       setProfileSaveMessage("Perfil atualizado com sucesso!");
       setIsProfileSaveError(false);
 
-      // Atualiza o usuário no context/local
       if (updateUser && user) {
         updateUser({
           ...user,
@@ -271,7 +266,7 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
     );
   }
 
-  if (!userId || !authToken) {
+  if (!userId) {
     return (
       <Box
         sx={{
@@ -387,7 +382,6 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
                 imagePreview={profileImagePreview}
                 onImageChange={handleImageChange}
                 userId={userId}
-                authToken={authToken}
                 onUploadSuccess={handleProfileImageUploadSuccess}
                 onUploadError={handleProfileImageUploadError}
               />

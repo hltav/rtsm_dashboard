@@ -27,7 +27,6 @@ export const ProfileAvatar: React.FC = () => {
     setAnchorEl(null);
   };
 
-  // --- Trate o estado de carregamento do AuthContext ---
   if (loading) {
     return (
       <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>

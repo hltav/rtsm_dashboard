@@ -1,5 +1,6 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Typography,
@@ -71,6 +72,8 @@ const ProfileContentPage: React.FC = () => {
   const handleCancel = () => {
     setIsEditing(false);
   };
+
+  console.log("User data in ProfileContentPage:", user);
 
   if (!user) {
     return <div>Carregando perfil...</div>;
@@ -156,6 +159,7 @@ const ProfileContentPage: React.FC = () => {
                 profileImage={formData.image}
                 isEditing={isEditing}
                 onImageChange={handleImageChange}
+                
               />
 
               <UserFormFields
@@ -192,7 +196,7 @@ const ProfileContentPage: React.FC = () => {
                     size="large"
                     sx={{ py: 1.5, flex: 1 }}
                   >
-                    Salvar 
+                    Salvar
                   </Button>
                 </Stack>
               ) : (

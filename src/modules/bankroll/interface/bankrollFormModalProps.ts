@@ -1,3 +1,4 @@
+import { BankrollDto } from "../schema/bankroll.schema";
 import { BankrollForm } from "../schema/bankrollForm.schema";
 
 export interface BankrollFormModalProps {
@@ -7,5 +8,5 @@ export interface BankrollFormModalProps {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  onSave: (e: React.MouseEvent<HTMLButtonElement>) => void;
+  onSave?: (bankroll: BankrollDto) => void;
 }

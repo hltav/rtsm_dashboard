@@ -18,9 +18,10 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
   return (
     <AppBar
-      position="sticky"
+      position="fixed"
+      elevation={0}
       color="primary"
-      sx={{ boxShadow: "none", borderRadius: 0 }}
+      sx={{ boxShadow: "none", borderRadius: 0, backgroundColor: "#1A2B42" }}
     >
       <Toolbar sx={{ justifyContent: "space-between", flexWrap: "nowrap" }}>
         <Typography

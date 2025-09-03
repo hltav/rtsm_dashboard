@@ -11,20 +11,7 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
-
-interface Bankroll {
-  id: string;
-  name: string;
-  balance: number;
-  unidValue: number;
-  bookmaker: string;
-}
-
-interface BankrollCardProps {
-  bankroll: Bankroll;
-  onEdit: (id: string) => void;
-  onViewDetails: (id: string) => void;
-}
+import { BankrollCardProps } from "../props/bankrollCard.props";
 
 export const BankrollCard = ({
   bankroll,
@@ -43,17 +30,21 @@ export const BankrollCard = ({
   return (
     <Card
       sx={{
-        height: "100%",
+        height: "85%",
         display: "flex",
         flexDirection: "column",
+        minWidth: 220,
+        maxWidth: 350,
+        width: '100%',
         border:
           theme.palette.mode === "dark"
             ? "1px solid transparent"
             : "1px solid rgba(26, 43, 66, 0.08)",
         bgcolor: "#1A2B42",
+        p: 2,
       }}
     >
-      <CardContent sx={{ flexGrow: 1, position: "relative" }}>
+      <CardContent sx={{ flexGrow: 1, position: "relative", p: 0 }}>
         <Box
           sx={{
             display: "flex",
@@ -68,10 +59,10 @@ export const BankrollCard = ({
             sx={{
               fontWeight: 600,
               color: "#FFFFFF",
-              whiteSpace: "nowrap", 
-              overflow: "hidden", 
-              textOverflow: "ellipsis", 
-              maxWidth: "70%", 
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+              maxWidth: "70%",
             }}
           >
             {bankroll.name}
@@ -79,7 +70,7 @@ export const BankrollCard = ({
           <Box
             sx={{
               display: "flex",
-              gap: 0.5, // espaçamento entre ícones
+              gap: 0.5,
               alignItems: "center",
             }}
           >
@@ -114,7 +105,7 @@ export const BankrollCard = ({
           </Typography>
           <Typography variant="caption" sx={{ color: "#D0D0D0" }}>
             <strong>Número de Unids:</strong>{" "}
-            {(bankroll.balance / bankroll.unidValue).toFixed(2)}
+            {(bankroll.balance / bankroll.unidValue)}
           </Typography>
         </Stack>
       </CardContent>

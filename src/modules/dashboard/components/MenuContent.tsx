@@ -2,7 +2,7 @@ import MainContent from "@/modules/dashboard/components/MainContent";
 import ProfileContentPage from "@/modules/profile/ProfileContentPage";
 import { useDashboard } from "@/components/Providers/DashboardContext";
 import BankrollsPage from "@/modules/bankroll/BankrollPage";
-import EventPage from "@/modules/events/EventPage";
+import EventPage from "@/modules/events/EventPageComplete";
 
 const MenuContent = () => {
   const { selectedPage } = useDashboard();

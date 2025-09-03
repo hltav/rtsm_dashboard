@@ -1,7 +1,6 @@
-import { ChangeEvent } from 'react';
-
 export interface ProfileImageEditorProps {
   profileImage: string;
+  profileFileId?: string;
   isEditing: boolean;
-  onImageChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onImageChange: (event: React.ChangeEvent<HTMLInputElement>) => void
 }

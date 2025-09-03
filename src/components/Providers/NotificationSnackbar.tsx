@@ -1,8 +1,6 @@
 'use client';
-
 import React, { createContext, useContext, useState } from 'react';
 import { Alert, AlertColor, Snackbar } from '@mui/material';
-
 interface NotificationContextType {
   showNotification: (message: string, severity: AlertColor) => void;
 }

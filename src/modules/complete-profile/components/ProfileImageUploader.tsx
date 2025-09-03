@@ -8,8 +8,6 @@ import { uploadRtsmImage } from "@/lib/api/uploadImage";
 const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
   imagePreview,
   onImageChange,
-  userId,
-  authToken,
   onUploadSuccess,
   onUploadError,
 }) => {
