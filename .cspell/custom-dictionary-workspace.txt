@@ -95,6 +95,7 @@ digitado
 dinheiro
 direitos
 disciplina
+disparar
 Djokovic
 EDITÁVEL
 Empate
@@ -156,6 +157,7 @@ imediata
 impactam
 ímpares
 importação
+Incrementa
 informação
 Início
 Inteligente
@@ -273,6 +275,7 @@ retorno
 Retrátil
 revisitar
 Risco
+roda
 Saiba
 Saldo
 Seção
