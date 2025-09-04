@@ -9,7 +9,6 @@ import React, {
   useCallback,
 } from "react";
 import { useRouter } from "next/navigation";
-import { apiUrl } from "@/lib/api/apiUrl";
 
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -62,7 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (data: { email: string; password: string; rememberMe: boolean }) => {
     setLoading(true); 
     try {
-      const res = await fetch(`${apiUrl}/auth/login`, {
+      const res = await fetch("api/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
