@@ -199,7 +199,7 @@ const BankrollPage = () => {
             sx={{
               display: "flex",
               justifyContent: "space-between",
-              width: "100vh",
+              width: "100%",
               mb: 4,
               mt: { xs: "7%", sm: "2%", md: "2%" },
             }}
