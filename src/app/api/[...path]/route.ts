@@ -2,12 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 const BACKEND_URL = process.env.BACKEND_URL as string;
 
-async function handleProxy(req: NextRequest, path: string[]) {
-  const targetUrl = `${BACKEND_URL}/${path.join("/")}`;
+async function handleProxy(req: NextRequest) {
+  const path = req.nextUrl.pathname.replace(/^\/api\//, "");
+  const targetUrl = `${BACKEND_URL}/${path}${req.nextUrl.search}`;
 
   const headers = new Headers(req.headers);
   headers.delete("host");
-  headers.delete("cookie");
 
   const res = await fetch(targetUrl, {
     method: req.method,
@@ -19,9 +19,9 @@ async function handleProxy(req: NextRequest, path: string[]) {
     credentials: "include",
   });
 
-  const responseText = await res.text();
+  const text = await res.text();
 
-  const response = new NextResponse(responseText, { status: res.status });
+  const response = new NextResponse(text, { status: res.status });
 
   res.headers.forEach((value, key) => {
     if (
@@ -36,30 +36,18 @@ async function handleProxy(req: NextRequest, path: string[]) {
   return response;
 }
 
-export async function GET(
-  req: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  return handleProxy(req, params.path);
+export async function GET(req: NextRequest) {
+  return handleProxy(req);
 }
 
-export async function POST(
-  req: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  return handleProxy(req, params.path);
+export async function POST(req: NextRequest) {
+  return handleProxy(req);
 }
 
-export async function PUT(
-  req: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  return handleProxy(req, params.path);
+export async function PUT(req: NextRequest) {
+  return handleProxy(req);
 }
 
-export async function DELETE(
-  req: NextRequest,
-  { params }: { params: { path: string[] } }
-) {
-  return handleProxy(req, params.path);
+export async function DELETE(req: NextRequest) {
+  return handleProxy(req);
 }
