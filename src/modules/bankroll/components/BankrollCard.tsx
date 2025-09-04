@@ -29,13 +29,14 @@ export const BankrollCard = ({
 
   return (
     <Card
+      elevation={0}
       sx={{
         height: "85%",
         display: "flex",
         flexDirection: "column",
         minWidth: 220,
         maxWidth: 350,
-        width: '100%',
+        width: "100%",
         border:
           theme.palette.mode === "dark"
             ? "1px solid transparent"
@@ -105,7 +106,7 @@ export const BankrollCard = ({
           </Typography>
           <Typography variant="caption" sx={{ color: "#D0D0D0" }}>
             <strong>Número de Unids:</strong>{" "}
-            {(bankroll.balance / bankroll.unidValue)}
+            {bankroll.balance / bankroll.unidValue}
           </Typography>
         </Stack>
       </CardContent>

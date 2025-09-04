@@ -26,7 +26,7 @@ export const darkTheme = createTheme({
     },
   },
   typography: {
-    fontFamily: "Inter, sans-serif", // Usando Inter como fonte padrão
+    fontFamily: "Inter, sans-serif", 
     h1: {
       fontSize: "3.5rem",
       fontWeight: 700,
