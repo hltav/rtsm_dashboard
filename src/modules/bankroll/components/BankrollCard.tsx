@@ -106,7 +106,7 @@ export const BankrollCard = ({
           </Typography>
           <Typography variant="caption" sx={{ color: "#D0D0D0" }}>
             <strong>Número de Unids:</strong>{" "}
-            {bankroll.balance / bankroll.unidValue}
+            {(bankroll.balance / Number(bankroll.unidValue)).toFixed(2)}
           </Typography>
         </Stack>
       </CardContent>

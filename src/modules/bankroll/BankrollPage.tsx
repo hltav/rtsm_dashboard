@@ -137,9 +137,7 @@ const BankrollPage = () => {
     return <div>Carregando bancas...</div>;
   }
 
- 
   if (error) {
-   
     if (error.includes("No bankroll found for this user")) {
       return (
         <Box sx={{ p: 2, textAlign: "center" }}>
@@ -149,7 +147,6 @@ const BankrollPage = () => {
         </Box>
       );
     } else {
-      
       return (
         <div>
           <p>Erro ao carregar bancas: {error}</p>
@@ -159,7 +156,6 @@ const BankrollPage = () => {
     }
   }
 
-  
   if (bankrolls.length === 0) {
     return (
       <Box sx={{ p: 2, textAlign: "center" }}>
@@ -195,13 +191,17 @@ const BankrollPage = () => {
             py: 4,
           }}
         >
+          {/* Cabeçalho corrigido */}
           <Box
             sx={{
               display: "flex",
+              flexDirection: "row",
               justifyContent: "space-between",
+              alignItems: { xs: "flex-start", sm: "center" },
               width: "100%",
               mb: 4,
               mt: { xs: "7%", sm: "2%", md: "2%" },
+              gap: { xs: 2, sm: 0 },
             }}
           >
             <Typography
@@ -210,36 +210,49 @@ const BankrollPage = () => {
               gutterBottom
               sx={{
                 fontWeight: 700,
-                mb: 0,
+                mb: { xs: 0, sm: 0 },
                 color: "text.primary",
                 transition: "color 0.3s ease",
               }}
             >
               Minhas Bancas
             </Typography>
-            <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="small"
-                onClick={handleOpenModal}
-              >
-                Nova Banca
-              </Button>
-            </Box>
+            <Button
+              variant="contained"
+              color="primary"
+              size="small"
+              onClick={handleOpenModal}
+              sx={{
+                flexShrink: 0,
+              }}
+            >
+              Nova Banca
+            </Button>
           </Box>
+
+          {/* Grid corrigido */}
           <Grid
             container
             spacing={4}
             justifyContent="flex-start"
             sx={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "16px",
+              width: "100%",
+              maxWidth: "100%",
             }}
           >
             {bankrolls.map((bankroll) => (
-              <Grid item xs={12} sm={6} md={4} key={bankroll.id}>
+              <Grid
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                key={bankroll.id}
+                sx={{
+                  p: {
+                    sm: 20,
+                  },
+                }}
+              >
                 <BankrollCard
                   bankroll={bankroll}
                   onEdit={handleEditClick}
