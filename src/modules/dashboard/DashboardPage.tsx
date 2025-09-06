@@ -69,7 +69,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
             width: "100vw",
             bgcolor: "background.default",
             color: "text.primary",
-            }}
+          }}
         >
           <CircularProgress />
           <p style={{ marginLeft: "16px" }}>Carregando perfil...</p>
@@ -113,7 +113,9 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
         handleThemeToggle={handleThemeToggle}
       />
 
-      <main>{children || <MenuContent />}</main>
+      <main style={{ width: "100%", marginTop:30 }}>
+        {children || <MenuContent />}
+      </main>
 
       <CompleteProfileModal
         open={hasIncompleteProfile}

@@ -182,7 +182,7 @@ const BankrollPage = () => {
         }}
       >
         <Container
-          maxWidth="lg"
+          maxWidth={false}
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -233,11 +233,10 @@ const BankrollPage = () => {
           {/* Grid corrigido */}
           <Grid
             container
-            spacing={4}
+            spacing={2}
             justifyContent="flex-start"
             sx={{
               width: "100%",
-              maxWidth: "100%",
             }}
           >
             {bankrolls.map((bankroll) => (
@@ -245,13 +244,16 @@ const BankrollPage = () => {
                 item
                 xs={12}
                 sm={6}
-                md={4}
+                md={6}
+                lg={4}
+                xl={2.5}
                 key={bankroll.id}
                 sx={{
                   p: {
-                    sm: 20,
+                    sm: 0,
                   },
                 }}
+               
               >
                 <BankrollCard
                   bankroll={bankroll}

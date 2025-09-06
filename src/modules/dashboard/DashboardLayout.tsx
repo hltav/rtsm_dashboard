@@ -12,7 +12,7 @@ export const DashboardLayout: React.FC<DashboardLayoutProps> = ({
 }) => {
   return (
     <>
-      <Box sx={{ display: "flex", minHeight: "100vh" }}>{children}</Box>
+      <Box sx={{ display: "flex", minHeight: "100vh", width: "100%" }}>{children}</Box>
     </>
   );
 };

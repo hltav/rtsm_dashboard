@@ -10,6 +10,7 @@ import {
   IconButton,
   Typography,
   Box,
+  styled,
 } from "@mui/material";
 import { Info as InfoIcon, Edit as EditIcon } from "@mui/icons-material";
 import { EventItem } from "../interfaces/EventItem";
@@ -27,38 +28,47 @@ const EventTable: React.FC<EventTableProps> = ({
   onInfoClick,
   onEditClick,
 }) => {
+  const StyledTableCell = styled(TableCell)(() => ({
+    color: "#fff",
+  }));
   return (
-    <TableContainer component={Paper} elevation={3}>
+    <TableContainer
+      component={Paper}
+      elevation={0}
+      sx={{
+        bgcolor: "#1A2B42",
+      }}
+    >
       <Table aria-label="events table">
         <TableHead>
           <TableRow>
-            <TableCell>Evento</TableCell>
-            <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+            <StyledTableCell>Evento</StyledTableCell>
+            <StyledTableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
               Categoria
-            </TableCell>
-            <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+            </StyledTableCell>
+            <StyledTableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
               Mercado
-            </TableCell>
-            <TableCell
+            </StyledTableCell>
+            <StyledTableCell
               align="right"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
               Valor
-            </TableCell>
-            <TableCell align="right">Resultado</TableCell>
-            <TableCell
+            </StyledTableCell>
+            <StyledTableCell align="right">Resultado</StyledTableCell>
+            <StyledTableCell
               align="right"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
               Ações
-            </TableCell>
+            </StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {events.length > 0 ? (
             events.map((event) => (
               <TableRow key={event.id}>
-                <TableCell component="th" scope="row">
+                <StyledTableCell component="th" scope="row">
                   <Box
                     sx={{
                       display: "flex",
@@ -99,26 +109,30 @@ const EventTable: React.FC<EventTableProps> = ({
                       </IconButton>
                     </Box>
                   </Box>
-                </TableCell>
-                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                </StyledTableCell>
+                <StyledTableCell
+                  sx={{ display: { xs: "none", sm: "table-cell" } }}
+                >
                   {event.category}
-                </TableCell>
-                <TableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                </StyledTableCell>
+                <StyledTableCell
+                  sx={{ display: { xs: "none", sm: "table-cell" } }}
+                >
                   {event.market}
-                </TableCell>
-                <TableCell
+                </StyledTableCell>
+                <StyledTableCell
                   align="right"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
                   ${event.amount}
-                </TableCell>
-                <TableCell
+                </StyledTableCell>
+                <StyledTableCell
                   align="right"
                   sx={{ width: isMobile ? "30%" : "auto" }}
                 >
                   {event.result}
-                </TableCell>
-                <TableCell
+                </StyledTableCell>
+                <StyledTableCell
                   align="right"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
@@ -134,14 +148,14 @@ const EventTable: React.FC<EventTableProps> = ({
                   >
                     <EditIcon />
                   </IconButton>
-                </TableCell>
+                </StyledTableCell>
               </TableRow>
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={5} align="center">
+              <StyledTableCell colSpan={5} align="center">
                 Nenhum evento encontrado.
-              </TableCell>
+              </StyledTableCell>
             </TableRow>
           )}
         </TableBody>
