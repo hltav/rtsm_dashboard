@@ -14,10 +14,10 @@ export interface MenuItem {
 
 export const menuItems: MenuItem[] = [
   { key: "main", text: "Dashboard", icon: <HomeIcon /> },
-  { key: "bankrolls", text: "Bankrolls", icon: <AccountBalanceWalletIcon /> },
+  { key: "bankrolls", text: "Bancas", icon: <AccountBalanceWalletIcon /> },
   { key: "events", text: "Eventos", icon: <EventIcon /> },
   { key: "predictions", text: "Previsões", icon: <SportsSoccerIcon /> },
   { key: "statistics", text: "Estatísticas", icon: <InsightsIcon /> },
-  { key: "profile", text: "Meu Perfil", icon: <PersonIcon /> },
+  { key: "profile", text: "Perfil", icon: <PersonIcon /> },
   { key: "admin", text: "Administração", icon: <AdminPanelSettingsIcon /> },
 ];

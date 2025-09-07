@@ -33,13 +33,13 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
             component="img"
             src="rtsm.svg"
             alt="Logo"
+            m={1}
             sx={{
               width: 60,
               height: 60,
               borderRadius: 0,
               display: "block",
-              marginRight: 7,
-              marginTop: 0.5,
+              
               "@media (max-width:400px)": {
                 marginRight: 3,
               },

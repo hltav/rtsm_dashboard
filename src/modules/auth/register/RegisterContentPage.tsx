@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { Box, Container, Paper } from "@mui/material";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
 import { SignUpFormData } from "@/modules/auth/schemas/signup.schemas";
 import { useRouter } from "next/navigation";
 import { createUserApi } from "@/modules/auth/services/createUser-api";
@@ -48,17 +47,6 @@ const RegisterContentPage: React.FC = () => {
           p: { xs: 2, sm: 3, md: 0 },
         }}
       >
-        {/* ThemeToggle posicionado no canto superior direito */}
-        <Box
-          sx={{
-            position: "absolute",
-            top: 10,
-            right: 10,
-            zIndex: 1, 
-          }}
-        >
-          <ThemeToggle />
-        </Box>
         <Container
           disableGutters
           maxWidth={false}

@@ -2,7 +2,6 @@
 import React from "react";
 import { Box, Container, Paper } from "@mui/material";
 import LoginForm from "@/modules/auth/login/components/LoginForm";
-import { ThemeToggle } from "@/components/theme/theme-toggle";
 import LoginMarketing from "./components/LoginMarketing";
 
 const LoginContentPage: React.FC = () => {
@@ -17,17 +16,6 @@ const LoginContentPage: React.FC = () => {
         p: { xs: 2, sm: 3, md: 0 },
       }}
     >
-      {/* ThemeToggle posicionado no canto superior direito */}
-      <Box
-        sx={{
-          position: "absolute",
-          top: 16,
-          right: 16,
-          zIndex: 1,
-        }}
-      >
-        <ThemeToggle />
-      </Box>
       <Container
         disableGutters
         maxWidth={false}

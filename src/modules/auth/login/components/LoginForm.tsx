@@ -62,6 +62,7 @@ export const LoginForm: React.FC = () => {
         value={username}
         onChange={(e) => setUsername(e.target.value)}
         size="small"
+        type="email"
         sx={{ mb: 1 }}
       />
 

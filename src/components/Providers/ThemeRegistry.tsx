@@ -1,37 +1,72 @@
 "use client";
-import React, { createContext, useContext, useState, useMemo } from "react";
+import React, {
+  createContext,
+  useContext,
+  useState,
+  useMemo,
+  useEffect,
+} from "react";
 import { ThemeProvider as MuiThemeProvider } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { lightTheme } from "../theme/light-theme";
 import { darkTheme } from "../theme/dark-theme";
+import { useSystemTheme } from "@/hooks/useSystemTheme";
 
+type ThemeMode = "light" | "dark" | "system";
 
 interface ThemeModeContextType {
   toggleThemeMode: () => void;
-  mode: "light" | "dark";
+  mode: ThemeMode;
+  currentTheme: "light" | "dark"; 
 }
 
 const ThemeModeContext = createContext<ThemeModeContextType>({
   toggleThemeMode: () => {},
-  mode: "light",
+  mode: "system",
+  currentTheme: "light",
 });
 
 export const useThemeMode = () => useContext(ThemeModeContext);
 
 export function ThemeRegistry({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<"light" | "dark">("light");
+  const [mode, setMode] = useState<ThemeMode>("system"); // Padrão: system
+  const systemTheme = useSystemTheme();
+
+  // Recuperar tema salvo no localStorage
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const savedTheme = localStorage.getItem("theme") as ThemeMode | null;
+      if (savedTheme) {
+        setMode(savedTheme);
+      }
+    }
+  }, []);
+
+  // Salvar tema no localStorage quando mudar
+  useEffect(() => {
+    if (typeof window !== "undefined" && mode !== "system") {
+      localStorage.setItem("theme", mode);
+    }
+  }, [mode]);
 
   const toggleThemeMode = () => {
-    setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
+    setMode((prevMode) => {
+      if (prevMode === "light") return "dark";
+      if (prevMode === "dark") return "system";
+      return "light"; // system -> light
+    });
   };
 
+  // Determina qual tema está realmente sendo aplicado
+  const currentTheme = mode === "system" ? systemTheme : mode;
+
   const theme = useMemo(
-    () => (mode === "light" ? lightTheme : darkTheme),
-    [mode]
+    () => (currentTheme === "light" ? lightTheme : darkTheme),
+    [currentTheme]
   );
 
   return (
-    <ThemeModeContext.Provider value={{ toggleThemeMode, mode }}>
+    <ThemeModeContext.Provider value={{ toggleThemeMode, mode, currentTheme }}>
       <MuiThemeProvider theme={theme}>
         <CssBaseline />
         {children}

@@ -14,19 +14,15 @@ import {
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { MenuItem, menuItems } from "./MenuItems";
-
-
-interface DrawerComponentProps {
-  open: boolean;
-  handleDrawerToggle: () => void;
-  onMenuItemClick: (key: string) => void;
-}
+import { useDashboard } from "@/components/Providers/DashboardContext";
+import { DrawerComponentProps } from "../interface/drawerComponentProps";
 
 const DrawerComponent: React.FC<DrawerComponentProps> = ({
   open,
   handleDrawerToggle,
   onMenuItemClick,
 }) => {
+  const { selectedPage } = useDashboard();
   return (
     <Box
       sx={{
@@ -65,14 +61,26 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
             placement="right"
           >
             <ListItemButton
-              onClick={() => {
-                onMenuItemClick(item.key);
-              }}
+              onClick={() => onMenuItemClick(item.key)}
+              selected={selectedPage === item.key}
               sx={{
                 minHeight: 48,
                 justifyContent: "center",
                 px: 2.5,
                 "&:hover": { bgcolor: "primary.dark" },
+                "&.Mui-selected": {
+                  bgcolor: "secondary.main",
+                  "& .MuiListItemIcon-root": {
+                    color: "#1A2B42",
+                  },
+                  "& .MuiListItemText-root": {
+                    color: "#1A2B42", 
+                    "& .MuiTypography-root": {
+                      color: "#1A2B42", 
+                      fontWeight: 600, 
+                    },
+                  },
+                },
                 marginLeft: "10px",
               }}
             >

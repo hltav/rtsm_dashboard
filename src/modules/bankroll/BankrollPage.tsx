@@ -177,7 +177,7 @@ const BankrollPage = () => {
           alignItems: "center",
           justifyContent: "flex-start",
           bgcolor: "background.default",
-          p: { xs: 2, sm: 3, md: 4 },
+          p: { xs: 2, sm: 3, md: 2 },
           width: "100%",
         }}
       >
@@ -188,7 +188,7 @@ const BankrollPage = () => {
             flexDirection: "column",
             alignItems: "center",
             width: "100%",
-            py: 4,
+            py: 0,
           }}
         >
           {/* Cabeçalho corrigido */}
@@ -200,7 +200,6 @@ const BankrollPage = () => {
               alignItems: { xs: "flex-start", sm: "center" },
               width: "100%",
               mb: 4,
-              mt: { xs: "7%", sm: "2%", md: "2%" },
               gap: { xs: 2, sm: 0 },
             }}
           >

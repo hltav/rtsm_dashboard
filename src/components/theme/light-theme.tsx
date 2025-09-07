@@ -22,12 +22,11 @@ export const lightTheme = createTheme({
     text: {
       primary: "#333",
       secondary: "#555",
-      tertiary: "#fff"
+      tertiary: "#fff",
     },
-    
   },
   typography: {
-    fontFamily: "Inter, sans-serif", // Usando Inter como fonte padrão
+    fontFamily: "Inter, sans-serif",
     h1: {
       fontSize: "3.5rem",
       fontWeight: 700,
@@ -83,17 +82,16 @@ export const lightTheme = createTheme({
     MuiButton: {
       styleOverrides: {
         root: {
-          borderRadius: 8, // Borda arredondada para botões
-          textTransform: "none", // Manter o texto normal (não maiúsculas)
+          borderRadius: 8,
+          textTransform: "none",
         },
       },
     },
     MuiPaper: {
-      // Adicionado estilo para Paper
       styleOverrides: {
         root: {
-          borderRadius: 12, // Borda arredondada para o Paper (usado no formulário)
-          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)", // Sombra suave
+          borderRadius: 12,
+          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
         },
       },
     },
@@ -101,7 +99,7 @@ export const lightTheme = createTheme({
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
-            borderRadius: 8, // Borda arredondada para campos de texto
+            borderRadius: 8,
           },
         },
       },

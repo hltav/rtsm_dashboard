@@ -1,24 +1,60 @@
-'use client'
-import React from 'react';
-import { Box, Typography, Link, IconButton, Container } from '@mui/material';
+"use client";
+import React from "react";
+import { Box, Typography, Link, IconButton, Container } from "@mui/material";
 import {
   Facebook as FacebookIcon,
-  Twitter as TwitterIcon,
   Instagram as InstagramIcon,
-} from '@mui/icons-material';
+} from "@mui/icons-material";
+import { XIcon } from "@/components/ui/logos/XIcon";
 
 const Footer: React.FC = () => {
   return (
-    <Box sx={{ bgcolor: 'grey.900', color: 'white', py: { xs: 2, md: 4 }, textAlign: 'center' }}>
+    <Box
+      sx={{
+        bgcolor: "grey.900",
+        color: "white",
+        py: { xs: 2, md: 4 },
+        textAlign: "center",
+      }}
+    >
       <Container maxWidth="lg">
-        <Box sx={{ mb: 2, display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: 2 }}>
-          <Link href="#" color="inherit" sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+        <Box
+          sx={{
+            mb: 2,
+            display: "flex",
+            justifyContent: "center",
+            flexWrap: "wrap",
+            gap: 2,
+          }}
+        >
+          <Link
+            href="#"
+            color="inherit"
+            sx={{
+              textDecoration: "none",
+              "&:hover": { textDecoration: "underline" },
+            }}
+          >
             Termos de Uso
           </Link>
-          <Link href="#" color="inherit" sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+          <Link
+            href="#"
+            color="inherit"
+            sx={{
+              textDecoration: "none",
+              "&:hover": { textDecoration: "underline" },
+            }}
+          >
             Política de Privacidade
           </Link>
-          <Link href="#" color="inherit" sx={{ textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
+          <Link
+            href="#"
+            color="inherit"
+            sx={{
+              textDecoration: "none",
+              "&:hover": { textDecoration: "underline" },
+            }}
+          >
             Contato
           </Link>
         </Box>
@@ -27,15 +63,15 @@ const Footer: React.FC = () => {
             <FacebookIcon />
           </IconButton>
           <IconButton color="inherit" aria-label="Twitter">
-            <TwitterIcon />
+            <XIcon />
           </IconButton>
           <IconButton color="inherit" aria-label="Instagram">
             <InstagramIcon />
           </IconButton>
         </Box>
         <Typography variant="caption" color="text.secondary">
-          © 2025 <span translate="no">RT Sports Manager</span>
-. Todos os direitos reservados.
+          © 2025 <span translate="no">RT Sports Manager</span>. Todos os
+          direitos reservados.
         </Typography>
       </Container>
     </Box>

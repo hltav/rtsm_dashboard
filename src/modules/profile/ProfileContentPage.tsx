@@ -91,8 +91,7 @@ const ProfileContentPage: React.FC = () => {
           alignItems: "flex-start",
           justifyContent: "flex-start",
           p: { xs: 2, sm: 3, md: 0 },
-          mt: "10%",
-          ml: { xs: 0, md: "10%" },
+          ml: { xs: 0, md: 0 },
         }}
       >
         <Container
@@ -114,7 +113,7 @@ const ProfileContentPage: React.FC = () => {
               borderRadius: 3,
               overflow: "hidden",
               width: "95%",
-              maxWidth: { xs: "95%", sm: "700px" },
+              maxWidth: { xs: "95%", sm: "700px", md: "800px", lg: "700px" },
               margin: "20px auto",
               border: "none",
               bgcolor: "#1A2B42",
