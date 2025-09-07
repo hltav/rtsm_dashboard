@@ -11,7 +11,6 @@ export interface SportEvent {
   date: string;
 }
 
-// Props do componente
 interface CustomCarouselProps {
   items: SportEvent[];
   autoPlay?: boolean;
@@ -32,7 +31,7 @@ const CustomCarousel: React.FC<CustomCarouselProps> = ({
 
   const updateItemWidth = () => {
     if (itemRefs.current[0]) {
-      setItemWidth(itemRefs.current[0].offsetWidth + 16); // Item width + gap (marginRight)
+      setItemWidth(itemRefs.current[0].offsetWidth + 16); 
     }
   };
 

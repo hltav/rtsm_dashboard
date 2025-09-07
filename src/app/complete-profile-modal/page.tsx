@@ -1,6 +1,6 @@
 "use client";
+import CompleteProfileModal from "@/modules/complete-profile-modal/CompleteProfileModal";
 import React, { useState } from "react";
-import CompleteProfileModal from "@/components/complete-profile-modal/CompleteProfileModal";
 
 export default function CompleteProfileModalPage() {
   const [open, setOpen] = useState(true);

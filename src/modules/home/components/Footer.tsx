@@ -5,7 +5,7 @@ import {
   Facebook as FacebookIcon,
   Instagram as InstagramIcon,
 } from "@mui/icons-material";
-import { XIcon } from "@/components/ui/logos/XIcon";
+import { XIcon } from "@/lib/ui/logos/XIcon";
 
 const Footer: React.FC = () => {
   return (

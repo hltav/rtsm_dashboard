@@ -7,7 +7,7 @@ import { DashboardLayout } from "./DashboardLayout";
 import AppBarComponent from "./components/AppBarComponent";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/components/Providers/AuthContext";
-import CompleteProfileModal from "@/components/complete-profile-modal/CompleteProfileModal";
+import CompleteProfileModal from "@/modules/complete-profile-modal/CompleteProfileModal";
 import MenuContent from "./components/MenuContent";
 import { NavigationBar } from "./components/Navigation";
 interface DashboardPageProps {

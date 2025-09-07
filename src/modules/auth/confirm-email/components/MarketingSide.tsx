@@ -1,6 +1,6 @@
 "use client";
-import LogoImage from "@/components/ui/images/LogoImage";
-import { CenteredContainer } from "@/components/ui/layout/CenteredContainer";
+import LogoImage from "@/lib/ui/images/LogoImage";
+import { CenteredContainer } from "@/lib/ui/layout/CenteredContainer";
 import { Typography } from "@mui/material";
 
 interface MarketingSideProps {

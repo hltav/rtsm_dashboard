@@ -1,7 +1,7 @@
 import React from "react";
 import { Typography } from "@mui/material";
-import { CenteredContainer } from "@/components/ui/layout/CenteredContainer";
-import LogoImage from "@/components/ui/images/LogoImage";
+import { CenteredContainer } from "@/lib/ui/layout/CenteredContainer";
+import LogoImage from "@/lib/ui/images/LogoImage";
 ;
 
 const LoginMarketing: React.FC = () => {

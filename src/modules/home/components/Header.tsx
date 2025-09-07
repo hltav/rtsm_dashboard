@@ -39,7 +39,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
               height: 60,
               borderRadius: 0,
               display: "block",
-              
+
               "@media (max-width:400px)": {
                 marginRight: 3,
               },
