@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import apiClient from "../../apiBaseUrl";
+import { AxiosError } from "axios";
 
 export async function POST(req: NextRequest) {
   try {
@@ -12,15 +13,15 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // 🚀 Axios já joga exceção se o status >= 400
     const res = await apiClient.post("/auth/forgot-password", { email });
     const data = res.data;
 
     return NextResponse.json(data, { status: 200 });
-  } catch (error: any) {
-    console.error("Erro na API forgot-password:", error);
+  } catch (err) {
+    console.error("Erro na API forgot-password:", err);
 
-    // Captura erro de Axios
+    const error = err as AxiosError<{ message?: string }>;
+
     if (error.response) {
       return NextResponse.json(
         {
