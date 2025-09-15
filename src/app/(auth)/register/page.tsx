@@ -1,5 +1,5 @@
 import RegisterContentPage from "@/modules/auth/register/RegisterContentPage";
 
-export default function HomePage() {
+export default function RegisterPage() {
   return <RegisterContentPage />;
 }
