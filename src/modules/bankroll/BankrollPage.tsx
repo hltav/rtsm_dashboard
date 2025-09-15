@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -129,42 +130,42 @@ const BankrollPage = () => {
     handleCloseModal();
   };
 
-  const handleRefresh = () => {
-    loadBankrolls();
-  };
+  // const handleRefresh = () => {
+  //   loadBankrolls();
+  // };
 
-  if (loading) {
-    return <div>Carregando bancas...</div>;
-  }
+  // if (loading) {
+  //   return <div>Carregando bancas...</div>;
+  // }
 
-  if (error) {
-    if (error.includes("No bankroll found for this user")) {
-      return (
-        <Box sx={{ p: 2, textAlign: "center" }}>
-          <p>
-            Você ainda não possui bancas. Crie sua primeira banca para começar.
-          </p>
-        </Box>
-      );
-    } else {
-      return (
-        <div>
-          <p>Erro ao carregar bancas: {error}</p>
-          <button onClick={handleRefresh}>Tentar novamente</button>
-        </div>
-      );
-    }
-  }
+  // if (error) {
+  //   if (error.includes("No bankroll found for this user")) {
+  //     return (
+  //       <Box sx={{ p: 2, textAlign: "center" }}>
+  //         <p>
+  //           Você ainda não possui bancas. Crie sua primeira banca para começar.
+  //         </p>
+  //       </Box>
+  //     );
+  //   } else {
+  //     return (
+  //       <div>
+  //         <p>Erro ao carregar bancas: {error}</p>
+  //         <button onClick={handleRefresh}>Tentar novamente</button>
+  //       </div>
+  //     );
+  //   }
+  // }
 
-  if (bankrolls.length === 0) {
-    return (
-      <Box sx={{ p: 2, textAlign: "center" }}>
-        <p>
-          Você ainda não possui bancas. Crie sua primeira banca para começar.
-        </p>
-      </Box>
-    );
-  }
+  // if (bankrolls.length === 0) {
+  //   return (
+  //     <Box sx={{ p: 2, textAlign: "center" }}>
+  //       <p>
+  //         Você ainda não possui bancas. Crie sua primeira banca para começar.
+  //       </p>
+  //     </Box>
+  //   );
+  // }
 
   return (
     <div className={mode === "dark" ? "dark-mode-styles" : "light-mode-styles"}>

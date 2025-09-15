@@ -1,8 +1,8 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 export const ConfirmationSidePropsSchema = z.object({
-  onRedirectToLogin: z.custom<() => void>(), // ✅ tipagem manual
-  status: z.enum(['loading', 'verified', 'invalid', 'error']),
+  onRedirectToLogin: z.custom<() => void>(),
+  status: z.enum(["loading", "verified", "invalid", "error"]),
   countdown: z.number().optional(),
 });
 

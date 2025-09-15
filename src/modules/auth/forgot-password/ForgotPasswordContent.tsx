@@ -4,16 +4,42 @@ import { Box, Container, Paper } from "@mui/material";
 import ForgotPasswordMarketing from "@/modules/auth/forgot-password/components/ForgotPasswordMarketing";
 import ForgotPasswordForm from "@/modules/auth/forgot-password/components/ForgotPasswordForm";
 import { ThemeRegistry } from "@/components/Providers/ThemeRegistry";
+import { useNotification } from "@/components/Providers/NotificationSnackbar";
+import { useRouter } from "next/navigation";
 
 const ForgotPasswordContent: React.FC = () => {
-  const handleResetPassword = (email: string) => {
-    console.log("Solicitação de redefinição de senha para:", email);
-    alert(
-      "Se o email estiver registrado, um link de redefinição será enviado!"
-    );
-    // Lógica de API viria aqui
-  };
+  const { showNotification } = useNotification();
+  const router = useRouter();
 
+  const handleResetPassword = async (email: string) => {
+    try {
+      const res = await fetch(`/api/auth/forgot-password`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        showNotification(
+          data.error || "Erro ao solicitar redefinição de senha",
+          "error"
+        );
+      } else {
+        showNotification(
+          "Se o email estiver registrado, um link de redefinição será enviado!",
+          "success"
+        );
+        setTimeout(() => {
+          router.push("/login");
+        }, 2000);
+      }
+    } catch (err) {
+      console.error("Erro no forgot-password:", err);
+      showNotification("Erro interno no servidor.", "error");
+    }
+  };
   return (
     <ThemeRegistry>
       <Box

@@ -9,6 +9,7 @@ aguardando
 Ajusta
 ajustado
 ajustando
+alguém
 Alinhamento
 ALTERADA
 alternar
@@ -20,6 +21,7 @@ analisar
 Análise
 analisys
 antigo
+Apelido
 aplicados
 Aposta
 apostada
@@ -63,6 +65,7 @@ Chamar
 cinza
 claras
 Clubes
+coincidem
 Coleta
 coluna
 começar
@@ -81,6 +84,7 @@ crescimento
 criação
 criada
 Cripto
+curto
 decisões
 definitiva
 demonstração
@@ -100,6 +104,7 @@ Djokovic
 EDITÁVEL
 Empate
 entenda
+enviaremos
 envolver
 escolhe
 Espaçamento
@@ -227,6 +232,7 @@ parcialmente
 partida
 Partida
 passado
+passar
 Pequena
 perdas
 Pereira
@@ -282,6 +288,7 @@ Seção
 secundário
 seguro
 sejam
+senhas
 Série
 Simplesmente
 sobrescrever
