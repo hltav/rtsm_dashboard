@@ -6,6 +6,7 @@ import ForgotPasswordForm from "@/modules/auth/forgot-password/components/Forgot
 import { ThemeRegistry } from "@/components/Providers/ThemeRegistry";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import { useRouter } from "next/navigation";
+import { forgotPasswordApi } from "@/lib/api/auth/forgot-password/forgotPasswordApi";
 
 const ForgotPasswordContent: React.FC = () => {
   const { showNotification } = useNotification();
@@ -13,33 +14,25 @@ const ForgotPasswordContent: React.FC = () => {
 
   const handleResetPassword = async (email: string) => {
     try {
-      const res = await fetch(`/api/auth/forgot-password`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
-      });
+      const data = await forgotPasswordApi(email);
 
-      const data = await res.json();
-
-      if (!res.ok) {
-        showNotification(
-          data.error || "Erro ao solicitar redefinição de senha",
-          "error"
-        );
-      } else {
-        showNotification(
+      showNotification(
+        data.message ||
           "Se o email estiver registrado, um link de redefinição será enviado!",
-          "success"
-        );
-        setTimeout(() => {
-          router.push("/login");
-        }, 2000);
-      }
-    } catch (err) {
+        "success"
+      );
+
+      setTimeout(() => {
+        router.push("/login");
+      }, 2000);
+    } catch (err: unknown) {
       console.error("Erro no forgot-password:", err);
-      showNotification("Erro interno no servidor.", "error");
+      const message =
+        err instanceof Error ? err.message : "Erro interno no servidor.";
+      showNotification(message, "error");
     }
   };
+
   return (
     <ThemeRegistry>
       <Box

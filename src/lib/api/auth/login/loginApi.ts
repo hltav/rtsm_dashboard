@@ -1,16 +1,72 @@
-import { apiLoginFetch } from "../auth";
+import { LoginData } from "@/modules/auth/login/interface/loginData.schema";
+import apiClient from "../../apiBaseUrl";
+import axios from "axios";
 
-export const login = async (email: string, password: string) => {
-  return apiLoginFetch({
-    endpoint: "/auth/login",
-    method: "POST",
-    body: JSON.stringify({ email, password }),
-  });
+export const loginService = async (data: LoginData) => {
+  try {
+    const res = await apiClient.post("/auth/login", data, {
+      withCredentials: true,
+    });
+
+    return { success: true, data: res.data };
+  } catch (error: unknown) {
+    let message = "Falha no login";
+
+    if (axios.isAxiosError(error)) {
+      message =
+        error.response?.data?.message || error.response?.data?.error || message;
+    }
+
+    throw new Error(message);
+  }
 };
 
-export const refreshToken = async () => {
-  return apiLoginFetch({
-    endpoint: "/auth/refresh",
-    method: "POST",
-  });
+export const checkAuthStatusService = async () => {
+  try {
+    const res = await apiClient.get("/auth/me", { withCredentials: true });
+    return { success: true, data: res.data };
+  } catch (error: unknown) {
+    let message = "Erro ao verificar status de autenticação";
+    if (axios.isAxiosError(error)) {
+      message =
+        error.response?.data?.message || error.response?.data?.error || message;
+    }
+    throw new Error(message);
+  }
+};
+
+export const logoutService = async () => {
+  try {
+    const res = await apiClient.post(
+      "/auth/logout",
+      {},
+      { withCredentials: true }
+    );
+    return { success: true, data: res.data };
+  } catch (error: unknown) {
+    let message = "Erro ao fazer logout";
+    if (axios.isAxiosError(error)) {
+      message =
+        error.response?.data?.message || error.response?.data?.error || message;
+    }
+    throw new Error(message);
+  }
+};
+
+export const refreshTokenService = async () => {
+  try {
+    const res = await apiClient.post(
+      "/auth/refresh",
+      {},
+      { withCredentials: true }
+    );
+    return { success: true, data: res.data };
+  } catch (error: unknown) {
+    let message = "Erro ao atualizar token";
+    if (axios.isAxiosError(error)) {
+      message =
+        error.response?.data?.message || error.response?.data?.error || message;
+    }
+    throw new Error(message);
+  }
 };

@@ -265,6 +265,7 @@ rapidamente
 recolher
 Reconheça
 Recursos
+reenviar
 Registre
 rejeitar
 relançamos
@@ -272,6 +273,7 @@ relativa
 Removido
 renderizada
 reservados
+resto
 resultado
 Resultado
 resultados

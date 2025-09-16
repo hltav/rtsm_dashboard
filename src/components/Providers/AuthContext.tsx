@@ -9,6 +9,12 @@ import React, {
   useCallback,
 } from "react";
 import { useRouter } from "next/navigation";
+import { LoginData } from "@/modules/auth/login/interface/loginData.schema";
+import {
+  checkAuthStatusService,
+  loginService,
+  logoutService,
+} from "@/lib/api/auth/login/loginApi";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -35,22 +41,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const checkAuthStatus = useCallback(async () => {
     try {
-      //const res = await fetch("api/auth/me", {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/me`, {
-        method: "GET",
-        credentials: "include",
-      });
-
-      if (res.ok) {
-        const userData: GetUser = await res.json();
-        setUser(userData);
-        checkProfileCompletion(userData);
-      } else {
-        setUser(null);
-        setHasIncompleteProfile(false);
-      }
-    } catch (error) {
-      console.error("Erro ao verificar status de autenticação:", error);
+      const res = await checkAuthStatusService();
+      setUser(res.data);
+      checkProfileCompletion(res.data);
+    } catch (err) {
+      console.error("Erro ao verificar status de autenticação:", err);
       setUser(null);
       setHasIncompleteProfile(false);
     } finally {
@@ -58,52 +53,25 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [checkProfileCompletion]);
 
-  const login = async (data: {
-    email: string;
-    password: string;
-    rememberMe: boolean;
-  }) => {
-    setLoading(true);
+  const login = async (data: LoginData) => {
     try {
-      //const res = await fetch("api/auth/login", {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        credentials: "include",
-        body: JSON.stringify({
-          email: data.email,
-          password: data.password,
-          rememberMe: data.rememberMe,
-        }),
-      });
-
-      if (!res.ok) {
-        const errorData = await res.json();
-        throw new Error(errorData.error || "Falha no login");
-      }
-
-      await checkAuthStatus();
-
-      return { success: true };
-    } catch (error) {
-      console.error("Login failed:", error);
-      setLoading(false);
-      throw error;
+      const res = await loginService(data);
+      setUser(res.data.user);
+      return res;
+    } catch (err) {
+      console.error("Login failed:", err);
+      throw err;
     }
   };
 
   const logout = async () => {
     try {
-      // await fetch("api/auth/logout", {
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/login`, {
-        method: "POST",
-        credentials: "include",
-      });
+      await logoutService();
       setUser(null);
       setHasIncompleteProfile(false);
       router.push("/login");
-    } catch (error) {
-      console.error("Erro ao fazer logout:", error);
+    } catch (err) {
+      console.error("Erro ao fazer logout:", err);
     }
   };
 

@@ -8,7 +8,7 @@ import { MarketingSide } from "./components/MarketingSide";
 
 const ConfirmEmailContent = () => {
   const router = useRouter();
-  const { status, countdown } = useEmailVerification();
+  const { status, countdown, email } = useEmailVerification();
 
   const handleRedirectToLogin = () => {
     router.push("/login");
@@ -27,6 +27,7 @@ const ConfirmEmailContent = () => {
         onRedirectToLogin={handleRedirectToLogin}
         status={status}
         countdown={countdown}
+        email={email ?? undefined}
       />
     </ConfirmEmailMainLayout>
   );

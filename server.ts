@@ -1,4 +1,3 @@
-// server.ts
 import { createServer } from 'https';
 import { parse } from 'url';
 import next from 'next';
@@ -17,8 +16,8 @@ const app = next({ dev, hostname });
 const handle = app.getRequestHandler();
 
 const httpsOptions = {
-  key: readFileSync(`${__dirname}/cert/local-key.pem`),
-  cert: readFileSync(`${__dirname}/cert/local-cert.pem`)
+  key: readFileSync(`${__dirname}/cert/localhost-key.pem`),
+  cert: readFileSync(`${__dirname}/cert/localhost.pem`)
 };
 
 app.prepare().then(() => {
