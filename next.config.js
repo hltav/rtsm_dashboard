@@ -10,13 +10,19 @@ const nextConfig = {
   ],
   images: {
     domains: ["placehold.co"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "drive.google.com",
+      },
+    ],
   },
   async rewrites() {
     return [
       {
         source: "/api/:path*", // Todas as requisições para /api serão redirecionadas
-      //destination: "https://api.rtsportsmanager.com/:path*", // Para o seu backend
-        destination: "http://localhost:3000/:path*",
+        destination: "https://api.rtsportsmanager.com/:path*", // Para o seu backend
+        //destination: "http://localhost:3000/:path*",
       },
     ];
   },

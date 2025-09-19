@@ -1,5 +1,412 @@
+// "use client";
+// import React, { useState, useEffect } from "react";
+// import {
+//   Box,
+//   Button,
+//   Container,
+//   CssBaseline,
+//   Paper,
+//   Alert,
+//   Typography,
+//   CircularProgress,
+// } from "@mui/material";
+// import { ThemeRegistry } from "../../components/Providers/ThemeRegistry";
+// import EditableUserInfo from "./components/EditableUserInfo";
+// import NonEditableUserInfo from "./components/NonEditableUserInfo";
+// import PageHeader from "./components/PageHeader";
+// import ProfileImageUploader from "./components/ProfileImageUploader";
+// import axios from "axios";
+// import { useAuth } from "../../components/Providers/AuthContext";
+// import { clientDataService } from "@/lib/api/clientData/clientDataApi";
+
+// interface CompleteProfilePageProps {
+//   onComplete?: () => void;
+// }
+
+// const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
+//   onComplete,
+// }) => {
+//   const { user, updateUser } = useAuth();
+//   const [clientData, setClientData] = useState<{
+//     gender?: string;
+//     cpf?: string;
+//     image?: string;
+//     phone?: string;
+//     userId?: number;
+//     address?: {
+//       neighborhood?: string | null;
+//       city?: string | null;
+//       state?: string | null;
+//     } | null;
+//   }>({});
+
+//   const [profileImagePreview, setProfileImagePreview] = useState<string>(
+//     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
+//   );
+//   const [imageUploadMessage, setImageUploadMessage] = useState<string | null>(
+//     null
+//   );
+//   const [isImageUploadError, setIsImageUploadError] = useState(false);
+//   const [profileSaveMessage, setProfileSaveMessage] = useState<string | null>(
+//     null
+//   );
+//   const [isProfileSaveError, setIsProfileSaveError] = useState(false);
+//   const [isSavingProfile, setIsSavingProfile] = useState(false);
+//   const [isLoadingInitialData, setIsLoadingInitialData] = useState(true);
+
+//   const userId = user?.id;
+
+//   useEffect(() => {
+//     const fetchUserProfileData = async () => {
+//       if (!userId) {
+//         console.warn("ID do usuário ausente. Abortando busca de perfil.");
+//         setIsLoadingInitialData(false);
+//         return;
+//       }
+
+//       const currentClientDataId = user?.clientData?.id;
+
+//       if (!currentClientDataId) {
+//         console.log(
+//           "ClientData não encontrado. Usuário precisa completar o perfil."
+//         );
+//         setIsLoadingInitialData(false);
+//         return;
+//       }
+
+//       setIsLoadingInitialData(true);
+//       try {
+//         const response = await axios.get(
+//           `/users/${userId}/client-data/${currentClientDataId}`,
+//           {
+//             withCredentials: true,
+//           }
+//         );
+
+//         const data = response.data;
+//         setClientData({
+//           gender: data.gender,
+//           cpf: data.cpf,
+//           phone: data.phone,
+//           userId: data.userId,
+//           address: {
+//             neighborhood: data.address?.neighborhood ?? undefined,
+//             city: data.address?.city ?? undefined,
+//             state: data.address?.state ?? undefined,
+//           },
+//           image: data.image || undefined,
+//         });
+
+//         if (data.image) {
+//           setProfileImagePreview(data.image);
+//         }
+//       } catch (error) {
+//         console.error("Erro ao carregar dados do perfil inicial:", error);
+//       } finally {
+//         setIsLoadingInitialData(false);
+//       }
+//     };
+
+//     fetchUserProfileData();
+//   }, [userId, user]);
+//   const handleImageChange = (file: File | null) => {
+//     if (file) {
+//       setProfileImagePreview(URL.createObjectURL(file));
+
+//       setImageUploadMessage(null);
+
+//       setIsImageUploadError(false);
+//     }
+//   };
+
+//   const handleProfileImageUploadSuccess = (imageUrl: string) => {
+//     setProfileImagePreview(imageUrl);
+
+//     setImageUploadMessage("Foto de perfil atualizada com sucesso!");
+
+//     setIsImageUploadError(false);
+
+//     setClientData((prev) => ({
+//       ...prev,
+
+//       image: imageUrl,
+//     }));
+
+//     if (updateUser && user) {
+//       updateUser({
+//         ...user,
+
+//         clientData: {
+//           ...user.clientData,
+
+//           image: imageUrl,
+//         },
+//       });
+//     }
+//   };
+
+//   const handleProfileImageUploadError = (error: string) => {
+//     setImageUploadMessage(`Erro ao carregar foto de perfil: ${error}`);
+
+//     setIsImageUploadError(true);
+//   };
+
+//   const handleFieldChange = <
+//     K extends keyof Omit<typeof clientData, "address">
+//   >(
+//     field: K,
+
+//     value: (typeof clientData)[K]
+//   ) => {
+//     setClientData((prev) => ({
+//       ...prev,
+
+//       [field]: value,
+//     }));
+//   };
+
+//   const handleAddressFieldChange = (
+//     field: keyof NonNullable<typeof clientData.address>,
+
+//     value: string | null
+//   ) => {
+//     setClientData((prev) => ({
+//       ...prev,
+
+//       address: {
+//         ...prev.address,
+
+//         [field]: value,
+//       },
+//     }));
+//   };
+
+//   const handleSubmit = async (event: React.FormEvent) => {
+//   event.preventDefault();
+
+//   if (!userId) {
+//     setProfileSaveMessage("Erro: ID do usuário ausente.");
+//     setIsProfileSaveError(true);
+//     return;
+//   }
+
+//   setIsSavingProfile(true);
+//   setProfileSaveMessage(null);
+//   setIsProfileSaveError(false);
+
+//   const profileDataToSave = {
+//     ...clientData,
+//     userId,
+//     image: clientData.image,
+//   };
+
+//   console.log("Dados a serem enviados:", profileDataToSave);
+
+//   try {
+//     const { data } = await clientDataService.create(profileDataToSave);
+
+//     console.log("Resposta da API (salvar perfil):", data);
+//     setProfileSaveMessage("Perfil atualizado com sucesso!");
+//     setIsProfileSaveError(false);
+
+//     if (updateUser && user) {
+//       updateUser({
+//         ...user,
+//         clientData: {
+//           ...(user.clientData || {}),
+//           ...clientData,
+//           image: clientData.image,
+//         },
+//       });
+//     }
+
+//     if (onComplete) {
+//       onComplete();
+//     }
+//   } catch (error: unknown) {
+//     console.error("Erro ao salvar perfil:", error);
+//     if (error instanceof Error) {
+//       setProfileSaveMessage(error.message);
+//     } else {
+//       setProfileSaveMessage("Erro inesperado ao salvar perfil.");
+//     }
+//     setIsProfileSaveError(true);
+//   } finally {
+//     setIsSavingProfile(false);
+//   }
+// };
+
+//   if (isLoadingInitialData) {
+//     return (
+//       <Box
+//         sx={{
+//           display: "flex",
+//           justifyContent: "center",
+//           alignItems: "center",
+//           minHeight: "100vh",
+//         }}
+//       >
+//         <CircularProgress />
+//         <Typography variant="h6" color="text.secondary" sx={{ ml: 2 }}>
+//           Carregando informações do perfil...
+//         </Typography>
+//       </Box>
+//     );
+//   }
+
+//   if (!userId) {
+//     return (
+//       <Box
+//         sx={{
+//           display: "flex",
+//           justifyContent: "center",
+//           alignItems: "center",
+//           minHeight: "100vh",
+//         }}
+//       >
+//         <Typography variant="h6" color="error">
+//           Erro: Não foi possível carregar as informações do usuário. Por favor,
+//           faça login novamente.
+//         </Typography>
+//       </Box>
+//     );
+//   }
+
+//   return (
+//     <ThemeRegistry>
+//       <CssBaseline />
+//       <Box
+//         sx={{
+//           minHeight: "100vh",
+//           display: "flex",
+//           alignItems: "center",
+//           justifyContent: "center",
+//           bgcolor: "background.default",
+//           p: { xs: 2, sm: 3, md: 0 },
+//         }}
+//       >
+//         <Container
+//           disableGutters
+//           maxWidth={false}
+//           sx={{
+//             display: "flex",
+//             justifyContent: "center",
+//             alignItems: "center",
+//             width: "100%",
+//           }}
+//         >
+//           <Paper
+//             elevation={3}
+//             sx={{
+//               display: "flex",
+//               flexDirection: "column",
+//               borderRadius: 3,
+//               overflow: "hidden",
+//               width: "95%",
+//               maxWidth: { xs: "95%", sm: "700px" },
+//               margin: { xs: "20px auto", md: "20px auto" },
+//             }}
+//           >
+//             <Box
+//               component="form"
+//               onSubmit={handleSubmit}
+//               sx={{
+//                 flex: 1,
+//                 display: "flex",
+//                 flexDirection: "column",
+//                 justifyContent: "center",
+//                 p: { xs: 3, sm: 4, md: 6 },
+//                 bgcolor: "background.paper",
+//                 overflowY: "auto",
+//                 maxHeight: {
+//                   xs: "calc(100vh - 40px)",
+//                   sm: "calc(100vh - 60px)",
+//                   md: "unset",
+//                 },
+//               }}
+//             >
+//               <PageHeader />
+
+//               {/* Dados não editáveis vindo do 'user' do useAuth */}
+//               <NonEditableUserInfo
+//                 firstName={user.firstname}
+//                 lastName={user.lastname}
+//                 username={user.nickname}
+//                 email={user.email}
+//               />
+
+//               <EditableUserInfo
+//                 cpf={clientData.cpf || ""}
+//                 gender={clientData.gender || ""}
+//                 phone={clientData.phone || ""}
+//                 neighborhood={clientData.address?.neighborhood || ""}
+//                 city={clientData.address?.city || ""}
+//                 state={clientData.address?.state || ""}
+//                 onCpfChange={(value) => handleFieldChange("cpf", value)}
+//                 onGenderChange={(value) => handleFieldChange("gender", value)}
+//                 onPhoneChange={(value) => handleFieldChange("phone", value)}
+//                 onNeighborhoodChange={(value) =>
+//                   handleAddressFieldChange("neighborhood", value)
+//                 }
+//                 onCityChange={(value) =>
+//                   handleAddressFieldChange("city", value)
+//                 }
+//                 onStateChange={(value) =>
+//                   handleAddressFieldChange("state", value)
+//                 }
+//               />
+
+//               {/* Mensagem de feedback do upload da imagem */}
+//               {imageUploadMessage && (
+//                 <Alert
+//                   severity={isImageUploadError ? "error" : "success"}
+//                   sx={{ mb: 2 }}
+//                 >
+//                   {imageUploadMessage}
+//                 </Alert>
+//               )}
+
+//               <ProfileImageUploader
+//                 imagePreview={profileImagePreview}
+//                 onImageChange={handleImageChange}
+//                 userId={userId}
+//                 onUploadSuccess={handleProfileImageUploadSuccess}
+//                 onUploadError={handleProfileImageUploadError}
+//               />
+
+//               {/* Mensagem de feedback do salvamento dos outros dados */}
+//               {profileSaveMessage && (
+//                 <Alert
+//                   severity={isProfileSaveError ? "error" : "success"}
+//                   sx={{ mb: 2 }}
+//                 >
+//                   {profileSaveMessage}
+//                 </Alert>
+//               )}
+
+//               <Button
+//                 type="submit"
+//                 variant="contained"
+//                 color="primary"
+//                 fullWidth
+//                 size="large"
+//                 sx={{ py: 1.5 }}
+//                 disabled={isSavingProfile}
+//               >
+//                 {isSavingProfile ? "Salvando..." : "Salvar Perfil"}
+//               </Button>
+//             </Box>
+//           </Paper>
+//         </Container>
+//       </Box>
+//     </ThemeRegistry>
+//   );
+// };
+
+// export default CompleteProfilePage;
+
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Box,
   Button,
@@ -15,33 +422,37 @@ import EditableUserInfo from "./components/EditableUserInfo";
 import NonEditableUserInfo from "./components/NonEditableUserInfo";
 import PageHeader from "./components/PageHeader";
 import ProfileImageUploader from "./components/ProfileImageUploader";
-import axios from "axios";
 import { useAuth } from "../../components/Providers/AuthContext";
+import { clientDataService } from "@/lib/api/clientData/clientDataApi";
+import { ClientData } from "../client-data/client-data.schema";
+import { CreateClientDataDTO } from "../client-data/createClientData.schema";
+import { Address } from "../client-data/address.schema";
 
 interface CompleteProfilePageProps {
   onComplete?: () => void;
 }
 
+const normalizeClientData = (data: ClientData): CreateClientDataDTO => ({
+  ...data,
+  address: data.address
+    ? {
+        neighborhood: data.address.neighborhood ?? undefined,
+        city: data.address.city ?? undefined,
+        state: data.address.state ?? undefined,
+      }
+    : undefined,
+});
+
 const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
   onComplete,
 }) => {
   const { user, updateUser } = useAuth();
-  const [clientData, setClientData] = useState<{
-    gender?: string;
-    cpf?: string;
-    image?: string;
-    phone?: string;
-    userId?: number;
-    address?: {
-      neighborhood?: string | null;
-      city?: string | null;
-      state?: string | null;
-    } | null;
-  }>({});
 
+  const [clientData, setClientData] = useState<ClientData>({});
   const [profileImagePreview, setProfileImagePreview] = useState<string>(
     "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_960_720.png"
   );
+
   const [imageUploadMessage, setImageUploadMessage] = useState<string | null>(
     null
   );
@@ -55,52 +466,34 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
 
   const userId = user?.id;
 
+  // Fetch inicial dos dados do usuário
   useEffect(() => {
     const fetchUserProfileData = async () => {
-      if (!userId) {
-        console.warn("ID do usuário ausente. Abortando busca de perfil.");
-        setIsLoadingInitialData(false);
-        return;
-      }
+      if (!userId) return setIsLoadingInitialData(false);
 
       const currentClientDataId = user?.clientData?.id;
-
-      if (!currentClientDataId) {
-        console.log(
-          "ClientData não encontrado. Usuário precisa completar o perfil."
-        );
-        setIsLoadingInitialData(false);
-        return;
-      }
+      if (!currentClientDataId) return setIsLoadingInitialData(false);
 
       setIsLoadingInitialData(true);
+
       try {
-        const response = await axios.get(
-          `/api/users/${userId}/client-data/${currentClientDataId}`,
-          {
-            withCredentials: true,
-          }
+        const { data } = await clientDataService.get(
+          userId,
+          currentClientDataId
         );
 
-        const data = response.data;
         setClientData({
-          gender: data.gender,
-          cpf: data.cpf,
-          phone: data.phone,
-          userId: data.userId,
+          ...data,
           address: {
-            neighborhood: data.address?.neighborhood,
-            city: data.address?.city,
-            state: data.address?.state,
+            neighborhood: data.address?.neighborhood ?? undefined,
+            city: data.address?.city ?? undefined,
+            state: data.address?.state ?? undefined,
           },
-          image: data.image || undefined,
         });
 
-        if (data.image) {
-          setProfileImagePreview(data.image);
-        }
-      } catch (error) {
-        console.error("Erro ao carregar dados do perfil inicial:", error);
+        if (data.image) setProfileImagePreview(data.image);
+      } catch (err) {
+        console.error("Erro ao carregar dados do perfil inicial:", err);
       } finally {
         setIsLoadingInitialData(false);
       }
@@ -108,140 +501,86 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
 
     fetchUserProfileData();
   }, [userId, user]);
-  const handleImageChange = (file: File | null) => {
-    if (file) {
-      setProfileImagePreview(URL.createObjectURL(file));
 
-      setImageUploadMessage(null);
+  // Handle mudança de campo simples
+  const handleFieldChange = useCallback(
+    <K extends keyof Omit<ClientData, "address">>(
+      field: K,
+      value: ClientData[K]
+    ) => {
+      setClientData((prev) => ({ ...prev, [field]: value }));
+    },
+    []
+  );
 
+  // Handle mudança de campo de endereço
+  const handleAddressFieldChange = useCallback(
+    <K extends keyof Address>(field: K, value: string | undefined) => {
+      setClientData((prev) => ({
+        ...prev,
+        address: { ...prev.address, [field]: value },
+      }));
+    },
+    []
+  );
+
+  const handleProfileImageUploadSuccess = useCallback(
+    (imageUrl: string) => {
+      setProfileImagePreview(imageUrl);
+      setImageUploadMessage("Foto de perfil atualizada com sucesso!");
       setIsImageUploadError(false);
-    }
-  };
 
-  const handleProfileImageUploadSuccess = (imageUrl: string) => {
-    setProfileImagePreview(imageUrl);
+      setClientData((prev) => ({ ...prev, image: imageUrl }));
 
-    setImageUploadMessage("Foto de perfil atualizada com sucesso!");
+      if (updateUser && user) {
+        updateUser({
+          ...user,
+          clientData: { ...user.clientData, image: imageUrl },
+        });
+      }
+    },
+    [updateUser, user]
+  );
 
-    setIsImageUploadError(false);
-
-    setClientData((prev) => ({
-      ...prev,
-
-      image: imageUrl,
-    }));
-
-    if (updateUser && user) {
-      updateUser({
-        ...user,
-
-        clientData: {
-          ...user.clientData,
-
-          image: imageUrl,
-        },
-      });
-    }
-  };
-
-  const handleProfileImageUploadError = (error: string) => {
+  const handleProfileImageUploadError = useCallback((error: string) => {
     setImageUploadMessage(`Erro ao carregar foto de perfil: ${error}`);
-
     setIsImageUploadError(true);
-  };
+  }, []);
 
-  const handleFieldChange = <
-    K extends keyof Omit<typeof clientData, "address">
-  >(
-    field: K,
-
-    value: (typeof clientData)[K]
-  ) => {
-    setClientData((prev) => ({
-      ...prev,
-
-      [field]: value,
-    }));
-  };
-
-  const handleAddressFieldChange = (
-    field: keyof NonNullable<typeof clientData.address>,
-
-    value: string | null
-  ) => {
-    setClientData((prev) => ({
-      ...prev,
-
-      address: {
-        ...prev.address,
-
-        [field]: value,
-      },
-    }));
-  };
-
-  const handleSubmit = async (event: React.FormEvent) => {
+  // Submit do formulário
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-
-    if (!userId) {
-      setProfileSaveMessage("Erro: ID do usuário ausente.");
-      setIsProfileSaveError(true);
-      return;
-    }
+    if (!userId) return setProfileSaveMessage("Erro: ID do usuário ausente.");
 
     setIsSavingProfile(true);
     setProfileSaveMessage(null);
     setIsProfileSaveError(false);
 
-    const profileDataToSave = {
+    const dataToSend: CreateClientDataDTO = normalizeClientData({
       ...clientData,
       userId,
       image: clientData.image,
-    };
-
-    console.log("Dados a serem enviados:", profileDataToSave);
+    });
 
     try {
-      const response = await axios.post("/api/client-data", profileDataToSave, {
-        withCredentials: true,
-      });
+      const { data } = await clientDataService.create(dataToSend);
 
-      console.log("Resposta da API (salvar perfil):", response.data);
       setProfileSaveMessage("Perfil atualizado com sucesso!");
       setIsProfileSaveError(false);
 
       if (updateUser && user) {
         updateUser({
           ...user,
-          clientData: {
-            ...(user.clientData || {}),
-            ...clientData,
-            image: clientData.image,
-          },
+          clientData: { ...user.clientData, ...data },
         });
       }
 
-      if (onComplete) {
-        onComplete();
-      }
-    } catch (error: unknown) {
-      console.error("Erro ao salvar perfil:", error);
-      if (axios.isAxiosError(error)) {
-        setProfileSaveMessage(
-          error.response?.data?.message ||
-            error.message ||
-            "Erro desconhecido ao salvar perfil."
-        );
-      } else if (error instanceof Error) {
-        setProfileSaveMessage(
-          error.message || "Erro desconhecido ao salvar perfil."
-        );
-      } else {
-        const errorMessage = (error as { message?: string })?.message;
-        setProfileSaveMessage(
-          errorMessage || String(error) || "Erro inesperado ao salvar perfil."
-        );
-      }
+      onComplete?.();
+    } catch (err: unknown) {
+      console.error("Erro ao salvar perfil:", err);
+      setProfileSaveMessage(
+        err instanceof Error ? err.message : "Erro inesperado ao salvar perfil."
+      );
       setIsProfileSaveError(true);
     } finally {
       setIsSavingProfile(false);
@@ -339,7 +678,6 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
             >
               <PageHeader />
 
-              {/* Dados não editáveis vindo do 'user' do useAuth */}
               <NonEditableUserInfo
                 firstName={user.firstname}
                 lastName={user.lastname}
@@ -348,12 +686,12 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
               />
 
               <EditableUserInfo
-                cpf={clientData.cpf || ""}
-                gender={clientData.gender || ""}
-                phone={clientData.phone || ""}
-                neighborhood={clientData.address?.neighborhood || ""}
-                city={clientData.address?.city || ""}
-                state={clientData.address?.state || ""}
+                cpf={clientData.cpf ?? ""}
+                gender={clientData.gender ?? ""}
+                phone={clientData.phone ?? ""}
+                neighborhood={clientData.address?.neighborhood ?? ""}
+                city={clientData.address?.city ?? ""}
+                state={clientData.address?.state ?? ""}
                 onCpfChange={(value) => handleFieldChange("cpf", value)}
                 onGenderChange={(value) => handleFieldChange("gender", value)}
                 onPhoneChange={(value) => handleFieldChange("phone", value)}
@@ -368,7 +706,6 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
                 }
               />
 
-              {/* Mensagem de feedback do upload da imagem */}
               {imageUploadMessage && (
                 <Alert
                   severity={isImageUploadError ? "error" : "success"}
@@ -380,13 +717,14 @@ const CompleteProfilePage: React.FC<CompleteProfilePageProps> = ({
 
               <ProfileImageUploader
                 imagePreview={profileImagePreview}
-                onImageChange={handleImageChange}
+                onImageChange={(file) =>
+                  file && handleFieldChange("image", URL.createObjectURL(file))
+                }
                 userId={userId}
                 onUploadSuccess={handleProfileImageUploadSuccess}
                 onUploadError={handleProfileImageUploadError}
               />
 
-              {/* Mensagem de feedback do salvamento dos outros dados */}
               {profileSaveMessage && (
                 <Alert
                   severity={isProfileSaveError ? "error" : "success"}

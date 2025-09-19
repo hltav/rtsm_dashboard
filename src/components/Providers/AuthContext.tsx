@@ -5,7 +5,6 @@ import React, {
   useState,
   useContext,
   ReactNode,
-  useEffect,
   useCallback,
 } from "react";
 import { useRouter } from "next/navigation";
@@ -57,6 +56,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const res = await loginService(data);
       setUser(res.data.user);
+      console.log(res);
       return res;
     } catch (err) {
       console.error("Login failed:", err);
@@ -75,16 +75,15 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  const updateUser = (userData: GetUser) => {
-    setUser(userData);
-    checkProfileCompletion(userData);
-  };
+  const updateUser = useCallback(
+    (userData: GetUser) => {
+      setUser(userData);
+      checkProfileCompletion(userData);
+    },
+    [checkProfileCompletion]
+  );
 
   const profileImageUrl = user?.clientData?.image ?? null;
-
-  useEffect(() => {
-    checkAuthStatus();
-  }, [checkAuthStatus]);
 
   return (
     <AuthContext.Provider

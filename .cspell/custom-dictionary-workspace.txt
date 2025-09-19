@@ -2,6 +2,7 @@
 abordagem
 acertos
 acionado
+Aconteceu
 Adesanya
 adição
 Agrupamento
@@ -21,6 +22,8 @@ analisar
 Análise
 analisys
 antigo
+apagada
+apagado
 Apelido
 aplicados
 Aposta
@@ -33,6 +36,7 @@ aprendendo
 aprender
 aprendizado
 aprimore
+aproveitar
 arredondada
 ausente
 autorizar
@@ -113,6 +117,7 @@ esportes
 essa
 estilo
 Estilos
+estranho
 estratégias
 Euroliga
 evento
@@ -178,6 +183,7 @@ Jogo
 Junte
 Khabib
 lançamos
+leve
 Libera
 Liga
 linhas
@@ -262,10 +268,12 @@ pronunciada
 próximo
 quebra
 rapidamente
+Recarregue
 recolher
 Reconheça
 Recursos
 reenviar
+registrada
 Registre
 rejeitar
 relançamos

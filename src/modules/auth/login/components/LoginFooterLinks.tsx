@@ -14,7 +14,7 @@ const LoginFooterLinks: React.FC = () => {
       <Link
         href="/forgot-password"
         variant="body2"
-        color="primary"
+        color="text.primary"
         sx={{
           textDecoration: "none",
           "&:hover": { textDecoration: "underline" },
@@ -25,7 +25,7 @@ const LoginFooterLinks: React.FC = () => {
       <Link
         href="/register"
         variant="body2"
-        color="primary"
+        color="text.primary"
         sx={{
           textDecoration: "none",
           "&:hover": { textDecoration: "underline" },

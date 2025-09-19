@@ -8,6 +8,7 @@ import LoginFormError from "./LoginFormError";
 import LoginPasswordInput from "./LoginPasswordInput";
 import { useAuth } from "@/components/Providers/AuthContext";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
+import { getUserProfile } from "@/lib/api/users/usersApi";
 
 export const LoginForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -16,7 +17,7 @@ export const LoginForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, updateUser } = useAuth();
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,14 +27,23 @@ export const LoginForm: React.FC = () => {
 
     try {
       await login({ email: username, password, rememberMe });
+
+      const userProfile = await getUserProfile();
+
+      updateUser(userProfile);
+
       showNotification("Login realizado com sucesso!", "success");
+
       router.push("/dashboard");
-    } catch (err: unknown) {
-      setError(
-        err instanceof Error
-          ? err.message
-          : "Ocorreu um erro inesperado. Por favor, tente novamente."
+    } catch (error) {
+      console.error("Erro no login:", error);
+      showNotification(
+        "Não foi possível efetuar o login. Por favor, verifique suas credenciais.",
+        "warning"
       );
+      setTimeout(() => {
+        setError(null);
+      }, 1500);
     } finally {
       setLoading(false);
     }

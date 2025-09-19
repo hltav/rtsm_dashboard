@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useCallback, useEffect, useState } from "react";
 import {
@@ -14,20 +13,25 @@ import { BankrollCard } from "./components/BankrollCard";
 import { useThemeMode } from "@/components/Providers/ThemeRegistry";
 import { BankrollFormModal } from "./components/BankrollFormModal";
 import { useAuth } from "@/components/Providers/AuthContext";
-import { getBankrolls } from "@/lib/api/bankroll/methodsApiBankroll";
+import { bankrollApi } from "@/lib/api/bankroll/bankrollApi";
+import { CreateBankrollDto } from "./schema/createBankroll.schema";
+import { useNotification } from "@/components/Providers/NotificationSnackbar";
+import axios from "axios";
 
-const BankrollPage = () => {
+const BankrollPageContent = () => {
   const { user } = useAuth();
   const [bankrolls, setBankrolls] = useState<BankrollDto[]>([]);
   const [openModal, setOpenModal] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [newBankroll, setNewBankroll] = useState({
+  const [newBankroll, setNewBankroll] = useState<CreateBankrollDto>({
+    userId: user?.id ?? 0,
     name: "",
-    balance: "",
-    unidValue: "",
+    balance: 0,
+    unidValue: 0,
     bookmaker: "",
   });
+  const { showNotification } = useNotification();
 
   const { mode } = useThemeMode();
 
@@ -41,15 +45,26 @@ const BankrollPage = () => {
       setLoading(true);
       setError(null);
 
-      const data = await getBankrolls(user.id);
+      const data = await bankrollApi.getAll(user.id);
       setBankrolls(data);
-    } catch (err) {
-      console.error("Erro ao carregar bancas:", err);
-      setError("Erro ao carregar as bancas. Tente novamente.");
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 404) {
+          showNotification(
+            "Você ainda não possui uma banca registrada. Registre e comece a aproveitar!",
+            "warning"
+          );
+        } else {
+          showNotification(
+            "Ops. Aconteceu algo estranho. Recarregue a página e tente novamente!",
+            "error"
+          );
+        }
+      }
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [user, showNotification]);
 
   useEffect(() => {
     if (user) {
@@ -57,11 +72,11 @@ const BankrollPage = () => {
     }
   }, [user, loadBankrolls]);
 
-  const handleEditClick = (id: string) => {
+  const handleEditClick = (id: number) => {
     console.log("Editar banca:", id);
   };
 
-  const handleViewDetailsClick = (id: string) => {
+  const handleViewDetailsClick = (id: number) => {
     console.log("Ver detalhes da banca:", id);
   };
 
@@ -71,9 +86,21 @@ const BankrollPage = () => {
 
   const handleCloseModal = () => {
     setOpenModal(false);
-
-    setNewBankroll({ name: "", balance: "", unidValue: "", bookmaker: "" });
+    setNewBankroll({
+      userId: user?.id ?? 0,
+      name: "",
+      balance: 0,
+      unidValue: 0,
+      bookmaker: "",
+    });
   };
+
+  const handleBankrollSaved = (savedBankroll: BankrollDto) => {
+    // Atualiza a lista de bancas
+    setBankrolls((prev) => [...prev, savedBankroll]);
+    setOpenModal(false);
+  };
+
   const handleNewBankrollChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -81,91 +108,9 @@ const BankrollPage = () => {
 
     setNewBankroll((prev) => ({
       ...prev,
-
       [name]: value,
     }));
   };
-
-  const handleSaveNewBankroll = async () => {
-    if (!user) {
-      console.error(
-        "Erro: Usuário não autenticado. Por favor, faça login novamente."
-      );
-      setError(
-        "Não foi possível salvar a banca. Por favor, faça login novamente."
-      );
-      return;
-    }
-
-    const balanceNum = parseFloat(newBankroll.balance);
-    const unidValueNum = parseFloat(newBankroll.unidValue);
-
-    if (isNaN(balanceNum) || isNaN(unidValueNum) || unidValueNum === 0) {
-      console.error(
-        "Saldo e Valor por Unid devem ser números válidos e Valor por Unid não pode ser zero."
-      );
-      return;
-    }
-
-    try {
-      console.log("Saving new bankroll to the database:", newBankroll);
-
-      const newId = Date.now().toString();
-      setBankrolls((prev) => [
-        ...prev,
-        {
-          id: newId,
-          name: newBankroll.name,
-          balance: balanceNum,
-          unidValue: unidValueNum,
-          bookmaker: newBankroll.bookmaker,
-          userId: user.id,
-        },
-      ]);
-    } catch (err) {
-      console.error("Erro ao salvar nova banca:", err);
-      setError("Erro ao salvar a nova banca. Tente novamente.");
-    }
-
-    handleCloseModal();
-  };
-
-  // const handleRefresh = () => {
-  //   loadBankrolls();
-  // };
-
-  // if (loading) {
-  //   return <div>Carregando bancas...</div>;
-  // }
-
-  // if (error) {
-  //   if (error.includes("No bankroll found for this user")) {
-  //     return (
-  //       <Box sx={{ p: 2, textAlign: "center" }}>
-  //         <p>
-  //           Você ainda não possui bancas. Crie sua primeira banca para começar.
-  //         </p>
-  //       </Box>
-  //     );
-  //   } else {
-  //     return (
-  //       <div>
-  //         <p>Erro ao carregar bancas: {error}</p>
-  //         <button onClick={handleRefresh}>Tentar novamente</button>
-  //       </div>
-  //     );
-  //   }
-  // }
-
-  // if (bankrolls.length === 0) {
-  //   return (
-  //     <Box sx={{ p: 2, textAlign: "center" }}>
-  //       <p>
-  //         Você ainda não possui bancas. Crie sua primeira banca para começar.
-  //       </p>
-  //     </Box>
-  //   );
-  // }
 
   return (
     <div className={mode === "dark" ? "dark-mode-styles" : "light-mode-styles"}>
@@ -235,33 +180,53 @@ const BankrollPage = () => {
             container
             spacing={2}
             justifyContent="flex-start"
-            sx={{
-              width: "100%",
-            }}
+            sx={{ width: "100%" }}
           >
-            {bankrolls.map((bankroll) => (
-              <Grid
-                item
-                xs={12}
-                sm={6}
-                md={6}
-                lg={4}
-                xl={2.5}
-                key={bankroll.id}
-                sx={{
-                  p: {
-                    sm: 0,
-                  },
-                }}
-               
-              >
-                <BankrollCard
-                  bankroll={bankroll}
-                  onEdit={handleEditClick}
-                  onViewDetails={handleViewDetailsClick}
-                />
-              </Grid>
-            ))}
+            {loading ? (
+              <Box sx={{ p: 2, textAlign: "center", width: "100%" }}>
+                <p>Carregando bancas...</p>
+              </Box>
+            ) : error ? (
+              <Box sx={{ p: 2, textAlign: "center", width: "100%" }}>
+                {error.includes("No bankroll found for this user") ? (
+                  <p>
+                    Você ainda não possui bancas. Crie sua primeira banca para
+                    começar.
+                  </p>
+                ) : (
+                  <>
+                    <p>Erro ao carregar bancas: {error}</p>
+                    <button onClick={loadBankrolls}>Tentar novamente</button>
+                  </>
+                )}
+              </Box>
+            ) : bankrolls.length === 0 ? (
+              <Box sx={{ p: 2, textAlign: "center", width: "100%" }}>
+                <p>
+                  Você ainda não possui bancas. Crie sua primeira banca para
+                  começar.
+                </p>
+              </Box>
+            ) : (
+              bankrolls.map((bankroll) => (
+                <Grid
+                  item
+                  xs={12}
+                  sm={6}
+                  md={6}
+                  lg={4}
+                  xl={2.5}
+                  key={bankroll.id}
+                  sx={{ p: { sm: 0 } }}
+                >
+                  <BankrollCard
+                    bankroll={bankroll}
+                    onEdit={handleEditClick}
+                    onViewDetails={handleViewDetailsClick}
+                  />
+                </Grid>
+              ))
+            )}
           </Grid>
         </Container>
       </Box>
@@ -270,10 +235,10 @@ const BankrollPage = () => {
         onClose={handleCloseModal}
         bankroll={newBankroll}
         onChange={handleNewBankrollChange}
-        onSave={handleSaveNewBankroll}
+        onSave={handleBankrollSaved}
       />
     </div>
   );
 };
 
-export default BankrollPage;
+export default BankrollPageContent;

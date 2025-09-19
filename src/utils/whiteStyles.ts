@@ -35,7 +35,7 @@ export const whiteStyles = {
         WebkitTextFillColor: "rgba(255, 255, 255, 0.7)",
       },
       "& .MuiOutlinedInput-notchedOutline": {
-        borderColor: "rgba(255, 255, 255, 0.3) !important",
+        borderColor: "rgba(255, 255, 255, 0.5) !important",
       },
       "& .MuiInputLabel-root": {
         color: "rgba(255, 255, 255, 0.5)",

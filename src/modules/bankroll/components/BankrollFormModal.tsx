@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Modal,
   Box,
@@ -11,83 +11,136 @@ import {
 } from "@mui/material";
 import { BankrollFormModalProps } from "../interface/bankrollFormModalProps";
 import { AlertColor } from "@mui/material/Alert";
-import { createBankroll } from "@/lib/api/bankroll/methodsApiBankroll";
 import { useAuth } from "@/components/Providers/AuthContext";
+import { bankrollApi } from "@/lib/api/bankroll/bankrollApi";
+import { useNotification } from "@/components/Providers/NotificationSnackbar";
+import axios from "axios";
+
+// export const BankrollFormModal = ({
+//   open,
+//   onClose,
+//   bankroll,
+//   onChange,
+//   onSave,
+// }: BankrollFormModalProps) => {
+//   const [loading, setLoading] = useState(false);
+//   const [snackbar, setSnackbar] = useState({
+//     open: false,
+//     message: "",
+//     severity: "success",
+//   });
+
+//   const { showNotification } = useNotification();
+
+//   const { user } = useAuth();
+
+//   const userId = user?.id;
+
+//   const handleSave = async () => {
+//     try {
+//       setLoading(true);
+//       if (!bankroll.name || bankroll.name.length < 3) {
+//         showNotification("Nome deve ter pelo menos 3 caracteres", "warning");
+//         return;
+//       }
+//       if (!bankroll.balance || bankroll.balance <= 0) {
+//         showNotification("Saldo deve ser maior que zero", "warning");
+//         return;
+//       }
+//       if (!bankroll.unidValue || bankroll.unidValue <= 0) {
+//         showNotification("Valor por unidade deve ser maior que zero", "error");
+//         return;
+//       }
+//       const newBankroll = await bankrollApi.create(
+//         {
+//           name: bankroll.name,
+//           balance: bankroll.balance,
+//           unidValue: bankroll.unidValue,
+//           bookmaker: bankroll.bookmaker || "Unknown",
+//         },
+//         userId!
+//       );
+
+//       onClose();
+//       showNotification("Banca criada com sucesso!", "success");
+//       if (onSave) onSave(newBankroll);
+//     } catch {
+//       showNotification("Erro ao criar banca. Tente novamente.", "error");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   const handleCloseSnackbar = () => {
+//     setSnackbar({ ...snackbar, open: false });
+//   };
 
 export const BankrollFormModal = ({
   open,
   onClose,
   bankroll,
-  onChange,
   onSave,
 }: BankrollFormModalProps) => {
   const [loading, setLoading] = useState(false);
+  const { showNotification } = useNotification();
+  const { user } = useAuth();
+  const userId = user?.id;
+  const [formState, setFormState] = useState(bankroll);
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
     severity: "success",
   });
 
-  const { user } = useAuth();
+  useEffect(() => {
+    if (open) {
+      setFormState(bankroll);
+    }
+  }, [open, bankroll]);
 
-  const userId = user?.id;
+  const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormState((prev) => ({
+      ...prev,
+      [name]:
+        name === "balance" || name === "unidValue" ? Number(value) : value,
+    }));
+  };
 
   const handleSave = async () => {
+    if (!userId) {
+      showNotification("Usuário não autenticado.", "warning");
+      return;
+    }
+
+    if (!formState.name || formState.name.length < 3) {
+      showNotification("Nome deve ter pelo menos 3 caracteres", "warning");
+      return;
+    }
+
+    if (formState.balance <= 0) {
+      showNotification("Saldo deve ser maior que zero", "warning");
+      return;
+    }
+
+    if (formState.unidValue <= 0) {
+      showNotification("Valor por unidade deve ser maior que zero", "warning");
+      return;
+    }
+
     try {
       setLoading(true);
+      const saved = await bankrollApi.create(formState, userId);
 
-      if (!bankroll.name || bankroll.name.length < 3) {
-        setSnackbar({
-          open: true,
-          message: "Nome deve ter pelo menos 3 caracteres",
-          severity: "error",
-        });
-        return;
-      }
-
-      if (!bankroll.balance || parseFloat(bankroll.balance) <= 0) {
-        setSnackbar({
-          open: true,
-          message: "Saldo deve ser maior que zero",
-          severity: "error",
-        });
-        return;
-      }
-
-      if (!bankroll.unidValue || parseFloat(bankroll.unidValue) <= 0) {
-        setSnackbar({
-          open: true,
-          message: "Valor por unidade deve ser maior que zero",
-          severity: "error",
-        });
-        return;
-      }
-
-      const newBankroll = await createBankroll({
-        name: bankroll.name,
-        balance: parseFloat(bankroll.balance),
-        unidValue: parseFloat(bankroll.unidValue),
-        bookmaker: bankroll.bookmaker || "Unknown",
-      }, userId!);
-
-      console.log(newBankroll);
-
+      showNotification("Banca criada com sucesso!", "success");
+      if (onSave) onSave(saved);
       onClose();
-
-      setSnackbar({
-        open: true,
-        message: "Banca criada com sucesso!",
-        severity: "success",
-      });
-
-      if (onSave) onSave(newBankroll);
-    } catch (error) {
-      console.error("Erro ao salvar banca:", error);
-      setSnackbar({
-        open: true,
-        message: "Erro ao criar banca. Tente novamente.",
-        severity: "error",
-      });
+    } catch (err) {
+      if (axios.isAxiosError(err) && err.response?.status === 409) {
+        showNotification("Já existe uma banca com este nome!", "error");
+      } else {
+        showNotification("Erro ao criar banca. Tente novamente.", "error");
+      }
     } finally {
       setLoading(false);
     }
@@ -123,14 +176,14 @@ export const BankrollFormModal = ({
           <TextField
             label="Nome da Banca"
             name="name"
-            value={bankroll.name}
+            value={formState.name}
             onChange={onChange}
             fullWidth
             variant="outlined"
             required
-            error={bankroll.name.length > 0 && bankroll.name.length < 3}
+            error={formState.name.length > 0 && formState.name.length < 3}
             helperText={
-              bankroll.name.length > 0 && bankroll.name.length < 3
+              formState.name.length > 0 && formState.name.length < 3
                 ? "Mínimo 3 caracteres"
                 : ""
             }
@@ -158,7 +211,7 @@ export const BankrollFormModal = ({
           <TextField
             label="Saldo (R$)"
             name="balance"
-            value={bankroll.balance}
+            value={formState.balance}
             onChange={onChange}
             fullWidth
             variant="outlined"
@@ -188,7 +241,7 @@ export const BankrollFormModal = ({
           <TextField
             label="Valor por Unid"
             name="unidValue"
-            value={bankroll.unidValue}
+            value={formState.unidValue}
             onChange={onChange}
             fullWidth
             variant="outlined"
@@ -218,7 +271,7 @@ export const BankrollFormModal = ({
           <TextField
             label="Casa de Apostas"
             name="bookmaker"
-            value={bankroll.bookmaker}
+            value={formState.bookmaker}
             onChange={onChange}
             fullWidth
             variant="outlined"
@@ -259,6 +312,7 @@ export const BankrollFormModal = ({
               Cancelar
             </Button>
             <Button
+              type="button"
               variant="contained"
               color="primary"
               onClick={handleSave}

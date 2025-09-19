@@ -15,7 +15,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useAuth } from "@/components/Providers/AuthContext";
 
 export const ProfileAvatar: React.FC = () => {
-  const { user, logout, loading } = useAuth();
+  const { user, logout, loading } = useAuth(); // user: GetUser | null
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -23,33 +23,27 @@ export const ProfileAvatar: React.FC = () => {
     setAnchorEl(event.currentTarget);
   };
 
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
+  const handleClose = () => setAnchorEl(null);
 
   if (loading) {
     return (
       <Box sx={{ display: "flex", alignItems: "center", ml: 2 }}>
-        <CircularProgress size={24} /> {/* Exibe um spinner de carregamento */}
+        <CircularProgress size={24} />
       </Box>
     );
   }
 
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   const userName = `${user.firstname} ${user.lastname}`;
   const userEmail = user.email;
   const fallbackAvatar = `https://placehold.co/32x32/d1d1d1/000000?text=${user.firstname.charAt(
     0
   )}${user.lastname.charAt(0)}`;
-  const userAvatarUrl = user.clientData?.image || fallbackAvatar;
-
-  console.log("User Avatar URL:", userAvatarUrl);
+  const userAvatarUrl = user.clientData?.image ?? fallbackAvatar;
 
   return (
-    <React.Fragment>
+    <>
       <IconButton
         onClick={handleClick}
         size="small"
@@ -64,6 +58,7 @@ export const ProfileAvatar: React.FC = () => {
           sx={{ width: 50, height: 50 }}
         />
       </IconButton>
+
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -76,12 +71,7 @@ export const ProfileAvatar: React.FC = () => {
             overflow: "visible",
             filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
             mt: 1.5,
-            "& .MuiAvatar-root": {
-              width: 32,
-              height: 32,
-              ml: -0.5,
-              mr: 1,
-            },
+            "& .MuiAvatar-root": { width: 32, height: 32, ml: -0.5, mr: 1 },
             "&::before": {
               content: '""',
               display: "block",
@@ -99,7 +89,6 @@ export const ProfileAvatar: React.FC = () => {
         transformOrigin={{ horizontal: "right", vertical: "top" }}
         anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        {/* Informações do usuário no cabeçalho do menu */}
         <MenuItem sx={{ py: 1, px: 2 }}>
           <Avatar src={userAvatarUrl} alt={userName} />
           <Box>
@@ -109,13 +98,14 @@ export const ProfileAvatar: React.FC = () => {
             </Typography>
           </Box>
         </MenuItem>
-        {/* Itens do menu */}
+
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
             <PersonIcon fontSize="small" />
           </ListItemIcon>
           Meu Perfil
         </MenuItem>
+
         <MenuItem
           onClick={() => {
             handleClose();
@@ -128,6 +118,6 @@ export const ProfileAvatar: React.FC = () => {
           Sair
         </MenuItem>
       </Menu>
-    </React.Fragment>
+    </>
   );
 };

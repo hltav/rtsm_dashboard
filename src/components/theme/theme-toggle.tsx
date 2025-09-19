@@ -1,10 +1,9 @@
-// components/ThemeToggle.tsx
 import { IconButton, Tooltip } from "@mui/material";
 import { useThemeMode } from "../Providers/ThemeRegistry";
-import { 
-  Brightness2Outlined, 
+import {
+  Brightness2Outlined,
   LightModeOutlined,
-  SettingsBrightness 
+  SettingsBrightness,
 } from "@mui/icons-material";
 
 export const ThemeToggle: React.FC = () => {

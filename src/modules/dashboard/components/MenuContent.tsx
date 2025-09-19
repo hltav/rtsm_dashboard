@@ -1,7 +1,7 @@
 import MainContent from "@/modules/dashboard/components/MainContent";
 import ProfileContentPage from "@/modules/profile/ProfileContentPage";
 import { useDashboard } from "@/components/Providers/DashboardContext";
-import BankrollsPage from "@/modules/bankroll/BankrollPage";
+import BankrollsPage from "@/modules/bankroll/BankrollPageContent";
 import EventPage from "@/modules/events/EventPage";
 
 const MenuContent = () => {

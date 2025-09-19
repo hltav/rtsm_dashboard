@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useState, ReactNode, useEffect } from "react";
-import { useMediaQuery, CircularProgress, Box, Menu } from "@mui/material";
+import { useMediaQuery, CircularProgress, Box } from "@mui/material";
 import { lightTheme } from "@/components/theme/light-theme";
 import { DashboardLayout } from "./DashboardLayout";
 import AppBarComponent from "./components/AppBarComponent";
@@ -10,26 +10,24 @@ import { useAuth } from "@/components/Providers/AuthContext";
 import CompleteProfileModal from "@/modules/complete-profile-modal/CompleteProfileModal";
 import MenuContent from "./components/MenuContent";
 import { NavigationBar } from "./components/Navigation";
+import { useAuthStatus } from "@/hooks/useAuthStatus";
+
 interface DashboardPageProps {
   children?: ReactNode;
 }
 
 const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
-  const {
-    user,
-    loading,
-    isAuthenticated,
-    hasIncompleteProfile,
-    checkAuthStatus,
-    logout,
-  } = useAuth();
-  const router = useRouter();
+  const { user, isAuthenticated, hasIncompleteProfile, checkAuthStatus } =
+    useAuth();
 
+  // Chame o hook aqui. Ele irá iniciar a verificação de status.
+  const { loading } = useAuthStatus();
+
+  const router = useRouter();
   const isDesktop = useMediaQuery(lightTheme.breakpoints.up("md"));
   const [open, setOpen] = useState(isDesktop);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
-  const [showModalTemp, setShowModalTemp] = useState(false);
 
   useEffect(() => {
     if (!loading && !isAuthenticated) {
@@ -41,7 +39,6 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
     console.log(
       "Perfil completado! Fechando o modal e recarregando dados via contexto."
     );
-    setShowModalTemp(false);
     await checkAuthStatus();
   };
 
@@ -78,28 +75,6 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
     );
   }
 
-  if (!isAuthenticated) {
-    return (
-      <DashboardLayout darkMode={darkMode}>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "center",
-            alignItems: "center",
-            height: "100vh",
-            width: "100vw",
-            bgcolor: "background.default",
-            color: "text.primary",
-          }}
-        >
-          <h1>Redirecionando para o login...</h1>
-          <CircularProgress size={24} sx={{ mt: 2 }} />
-        </Box>
-      </DashboardLayout>
-    );
-  }
-
   return (
     <DashboardLayout darkMode={darkMode}>
       <AppBarComponent handleDrawerToggle={handleDrawerToggle} />
@@ -113,7 +88,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
         handleThemeToggle={handleThemeToggle}
       />
 
-      <main style={{ width: "100%", marginTop:36, marginLeft:10 }}>
+      <main style={{ width: "100%", marginTop: 36, marginLeft: 10 }}>
         {children || <MenuContent />}
       </main>
 

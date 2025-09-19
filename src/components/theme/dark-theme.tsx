@@ -13,7 +13,7 @@ export const darkTheme = createTheme({
       main: "#FFC83D",
       light: "#FFD86B",
       dark: "#E0A800",
-      contrastText: "#000",
+      contrastText: "#fff",
     },
     background: {
       default: "#121212",
@@ -80,26 +80,59 @@ export const darkTheme = createTheme({
   },
   components: {
     MuiButton: {
-      styleOverrides: {
-        root: {
-          borderRadius: 8,
-          textTransform: "none",
-        },
-      },
-    },
-    MuiPaper: {
-      styleOverrides: {
-        root: {
-          borderRadius: 12,
-          boxShadow: "0px 4px 20px rgba(0, 0, 0, 0.05)",
-        },
-      },
+      styleOverrides: { root: { borderRadius: 8, textTransform: "none" } },
     },
     MuiTextField: {
       styleOverrides: {
         root: {
           "& .MuiOutlinedInput-root": {
             borderRadius: 8,
+            "& fieldset": {
+              borderColor: "rgba(255, 255, 255, 0.3)",
+            },
+            "&:hover fieldset": {
+              borderColor: "#fff",
+            },
+            "&.Mui-focused fieldset": {
+              borderColor: "#fff",
+            },
+            "& input": {
+              color: "#fff",
+            },
+          },
+          "& .MuiInputLabel-root": {
+            color: "#ccc",
+            "&.Mui-focused": {
+              color: "#fff",
+            },
+          },
+        },
+      },
+    },
+    MuiSelect: {
+      styleOverrides: {
+        root: {
+          "& .MuiOutlinedInput-notchedOutline": {
+            borderColor: "rgba(255, 255, 255, 0.3)",
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#fff",
+          },
+          "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+            borderColor: "#fff",
+          },
+        },
+        icon: {
+          color: "rgba(255, 255, 255, 0.7)",
+        },
+      },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: {
+          color: "rgba(255,255,255,0.7)",
+          "&.Mui-focused": {
+            color: "#fff",
           },
         },
       },

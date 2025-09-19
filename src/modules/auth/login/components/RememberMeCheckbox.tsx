@@ -18,6 +18,14 @@ const RememberMeCheckbox: React.FC<RememberMeCheckboxProps> = ({
           onChange={onChange}
           color="primary"
           size="small"
+          sx={(theme) => ({
+            ...(theme.palette.mode === "dark" && {
+              color: "white",
+              "&.Mui-checked": {
+                color: "white",
+              },
+            }),
+          })}
         />
       }
       label="Lembrar-me"

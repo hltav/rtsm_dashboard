@@ -83,6 +83,16 @@ const ProfileImageUploader: React.FC<ProfileImageUploaderProps> = ({
           component="span"
           color="primary"
           disabled={isUploading}
+          sx={(theme) => ({
+            ...(theme.palette.mode === "dark" && {
+              border: "1px solid #fff",
+              color: "#fff",
+              "&:hover": {
+                border: "1px solid #fff",
+                backgroundColor: "rgba(255,255,255,0.1)",
+              },
+            }),
+          })}
         >
           {isUploading ? "Enviando..." : "Carregar Imagem"}
         </Button>
