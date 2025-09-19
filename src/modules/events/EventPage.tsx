@@ -8,7 +8,7 @@ import {
   useMediaQuery,
   SelectChangeEvent,
 } from "@mui/material";
-import { ThemeProvider, CssBaseline } from "@mui/material";
+import { CssBaseline } from "@mui/material";
 import { EventItem } from "./interfaces/EventItem";
 import { darkTheme } from "@/components/theme/dark-theme";
 import EventActions from "./components/EventActions";
@@ -22,7 +22,7 @@ import { initialEvents } from "./interfaces/initialEvents";
 const EventPage = () => {
   const isMobile = useMediaQuery(darkTheme.breakpoints.down("sm"));
 
-  const [events, setEvents] = useState<EventItem[]>(initialEvents);
+  const [events, setEvents] = useState<EventItem[]>([]);
 
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openInfoModal, setOpenInfoModal] = useState(false);
@@ -255,7 +255,6 @@ const EventPage = () => {
           bgcolor: "background.default",
           p: { xs: 2, sm: 4 },
         }}
-        
       >
         <Container maxWidth={false} sx={{ p: 0 }}>
           <Box

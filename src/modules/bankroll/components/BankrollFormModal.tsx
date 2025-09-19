@@ -16,65 +16,6 @@ import { bankrollApi } from "@/lib/api/bankroll/bankrollApi";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import axios from "axios";
 
-// export const BankrollFormModal = ({
-//   open,
-//   onClose,
-//   bankroll,
-//   onChange,
-//   onSave,
-// }: BankrollFormModalProps) => {
-//   const [loading, setLoading] = useState(false);
-//   const [snackbar, setSnackbar] = useState({
-//     open: false,
-//     message: "",
-//     severity: "success",
-//   });
-
-//   const { showNotification } = useNotification();
-
-//   const { user } = useAuth();
-
-//   const userId = user?.id;
-
-//   const handleSave = async () => {
-//     try {
-//       setLoading(true);
-//       if (!bankroll.name || bankroll.name.length < 3) {
-//         showNotification("Nome deve ter pelo menos 3 caracteres", "warning");
-//         return;
-//       }
-//       if (!bankroll.balance || bankroll.balance <= 0) {
-//         showNotification("Saldo deve ser maior que zero", "warning");
-//         return;
-//       }
-//       if (!bankroll.unidValue || bankroll.unidValue <= 0) {
-//         showNotification("Valor por unidade deve ser maior que zero", "error");
-//         return;
-//       }
-//       const newBankroll = await bankrollApi.create(
-//         {
-//           name: bankroll.name,
-//           balance: bankroll.balance,
-//           unidValue: bankroll.unidValue,
-//           bookmaker: bankroll.bookmaker || "Unknown",
-//         },
-//         userId!
-//       );
-
-//       onClose();
-//       showNotification("Banca criada com sucesso!", "success");
-//       if (onSave) onSave(newBankroll);
-//     } catch {
-//       showNotification("Erro ao criar banca. Tente novamente.", "error");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   const handleCloseSnackbar = () => {
-//     setSnackbar({ ...snackbar, open: false });
-//   };
-
 export const BankrollFormModal = ({
   open,
   onClose,

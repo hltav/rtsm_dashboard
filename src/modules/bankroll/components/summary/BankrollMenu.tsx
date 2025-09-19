@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
-import { Box, Popover, CircularProgress } from '@mui/material';
-import BankrollSummary from './BankrollSummary';
-import BankrollDetails from './BankrollDetails';
-import { useAuth } from '@/components/Providers/AuthContext';
-import { getBankrolls } from '@/lib/api/bankroll/methodsApiBankroll';
-import { BankrollDto } from '@/modules/bankroll/schema/bankroll.schema';
+import React, { useState, useEffect } from "react";
+import { Box, Popover, CircularProgress } from "@mui/material";
+import BankrollSummary from "./BankrollSummary";
+import BankrollDetails from "./BankrollDetails";
+import { bankrollApi } from "@/lib/api/bankroll/bankrollApi";
+import { useAuth } from "@/components/Providers/AuthContext";
+import { BankrollDto } from "../../schema/bankroll.schema";
 
 const BankrollMenu: React.FC = () => {
   const { user } = useAuth();
@@ -19,10 +19,10 @@ const BankrollMenu: React.FC = () => {
         return;
       }
       try {
-        const data = await getBankrolls(user.id);
-        setBankrolls(data);
+        const data = await bankrollApi.getById(user.id);
+        setBankrolls(Array.isArray(data) ? data : [data]);
       } catch (error) {
-        console.error('Failed to fetch bankrolls:', error);
+        console.error("Failed to fetch bankrolls:", error);
       } finally {
         setLoading(false);
       }
@@ -62,12 +62,12 @@ const BankrollMenu: React.FC = () => {
         anchorEl={anchorEl}
         onClose={handlePopoverClose}
         anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
+          vertical: "bottom",
+          horizontal: "left",
         }}
         transformOrigin={{
-          vertical: 'top',
-          horizontal: 'left',
+          vertical: "top",
+          horizontal: "left",
         }}
         disableRestoreFocus
       >
