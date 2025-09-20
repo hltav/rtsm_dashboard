@@ -28,6 +28,6 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "server.js"
-  ],
+, "src/middleware.ts.bak"  ],
   "exclude": ["node_modules"]
 }
