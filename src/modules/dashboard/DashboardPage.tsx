@@ -20,8 +20,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
   const { user, isAuthenticated, hasIncompleteProfile, checkAuthStatus } =
     useAuth();
 
-  // Chame o hook aqui. Ele irá iniciar a verificação de status.
-  const { loading } = useAuthStatus();
+   const { loading } = useAuthStatus();
 
   const router = useRouter();
   const isDesktop = useMediaQuery(lightTheme.breakpoints.up("md"));
