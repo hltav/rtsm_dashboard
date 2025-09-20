@@ -3,6 +3,7 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("access_token");
+  console.log("TOKEN NO MIDDLEWARE:", accessToken);
 
   if (!accessToken) {
     return NextResponse.redirect(new URL("/login", request.url));

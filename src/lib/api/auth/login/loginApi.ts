@@ -16,7 +16,6 @@ export const loginService = async (data: LoginData) => {
     if (axios.isAxiosError(error)) {
       message =
         error.response?.data?.message || error.response?.data?.error || message;
-      console.log(message);
     }
 
     throw new Error(message);
@@ -28,7 +27,7 @@ export const checkAuthStatusService = async (): Promise<GetUser> => {
     const res = await apiClient.get("/auth/me", {
       withCredentials: true,
     });
-    console.log(res)
+    console.log("DATA NO CHECK_AUTH", res.data.data.user);
     return res.data.data.user;
   } catch (error: unknown) {
     let message = "Erro ao verificar status de autenticação";

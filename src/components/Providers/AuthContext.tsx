@@ -56,7 +56,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const res = await loginService(data);
       setUser(res.data.user);
-      console.log(res);
+      console.log('DATA EM CALL LOGIN',res.data.user);
       return res;
     } catch (err) {
       console.error("Login failed:", err);
