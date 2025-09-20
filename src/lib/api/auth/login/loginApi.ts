@@ -29,7 +29,7 @@ export const checkAuthStatusService = async (): Promise<GetUser> => {
       withCredentials: true,
     });
     console.log(res)
-    return res.data;
+    return res.data.data.user;
   } catch (error: unknown) {
     let message = "Erro ao verificar status de autenticação";
     if (axios.isAxiosError(error)) {
