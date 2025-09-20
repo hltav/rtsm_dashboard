@@ -1,6 +1,7 @@
 import { LoginData } from "@/modules/auth/login/interface/loginData.schema";
 import apiClient from "../../apiBaseUrl";
 import axios from "axios";
+import { GetUser } from "@/modules/user/schemas/user.schema";
 
 export const loginService = async (data: LoginData) => {
   try {
@@ -22,12 +23,12 @@ export const loginService = async (data: LoginData) => {
   }
 };
 
-export const checkAuthStatusService = async () => {
+export const checkAuthStatusService = async (): Promise<GetUser> => {
   try {
     const res = await apiClient.get("/auth/me", {
       withCredentials: true,
     });
-    return { success: true, data: res.data };
+    return res.data;
   } catch (error: unknown) {
     let message = "Erro ao verificar status de autenticação";
     if (axios.isAxiosError(error)) {

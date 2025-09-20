@@ -34,9 +34,7 @@ export const LoginForm: React.FC = () => {
 
       showNotification("Login realizado com sucesso!", "success");
 
-      setTimeout(() => {
-        router.push("/dashboard");
-      }, 1000);
+      router.push("/dashboard");
     } catch (error) {
       console.error("Erro no login:", error);
       showNotification(

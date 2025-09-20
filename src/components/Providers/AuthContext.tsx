@@ -41,8 +41,8 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const checkAuthStatus = useCallback(async () => {
     try {
       const res = await checkAuthStatusService();
-      setUser(res.data);
-      checkProfileCompletion(res.data);
+      setUser(res);
+      checkProfileCompletion(res);
     } catch (err) {
       console.error("Erro ao verificar status de autenticação:", err);
       setUser(null);
