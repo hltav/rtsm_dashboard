@@ -8,7 +8,7 @@ import LoginFormError from "./LoginFormError";
 import LoginPasswordInput from "./LoginPasswordInput";
 import { useAuth } from "@/components/Providers/AuthContext";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
-import { checkAuthStatusService } from "@/lib/api/auth/login/loginApi";
+
 
 export const LoginForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -17,8 +17,9 @@ export const LoginForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { login, updateUser } = useAuth();
+  const { login, updateUser, checkAuthStatus} = useAuth();
   const { showNotification } = useNotification();
+  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,7 +29,7 @@ export const LoginForm: React.FC = () => {
     try {
       await login({ email: username, password, rememberMe });
 
-      const userProfile = await checkAuthStatusService();
+      const userProfile = await checkAuthStatus();
 
       console.log("DATA LOGIN FORM CHECK_AUTH:", userProfile);
 

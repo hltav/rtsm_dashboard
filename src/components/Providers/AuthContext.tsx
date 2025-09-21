@@ -44,10 +44,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(res);
       checkProfileCompletion(res);
       console.log("DADOS EM CHECK_AUTH_STATUS:", res)
+      return res;
     } catch (err) {
       console.error("Erro ao verificar status de autenticação:", err);
       setUser(null);
       setHasIncompleteProfile(false);
+      throw err;
     } finally {
       setLoading(false);
     }
