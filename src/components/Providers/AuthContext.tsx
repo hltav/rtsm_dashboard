@@ -49,7 +49,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       console.error("Erro ao verificar status de autenticação:", err);
       setUser(null);
       setHasIncompleteProfile(false);
-      throw err;
+      return null;
     } finally {
       setLoading(false);
     }

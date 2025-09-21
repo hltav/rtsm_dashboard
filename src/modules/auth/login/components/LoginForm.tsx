@@ -33,7 +33,7 @@ export const LoginForm: React.FC = () => {
 
       console.log("DATA LOGIN FORM CHECK_AUTH:", userProfile);
 
-      updateUser(userProfile);
+      updateUser(userProfile!);
 
       showNotification("Login realizado com sucesso!", "success");
 

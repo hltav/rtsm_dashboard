@@ -11,7 +11,7 @@ export interface AuthContextType {
   isAuthenticated: boolean;
   loading: boolean;
   hasIncompleteProfile: boolean;
-  checkAuthStatus: () => Promise<GetUser>;
+  checkAuthStatus: () => Promise<GetUser | null>;
   updateUser: (userData: GetUser) => void;
   profileImageUrl: string | null;
 }
