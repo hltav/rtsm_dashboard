@@ -18,6 +18,7 @@ alternativo
 altura
 amarelo
 ambiente
+ampla
 analisar
 Análise
 analisys
@@ -115,6 +116,7 @@ Espaçamento
 específica
 esportes
 essa
+estáticos
 estilo
 Estilos
 estranho
@@ -123,9 +125,11 @@ Euroliga
 evento
 Evento
 evolua
+executando
 existia
 expandir
 expansão
+extensão
 Extrai
 extrair
 fácil
@@ -163,6 +167,8 @@ houve
 Ícone
 Ícones
 identificando
+Ignorando
+Ignorar
 imediata
 impactam
 ímpares
@@ -239,6 +245,7 @@ partida
 Partida
 passado
 passar
+PASSOU
 Pequena
 perdas
 Pereira
@@ -265,6 +272,7 @@ Privacidade
 processo
 promessa
 pronunciada
+protegida
 próximo
 quebra
 rapidamente
@@ -296,6 +304,7 @@ Saiba
 Saldo
 Seção
 secundário
+SEGUINDO
 seguro
 sejam
 senhas
