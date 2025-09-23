@@ -30,4 +30,4 @@ const nextConfig = {
 
 export default nextConfig;
 
-Coloque essas configurações dentro desse configuração pré-existente. 
+
