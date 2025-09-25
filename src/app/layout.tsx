@@ -32,7 +32,7 @@ export default async function RootLayout({
       <head>
         <meta name="google" content="notranslate" />
         <meta name="emotion-insertion-point" content="" />
-        {nonce && <style nonce={nonce} />}
+        {nonce && <style nonce={nonce}>{""}</style>}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
