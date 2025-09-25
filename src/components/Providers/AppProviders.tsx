@@ -4,17 +4,27 @@ import { NotificationProvider } from "./NotificationSnackbar";
 import { ThemeRegistry } from "./ThemeRegistry";
 import { AuthProvider } from "./AuthContext";
 import { DashboardProvider } from "./DashboardContext";
-import { EmotionNonceCache } from "./EmotionNonceCache";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 
-export function AppProviders({
-  children,
-  nonce,
-}: {
+interface AppProvidersProps {
   children: React.ReactNode;
   nonce?: string;
-}) {
+}
+
+export function AppProviders({ children, nonce }: AppProvidersProps) {
+  const cache = createCache({
+    key: "mui",
+    nonce: nonce || undefined,
+    insertionPoint:
+      typeof document !== "undefined"
+        ? (document.querySelector(
+            'meta[name="emotion-insertion-point"]'
+          ) as HTMLElement) || undefined
+        : undefined,
+  });
   return (
-    <EmotionNonceCache nonce={nonce}>
+    <CacheProvider value={cache}>
       <ThemeRegistry>
         <NotificationProvider>
           <AuthProvider>
@@ -22,6 +32,6 @@ export function AppProviders({
           </AuthProvider>
         </NotificationProvider>
       </ThemeRegistry>
-    </EmotionNonceCache>
+    </CacheProvider>
   );
 }

@@ -25,17 +25,20 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const headerList = await headers();
-  const nonce = headerList.get("x-nonce") || undefined;
+  const nonce = headerList.get("x-nonce") || "";
+
   return (
-    <html lang="en" suppressHydrationWarning nonce={nonce}>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="google" content="notranslate" />
+        <meta name="emotion-insertion-point" content="" />
+        {nonce && <style nonce={nonce} />}
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         suppressHydrationWarning
       >
-        <AppProviders>{children}</AppProviders>
+        <AppProviders nonce={nonce}>{children}</AppProviders>
       </body>
     </html>
   );
