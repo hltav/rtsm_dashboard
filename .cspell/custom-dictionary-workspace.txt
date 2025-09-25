@@ -97,6 +97,7 @@ curto
 decisões
 definitiva
 demonstração
+Desativado
 Descubra
 desempenho
 desenvolvendo
@@ -111,6 +112,7 @@ disciplina
 disparar
 Djokovic
 EDITÁVEL
+eficaz
 Empate
 entenda
 enviaremos
@@ -216,6 +218,7 @@ marcam
 máxima
 médio
 Medvedev
+MELHORADA
 Melhore
 menor
 mercados
@@ -271,6 +274,7 @@ Política
 Polônia
 pontos
 porcentagem
+porque
 possui
 precisam
 precisamos
@@ -321,6 +325,7 @@ SAMEORIGIN
 Seção
 secundário
 SEGUINDO
+segura
 seguro
 sejam
 senhas
