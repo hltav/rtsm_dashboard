@@ -1,38 +1,3 @@
-// import { NextResponse } from "next/server";
-// import type { NextRequest } from "next/server";
-
-// export function middleware(request: NextRequest) {
-//   const { pathname, searchParams } = request.nextUrl;
-
-//   // Ignorar TODAS as requisições RSC - abordagem mais ampla
-//   if (searchParams.has("_rsc") || request.headers.get("rsc") === "1") {
-//     console.log("Ignorando requisição RSC:", request.url);
-//     return NextResponse.next();
-//   }
-
-//   // Ignorar requisições de API e arquivos estáticos
-//   if (
-//     pathname.startsWith("/_next/") ||
-//     pathname.startsWith("/api/") ||
-//     pathname.includes(".") // arquivos com extensão
-//   ) {
-//     return NextResponse.next();
-//   }
-
-//   const accessToken = request.cookies.get("access_token");
-//   console.log("TOKEN NO MIDDLEWARE:", accessToken);
-
-//   if (!accessToken) {
-//     return NextResponse.redirect(new URL("/login", request.url));
-//   }
-
-//   return NextResponse.next();
-// }
-
-// export const config = {
-//   matcher: ["/dashboard/:path*", "/dashboard"],
-// };
-
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 

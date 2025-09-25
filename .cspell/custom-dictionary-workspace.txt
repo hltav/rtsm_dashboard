@@ -22,6 +22,7 @@ ampla
 analisar
 Análise
 analisys
+andamento
 antigo
 apagada
 apagado
@@ -70,6 +71,7 @@ Chamar
 cinza
 claras
 Clubes
+COEP
 coincidem
 Coleta
 coluna
@@ -79,9 +81,11 @@ completamente
 concretos
 condicionalmente
 configuradas
+conseguiu
 continuar
 contínuo
 contraste
+Controle
 Converta
 Copa
 cópia
@@ -121,6 +125,7 @@ estilo
 Estilos
 estranho
 estratégias
+estritamente
 Euroliga
 evento
 Evento
@@ -129,6 +134,7 @@ executando
 existia
 expandir
 expansão
+expiração
 extensão
 Extrai
 extrair
@@ -142,6 +148,7 @@ filtragem
 filtro
 filtros
 Filtros
+flexível
 Flutuante
 focada
 focado
@@ -201,8 +208,10 @@ maior
 maiúsculas
 mandar
 manipulação
+Mantém
 mantendo
 Manter
+Marca
 marcam
 máxima
 médio
@@ -226,8 +235,11 @@ Mundial
 Nações
 Nadal
 negativo
+nesta
 nível
 nocaute
+nosniff
+novos
 números
 Nurmagomedov
 obrigatória
@@ -246,6 +258,7 @@ Partida
 passado
 passar
 PASSOU
+Pede
 Pequena
 perdas
 Pereira
@@ -281,8 +294,10 @@ recolher
 Reconheça
 Recursos
 reenviar
+Reexecuta
 registrada
 Registre
+Rejeita
 rejeitar
 relançamos
 relativa
@@ -302,6 +317,7 @@ Risco
 roda
 Saiba
 Saldo
+SAMEORIGIN
 Seção
 secundário
 SEGUINDO
@@ -323,6 +339,7 @@ tabela
 temporárias
 Tenha
 Tênis
+tentamos
 terminou
 Teste
 texto
@@ -330,6 +347,7 @@ tipos
 título
 Totais
 transformar
+única
 únicas
 único
 únicos
