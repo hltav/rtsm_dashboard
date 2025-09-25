@@ -31,7 +31,7 @@ export default async function RootLayout({
     <html lang="en" suppressHydrationWarning>
       <head>
         <meta name="google" content="notranslate" />
-        <meta name="emotion-insertion-point" content="" />
+        <meta name="mui-insertion-point" content="" />
         {nonce && <style nonce={nonce}>{""}</style>}
       </head>
       <body
