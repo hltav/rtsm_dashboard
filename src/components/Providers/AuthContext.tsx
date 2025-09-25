@@ -43,7 +43,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const res = await checkAuthStatusService();
       setUser(res);
       checkProfileCompletion(res);
-      console.log("DADOS EM CHECK_AUTH_STATUS:", res)
       return res;
     } catch (err) {
       console.error("Erro ao verificar status de autenticação:", err);
@@ -59,7 +58,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       const res = await loginService(data);
       setUser(res.data.user);
-      console.log('DATA EM CALL LOGIN',res.data.user);
       return res;
     } catch (err) {
       console.error("Login failed:", err);
@@ -102,7 +100,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         profileImageUrl,
       }}
     >
-            {children}   {" "}
+      {children} 
     </AuthContext.Provider>
   );
 };

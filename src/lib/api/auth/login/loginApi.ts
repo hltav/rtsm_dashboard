@@ -27,7 +27,6 @@ export const checkAuthStatusService = async (): Promise<GetUser> => {
     const res = await apiClient.get("/auth/me", {
       withCredentials: true,
     });
-    console.log("DATA NO CHECK_AUTH", res.data);
     return res.data;
   } catch (error: unknown) {
     let message = "Erro ao verificar status de autenticação";
