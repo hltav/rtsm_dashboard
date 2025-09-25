@@ -19,7 +19,7 @@ export function AppProviders({ children, nonce }: AppProvidersProps) {
     insertionPoint:
       typeof document !== "undefined"
         ? (document.querySelector(
-            'meta[name="emotion-insertion-point"]'
+            'meta[name="mui-insertion-point"]'
           ) as HTMLElement) || undefined
         : undefined,
   });
