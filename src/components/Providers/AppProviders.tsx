@@ -6,7 +6,6 @@ import { AuthProvider } from "./AuthContext";
 import { DashboardProvider } from "./DashboardContext";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
-import { getInsertionPoint } from "@/utils/getInsertionPoint";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -14,14 +13,16 @@ interface AppProvidersProps {
 }
 
 export function AppProviders({ children, nonce }: AppProvidersProps) {
-  const isClient = typeof window !== "undefined";
-
   const cache = createCache({
     key: "mui",
-    nonce: isClient ? nonce || undefined : undefined,
-    insertionPoint: isClient ? getInsertionPoint() : undefined,
+    nonce: nonce || undefined,
+    insertionPoint:
+      typeof document !== "undefined"
+        ? (document.querySelector(
+            'meta[name="emotion-insertion-point"]'
+          ) as HTMLElement) || undefined
+        : undefined,
   });
-
   return (
     <CacheProvider value={cache}>
       <ThemeRegistry>
