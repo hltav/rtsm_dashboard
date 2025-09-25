@@ -39,6 +39,7 @@ import type { NextRequest } from "next/server";
 
 export function middleware(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
+  console.log('MIDDLEWARE: ',nonce);
 
   const response = NextResponse.next();
 
@@ -46,7 +47,7 @@ export function middleware(request: NextRequest) {
     "Content-Security-Policy",
     `
       default-src 'self';
-      script-src 'self' 'nonce-${nonce}' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com;
+      script-src 'self' 'nonce-${nonce}' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com;
       style-src 'self' 'nonce-${nonce}' https://fonts.googleapis.com;
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: https: https://www.google-analytics.com https://drive.google.com placehold.co;
@@ -59,9 +60,7 @@ export function middleware(request: NextRequest) {
       .trim()
   );
 
-  
   response.headers.set("x-nonce", nonce);
-
 
   const accessToken = request.cookies.get("access_token")?.value;
   const url = request.nextUrl.clone();
@@ -78,7 +77,6 @@ export function middleware(request: NextRequest) {
 
   return response;
 }
-
 
 export const config = {
   matcher: ["/dashboard/:path*", "/login"],

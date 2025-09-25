@@ -28,13 +28,14 @@ import createCache from "@emotion/cache";
 
 interface AppProvidersProps {
   children: React.ReactNode;
-  nonce?: string;
+  nonce?: string; // recebe do RootLayout
 }
 
 export function AppProviders({ children, nonce }: AppProvidersProps) {
   const cache = createCache({
     key: "mui",
     nonce,
+    prepend: true, // garante que os estilos do MUI sejam inseridos antes dos outros
     insertionPoint:
       typeof document !== "undefined"
         ? (document.querySelector(
