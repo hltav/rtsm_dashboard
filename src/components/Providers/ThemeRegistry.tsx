@@ -17,7 +17,7 @@ type ThemeMode = "light" | "dark" | "system";
 interface ThemeModeContextType {
   toggleThemeMode: () => void;
   mode: ThemeMode;
-  currentTheme: "light" | "dark"; 
+  currentTheme: "light" | "dark";
 }
 
 const ThemeModeContext = createContext<ThemeModeContextType>({
@@ -29,10 +29,9 @@ const ThemeModeContext = createContext<ThemeModeContextType>({
 export const useThemeMode = () => useContext(ThemeModeContext);
 
 export function ThemeRegistry({ children }: { children: React.ReactNode }) {
-  const [mode, setMode] = useState<ThemeMode>("system"); // Padrão: system
+  const [mode, setMode] = useState<ThemeMode>("system");
   const systemTheme = useSystemTheme();
 
-  // Recuperar tema salvo no localStorage
   useEffect(() => {
     if (typeof window !== "undefined") {
       const savedTheme = localStorage.getItem("theme") as ThemeMode | null;
@@ -42,7 +41,6 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
     }
   }, []);
 
-  // Salvar tema no localStorage quando mudar
   useEffect(() => {
     if (typeof window !== "undefined" && mode !== "system") {
       localStorage.setItem("theme", mode);
@@ -53,11 +51,10 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
     setMode((prevMode) => {
       if (prevMode === "light") return "dark";
       if (prevMode === "dark") return "system";
-      return "light"; // system -> light
+      return "light";
     });
   };
 
-  // Determina qual tema está realmente sendo aplicado
   const currentTheme = mode === "system" ? systemTheme : mode;
 
   const theme = useMemo(

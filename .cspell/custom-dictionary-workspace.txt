@@ -41,6 +41,7 @@ aprendizado
 aprimore
 aproveitar
 arredondada
+atributo
 ausente
 autorizar
 BALANCEADA
@@ -59,6 +60,7 @@ Borda
 branca
 branco
 Brasileirão
+bruta
 buscaria
 cabeçalhos
 CABEÇALHOS
@@ -70,11 +72,13 @@ cartões
 Cartões
 categoria
 Categoria
+causando
 células
 Chamar
 cinza
 claras
 Clickjacking
+Clona
 Clubes
 cobriria
 COEP
@@ -101,6 +105,7 @@ criação
 criada
 Cripto
 criptográfico
+CRÍTICO
 curto
 decisões
 definitiva
@@ -122,6 +127,7 @@ disparar
 Djokovic
 EDITÁVEL
 eficaz
+elemento
 Empate
 encerrando
 entenda
@@ -135,6 +141,7 @@ essa
 ESTÁTICAS
 estático
 estáticos
+estava
 estilo
 Estilos
 estranho
@@ -167,6 +174,7 @@ Flutuante
 focada
 focado
 foco
+folha
 fonte
 França
 Funciona
@@ -199,7 +207,10 @@ Incrementa
 informação
 Início
 INJEÇÃO
+injeta
+injetadas
 injetados
+injetar
 inofensivo
 Inteligente
 Inteligentes
@@ -230,6 +241,7 @@ manipulação
 Mantém
 mantendo
 Manter
+Mapeia
 Marca
 marcam
 máxima
@@ -276,6 +288,7 @@ parcialmente
 pareça
 partida
 Partida
+partir
 passado
 passar
 PASSOU
@@ -368,10 +381,12 @@ tentamos
 terminou
 Teste
 texto
+tipagem
 tipos
 título
 Totais
 transformar
+transformará
 única
 únicas
 único
@@ -384,6 +399,7 @@ Unidades
 Unidos
 Unids
 usados
+útil
 válida
 Validar
 válidos
