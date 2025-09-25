@@ -60,6 +60,8 @@ branca
 branco
 Brasileirão
 buscaria
+cabeçalhos
+CABEÇALHOS
 calcular
 cálculo
 Campeonato
@@ -72,9 +74,12 @@ células
 Chamar
 cinza
 claras
+Clickjacking
 Clubes
+cobriria
 COEP
 coincidem
+coisa
 Coleta
 coluna
 começar
@@ -95,6 +100,7 @@ crescimento
 criação
 criada
 Cripto
+criptográfico
 curto
 decisões
 definitiva
@@ -103,6 +109,7 @@ Desativado
 Descubra
 desempenho
 desenvolvendo
+desnecessário
 destaque
 Detalhado
 Detecta
@@ -116,6 +123,7 @@ Djokovic
 EDITÁVEL
 eficaz
 Empate
+encerrando
 entenda
 enviaremos
 envolver
@@ -124,6 +132,8 @@ Espaçamento
 específica
 esportes
 essa
+ESTÁTICAS
+estático
 estáticos
 estilo
 Estilos
@@ -175,6 +185,7 @@ hipotética
 histórico
 Histórico
 houve
+HSTS
 Ícone
 Ícones
 identificando
@@ -187,6 +198,9 @@ importação
 Incrementa
 informação
 Início
+INJEÇÃO
+injetados
+inofensivo
 Inteligente
 Inteligentes
 interatividade
@@ -200,6 +214,7 @@ Jogo
 Junte
 Khabib
 lançamos
+lerá
 leve
 Libera
 Liga
@@ -258,6 +273,7 @@ Padrões
 paixão
 Palmeiras
 parcialmente
+pareça
 partida
 Partida
 passado
@@ -288,6 +304,7 @@ primário
 primeira
 prioridade
 Privacidade
+processamento
 processo
 promessa
 pronunciada
@@ -316,6 +333,7 @@ Resultado
 resultados
 retornada
 retornadas
+Retornamos
 retorno
 Retrátil
 revisitar
