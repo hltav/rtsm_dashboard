@@ -60,11 +60,11 @@ const nextConfig = {
     ];
   },
   async headers() {
-    // CSP MELHORADA - Sem unsafe-* e mais segura
+    // CSP BALANCEADA - Mantém segurança mas permite estilos inline
     const ContentSecurityPolicy = `
       default-src 'self';
       script-src 'self' https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com;
-      style-src 'self' https://fonts.googleapis.com;
+      style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;  <!-- ADICIONEI unsafe-inline AQUI -->
       font-src 'self' https://fonts.gstatic.com;
       img-src 'self' data: https: https://www.google-analytics.com https://drive.google.com placehold.co;
       connect-src 'self' https://www.google-analytics.com https://api.rtsportsmanager.com;
@@ -73,7 +73,6 @@ const nextConfig = {
       base-uri 'self';
       form-action 'self';
       object-src 'none';
-      upgrade-insecure-requests;
     `.replace(/\s+/g, ' ').trim();
 
     const securityHeaders = [
@@ -83,7 +82,6 @@ const nextConfig = {
       { key: 'Permissions-Policy', value: 'geolocation=(), camera=(), microphone=(), fullscreen=()' },
       { key: 'Content-Security-Policy', value: ContentSecurityPolicy },
       { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
-      { key: 'X-XSS-Protection', value: '0' }, // Desativado porque CSP é mais eficaz
       { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
     ];
 

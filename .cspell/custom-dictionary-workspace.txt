@@ -5,6 +5,7 @@ acionado
 Aconteceu
 Adesanya
 adição
+ADICIONEI
 Agrupamento
 aguardando
 Ajusta
@@ -42,6 +43,7 @@ aproveitar
 arredondada
 ausente
 autorizar
+BALANCEADA
 banca
 Banca
 bancas
