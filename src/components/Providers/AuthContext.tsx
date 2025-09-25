@@ -100,7 +100,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         profileImageUrl,
       }}
     >
-      {children} 
+      {children}
     </AuthContext.Provider>
   );
 };
