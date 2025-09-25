@@ -189,6 +189,7 @@ gols
 gráficos
 Grêmio
 habilidades
+hidratação
 hipotética
 histórico
 Histórico
@@ -261,6 +262,7 @@ modais
 modos
 monetários
 Monitore
+mostrando
 mostre
 motivação
 Mundial

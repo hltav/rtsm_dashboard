@@ -44,12 +44,11 @@
 //   );
 // }
 
-"use client";
-import React, { useEffect, useState } from "react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/components/Providers/AppProviders";
+import { headers } from "next/headers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -66,31 +65,28 @@ export const metadata: Metadata = {
   description: "Seu App de Gestão Esportiva",
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const [mounted, setMounted] = useState(false);
-  const [nonce, setNonce] = useState<string>("");
-
-  useEffect(() => {
-    setMounted(true);
-    // Pegando nonce do meta ou header
-    const headerNonce = document
-      .querySelector('meta[name="x-nonce"]')
-      ?.getAttribute("content");
-    setNonce(headerNonce || "");
-  }, []);
+export default async function RootLayout({
+  children,
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const headerList = await headers();
+  const nonce = headerList.get("x-nonce") || "";
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <meta name="google" content="notranslate" />
         <meta name="mui-insertion-point" content="" />
-        {nonce && <style nonce={nonce}>{""}</style>}
+
+        <style data-emotion="mui" nonce={nonce || undefined}>
+          {""}
+        </style>
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
       >
-        {mounted && <AppProviders nonce={nonce}>{children}</AppProviders>}
+        <AppProviders nonce={nonce}>{children}</AppProviders>
       </body>
     </html>
   );
