@@ -97,10 +97,11 @@ export const useThemeMode = () => useContext(ThemeModeContext);
 
 export function ThemeRegistry({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false);
-  const [mode, setMode] = useState<ThemeMode>("system");
+  const [mode, setMode] = useState<ThemeMode>("light"); // Valor padrão fixo inicial
 
   useEffect(() => {
     setMounted(true);
+    // Só carrega do localStorage depois da montagem
     const savedTheme = localStorage.getItem("theme") as ThemeMode | null;
     if (savedTheme) {
       setMode(savedTheme);
@@ -112,7 +113,9 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
   const toggleThemeMode = () => {
     setMode((prevMode) => {
       const newMode = prevMode === "light" ? "dark" : prevMode === "dark" ? "system" : "light";
-      localStorage.setItem("theme", newMode);
+      if (typeof window !== "undefined") {
+        localStorage.setItem("theme", newMode);
+      }
       return newMode;
     });
   };
@@ -120,20 +123,12 @@ export function ThemeRegistry({ children }: { children: React.ReactNode }) {
   const currentTheme = mode === "system" ? systemTheme : mode;
   const theme = useMemo(() => (currentTheme === "light" ? lightTheme : darkTheme), [currentTheme]);
 
-  // Evite hidratação mostrando tema padrão até montar no cliente
-  if (!mounted) {
-    return (
-      <html style={{ display: 'none' }}>
-        <body>
-          <div>{children}</div>
-        </body>
-      </html>
-    );
-  }
+  // Para evitar hidratação, use tema light até montar no cliente
+  const themeToUse = mounted ? theme : lightTheme;
 
   return (
     <ThemeModeContext.Provider value={{ toggleThemeMode, mode, currentTheme }}>
-      <MuiThemeProvider theme={theme}>
+      <MuiThemeProvider theme={themeToUse}>
         <CssBaseline />
         {children}
       </MuiThemeProvider>

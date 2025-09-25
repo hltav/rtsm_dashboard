@@ -37,7 +37,7 @@
 // }
 
 "use client";
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { NotificationProvider } from "./NotificationSnackbar";
 import { ThemeRegistry } from "./ThemeRegistry";
 import { AuthProvider } from "./AuthContext";
@@ -47,32 +47,13 @@ import createCache from "@emotion/cache";
 
 interface AppProvidersProps {
   children: React.ReactNode;
-  nonce?: string;
 }
 
-export function AppProviders({ children, nonce }: AppProvidersProps) {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
+export function AppProviders({ children }: AppProvidersProps) {
   const cache = createCache({
     key: "mui",
-    nonce: nonce || undefined,
     prepend: true,
   });
-
-  // Evite renderização diferente no servidor vs cliente
-  if (!mounted) {
-    return (
-      <html lang="en" suppressHydrationWarning>
-        <body suppressHydrationWarning>
-          <div>{children}</div>
-        </body>
-      </html>
-    );
-  }
 
   return (
     <CacheProvider value={cache}>

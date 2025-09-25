@@ -48,7 +48,6 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { AppProviders } from "@/components/Providers/AppProviders";
-import { headers } from "next/headers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -65,28 +64,15 @@ export const metadata: Metadata = {
   description: "Seu App de Gestão Esportiva",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const headerList = await headers();
-  const nonce = headerList.get("x-nonce") || "";
-
   return (
     <html lang="en">
-      <head>
-        <meta name="google" content="notranslate" />
-        <meta name="mui-insertion-point" content="" />
-
-        <style data-emotion="mui" nonce={nonce || undefined}>
-          {""}
-        </style>
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <AppProviders nonce={nonce}>{children}</AppProviders>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );
