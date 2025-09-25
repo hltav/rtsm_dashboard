@@ -28,7 +28,7 @@ export default async function RootLayout({
   const nonce = headerList.get("x-nonce") || "";
 
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en">
       <head>
         <meta name="google" content="notranslate" />
         <meta name="emotion-insertion-point" content="" />
@@ -36,7 +36,6 @@ export default async function RootLayout({
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        suppressHydrationWarning
       >
         <AppProviders nonce={nonce}>{children}</AppProviders>
       </body>
