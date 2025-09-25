@@ -1,18 +1,57 @@
+// "use client";
+// import React from "react";
+// import { NotificationProvider } from "./NotificationSnackbar";
+// import { ThemeRegistry } from "./ThemeRegistry";
+// import { AuthProvider } from "./AuthContext";
+// import { DashboardProvider } from "./DashboardContext";
+
+// export function AppProviders({ children }: { children: React.ReactNode }) {
+//   return (
+//     <ThemeRegistry>
+//       <NotificationProvider>
+//         <AuthProvider>
+//           <DashboardProvider>{children}</DashboardProvider>
+//         </AuthProvider>
+//       </NotificationProvider>
+//     </ThemeRegistry>
+//   );
+// }
+
 "use client";
 import React from "react";
 import { NotificationProvider } from "./NotificationSnackbar";
 import { ThemeRegistry } from "./ThemeRegistry";
 import { AuthProvider } from "./AuthContext";
 import { DashboardProvider } from "./DashboardContext";
+import { CacheProvider } from "@emotion/react";
+import createCache from "@emotion/cache";
 
-export function AppProviders({ children }: { children: React.ReactNode }) {
+interface AppProvidersProps {
+  children: React.ReactNode;
+  nonce?: string;
+}
+
+export function AppProviders({ children, nonce }: AppProvidersProps) {
+  const cache = createCache({
+    key: "mui",
+    nonce,
+    insertionPoint:
+      typeof document !== "undefined"
+        ? (document.querySelector(
+            'meta[name="mui-insertion-point"]'
+          ) as HTMLElement) || undefined
+        : undefined,
+  });
+
   return (
-    <ThemeRegistry>
-      <NotificationProvider>
-        <AuthProvider>
-          <DashboardProvider>{children}</DashboardProvider>
-        </AuthProvider>
-      </NotificationProvider>
-    </ThemeRegistry>
+    <CacheProvider value={cache}>
+      <ThemeRegistry>
+        <NotificationProvider>
+          <AuthProvider>
+            <DashboardProvider>{children}</DashboardProvider>
+          </AuthProvider>
+        </NotificationProvider>
+      </ThemeRegistry>
+    </CacheProvider>
   );
 }

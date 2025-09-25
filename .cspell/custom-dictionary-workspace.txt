@@ -213,6 +213,8 @@ injetadas
 injetados
 injetar
 inofensivo
+inserção
+inseridos
 Inteligente
 Inteligentes
 interatividade
@@ -295,6 +297,7 @@ passado
 passar
 PASSOU
 Pede
+Pega
 Pequena
 perdas
 Pereira
@@ -305,6 +308,7 @@ pesquisar
 Pesquisar
 Política
 Polônia
+Ponto
 pontos
 porcentagem
 porque
@@ -328,6 +332,7 @@ próximo
 quebra
 rapidamente
 Recarregue
+recebe
 recolher
 Reconheça
 Recursos
