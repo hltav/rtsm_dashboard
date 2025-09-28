@@ -1,22 +1,3 @@
-// "use client";
-// import React from "react";
-// import { NotificationProvider } from "./NotificationSnackbar";
-// import { ThemeRegistry } from "./ThemeRegistry";
-// import { AuthProvider } from "./AuthContext";
-// import { DashboardProvider } from "./DashboardContext";
-
-// export function AppProviders({ children }: { children: React.ReactNode }) {
-//   return (
-//     <ThemeRegistry>
-//       <NotificationProvider>
-//         <AuthProvider>
-//           <DashboardProvider>{children}</DashboardProvider>
-//         </AuthProvider>
-//       </NotificationProvider>
-//     </ThemeRegistry>
-//   );
-// }
-
 "use client";
 import React from "react";
 import { NotificationProvider } from "./NotificationSnackbar";
@@ -28,14 +9,14 @@ import createCache from "@emotion/cache";
 
 interface AppProvidersProps {
   children: React.ReactNode;
-  nonce?: string; // recebe do RootLayout
+  nonce?: string;
 }
 
 export function AppProviders({ children, nonce }: AppProvidersProps) {
   const cache = createCache({
     key: "mui",
     nonce,
-    prepend: true, // garante que os estilos do MUI sejam inseridos antes dos outros
+    prepend: true,
     insertionPoint:
       typeof document !== "undefined"
         ? (document.querySelector(

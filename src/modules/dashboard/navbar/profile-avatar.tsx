@@ -15,7 +15,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import { useAuth } from "@/components/Providers/AuthContext";
 
 export const ProfileAvatar: React.FC = () => {
-  const { user, logout, loading } = useAuth(); // user: GetUser | null
+  const { user, logout, loading } = useAuth(); 
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 

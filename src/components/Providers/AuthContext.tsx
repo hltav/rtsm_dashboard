@@ -67,12 +67,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const logout = async () => {
     try {
-      await logoutService();
       setUser(null);
-      setHasIncompleteProfile(false);
-      router.push("/login");
+      await logoutService();
+      await router.push("/login");
     } catch (err) {
-      console.error("Erro ao fazer logout:", err);
+      console.warn("Logout com aviso:", err);
+      await router.push("/login");
     }
   };
 

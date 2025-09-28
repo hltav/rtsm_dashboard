@@ -40,36 +40,24 @@ export const checkAuthStatusService = async (): Promise<GetUser> => {
 
 export const logoutService = async () => {
   try {
-    const res = await apiClient.post(
-      "/auth/logout",
-      {},
-      { withCredentials: true }
-    );
-    return { success: true, data: res.data };
+    const res = await apiClient.post("/auth/logout", {});
+    return res.data;
   } catch (error: unknown) {
-    let message = "Erro ao fazer logout";
-    if (axios.isAxiosError(error)) {
-      message =
-        error.response?.data?.message || error.response?.data?.error || message;
-    }
+    const message = axios.isAxiosError(error)
+      ? error.response?.data?.message || "Erro ao fazer logout"
+      : "Erro ao fazer logout";
     throw new Error(message);
   }
 };
 
 export const refreshTokenService = async () => {
   try {
-    const res = await apiClient.post(
-      "/auth/refresh",
-      {},
-      { withCredentials: true }
-    );
-    return { success: true, data: res.data };
+    const res = await apiClient.post("/auth/refresh", {});
+    return res.data;
   } catch (error: unknown) {
-    let message = "Erro ao atualizar token";
-    if (axios.isAxiosError(error)) {
-      message =
-        error.response?.data?.message || error.response?.data?.error || message;
-    }
+    const message = axios.isAxiosError(error)
+      ? error.response?.data?.message || "Erro ao atualizar token"
+      : "Erro ao atualizar token";
     throw new Error(message);
   }
 };

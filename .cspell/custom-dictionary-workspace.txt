@@ -29,6 +29,7 @@ apagada
 apagado
 Apelido
 aplicados
+aplicar
 Aposta
 apostada
 Apostada
@@ -100,6 +101,7 @@ Controle
 Converta
 Copa
 cópia
+corretamente
 crescimento
 criação
 criada
@@ -169,6 +171,7 @@ filtragem
 filtro
 filtros
 Filtros
+fizer
 flexível
 Flutuante
 focada
@@ -204,8 +207,10 @@ imediata
 impactam
 ímpares
 importação
+Inclui
 Incrementa
 informação
+Iniciando
 Início
 INJEÇÃO
 injeta
@@ -232,6 +237,8 @@ lerá
 leve
 Libera
 Liga
+limpeza
+limpos
 linhas
 Logamos
 lucrativos
@@ -244,6 +251,7 @@ manipulação
 Mantém
 mantendo
 Manter
+manualmente
 Mapeia
 Marca
 marcam
@@ -299,6 +307,7 @@ PASSOU
 Pede
 Pega
 Pequena
+pequeno
 perdas
 Pereira
 permanente
@@ -318,6 +327,7 @@ precisamos
 precisará
 preferir
 prejuízo
+presente
 preto
 primário
 primeira
@@ -385,6 +395,7 @@ temporárias
 Tenha
 Tênis
 tentamos
+tentativa
 terminou
 Teste
 texto
@@ -410,6 +421,7 @@ usados
 válida
 Validar
 válidos
+variável
 vazia
 vazias
 vence
