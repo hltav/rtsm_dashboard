@@ -5,7 +5,7 @@ import { Box, Paper, Typography } from "@mui/material";
 
 const MainContent: React.FC = () => {
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3, mt:4 }}>
+    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
       <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
         Visão Geral do Dashboard
       </Typography>
@@ -14,9 +14,9 @@ const MainContent: React.FC = () => {
           Bem-vindo ao seu Dashboard, Usuário!
         </Typography>
         <Typography variant="body1" color="text.secondary">
-          Aqui você terá acesso rápido às suas principais estatísticas,
-          eventos e previsões. Utilize o menu lateral para navegar entre as
-          diferentes seções.
+          Aqui você terá acesso rápido às suas principais estatísticas, eventos
+          e previsões. Utilize o menu lateral para navegar entre as diferentes
+          seções.
           <br />
           <br />
         </Typography>

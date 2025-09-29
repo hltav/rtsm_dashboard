@@ -125,7 +125,6 @@ const BankrollPageContent = () => {
           bgcolor: "background.default",
           p: { xs: 2, sm: 3, md: 2 },
           width: "100%",
-          mt:"2%",
         }}
       >
         <Container

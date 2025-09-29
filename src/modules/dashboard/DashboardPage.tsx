@@ -87,7 +87,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
         handleThemeToggle={handleThemeToggle}
       />
 
-      <main style={{ width: "100%", marginTop: 36, marginLeft: 10 }}>
+      <main style={{ width: "100%", marginTop:"6%", marginLeft: 10 }}>
         {children || <MenuContent />}
       </main>
 
