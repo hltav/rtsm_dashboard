@@ -8,5 +8,5 @@ export interface BankrollFormModalProps {
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
-  onSave?: (bankroll: BankrollDto) => void;
+  onSave?: (bankroll: Omit<BankrollDto, "id" | "userId">) => Promise<void>;
 }

@@ -75,10 +75,13 @@ categoria
 Categoria
 causando
 células
+chamamos
 Chamar
 cinza
 claras
+clickaway
 Clickjacking
+clicou
 Clona
 Clubes
 cobriria
@@ -116,6 +119,7 @@ Desativado
 Descubra
 desempenho
 desenvolvendo
+desmontar
 desnecessário
 destaque
 Detalhado
@@ -138,6 +142,7 @@ envolver
 escolhe
 Espaçamento
 específica
+especificado
 esportes
 essa
 ESTÁTICAS
@@ -179,6 +184,7 @@ focado
 foco
 folha
 fonte
+Força
 França
 Funciona
 funcionar
@@ -327,6 +333,7 @@ precisamos
 precisará
 preferir
 prejuízo
+preparamos
 presente
 preto
 primário

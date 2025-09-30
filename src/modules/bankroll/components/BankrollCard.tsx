@@ -12,6 +12,7 @@ import {
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import { BankrollCardProps } from "../props/bankrollCard.props";
+import { formatCurrency } from "@/utils/formatCurrency";
 
 export const BankrollCard = ({
   bankroll,
@@ -19,13 +20,6 @@ export const BankrollCard = ({
   onViewDetails,
 }: BankrollCardProps) => {
   const theme = useTheme();
-
-  const formatCurrency = (value: number) => {
-    return new Intl.NumberFormat("pt-BR", {
-      style: "currency",
-      currency: "BRL",
-    }).format(value);
-  };
 
   return (
     <Card

@@ -1,4 +1,7 @@
-import { IBGECity, IBGEState } from "@/modules/user/schemas/editableUserInfoProps.schema";
+import {
+  IBGECity,
+  IBGEState,
+} from "@/modules/user/schemas/editableUserInfoProps.schema";
 import { useState, useEffect } from "react";
 
 export const useIBGELocations = (selectedState: string) => {
@@ -7,7 +10,6 @@ export const useIBGELocations = (selectedState: string) => {
   const [loadingStates, setLoadingStates] = useState(true);
   const [loadingCities, setLoadingCities] = useState(false);
 
-  // Carrega estados do IBGE
   useEffect(() => {
     const fetchStates = async () => {
       try {
@@ -26,7 +28,6 @@ export const useIBGELocations = (selectedState: string) => {
     fetchStates();
   }, []);
 
-  // Carrega cidades quando o estado muda
   useEffect(() => {
     const fetchCities = async () => {
       if (!selectedState) {
