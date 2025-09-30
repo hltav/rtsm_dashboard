@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useState, ReactNode, useEffect } from "react";
 import { useMediaQuery, CircularProgress, Box } from "@mui/material";
@@ -16,11 +15,10 @@ interface DashboardPageProps {
   children?: ReactNode;
 }
 
-const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
-  const { user, isAuthenticated, hasIncompleteProfile, checkAuthStatus } =
-    useAuth();
+const DashboardPageContent: React.FC<DashboardPageProps> = ({ children }) => {
+  const { isAuthenticated, hasIncompleteProfile, checkAuthStatus } = useAuth();
 
-   const { loading } = useAuthStatus();
+  const { loading } = useAuthStatus();
 
   const router = useRouter();
   const isDesktop = useMediaQuery(lightTheme.breakpoints.up("md"));
@@ -87,7 +85,7 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
         handleThemeToggle={handleThemeToggle}
       />
 
-      <main style={{ width: "100%", marginTop:"6%", marginLeft: 10 }}>
+      <main style={{ width: "100%", marginTop: "6%", marginLeft: 10 }}>
         {children || <MenuContent />}
       </main>
 
@@ -99,4 +97,4 @@ const DashboardPage: React.FC<DashboardPageProps> = ({ children }) => {
   );
 };
 
-export default DashboardPage;
+export default DashboardPageContent;

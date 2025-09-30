@@ -17,7 +17,10 @@ export function middleware(request: NextRequest) {
   if (isDev) cspHeader += " 'unsafe-eval'";
   cspHeader +=
     " https://www.googletagmanager.com https://www.google-analytics.com https://apis.google.com;";
-  cspHeader += ` style-src 'self' 'nonce-${nonce}'  https://fonts.googleapis.com;`;
+
+  cspHeader += ` style-src 'self' 'nonce-${nonce}'`;
+  if (isDev) cspHeader += " 'unsafe-inline'";
+  cspHeader += " https://fonts.googleapis.com;";
   cspHeader += " font-src 'self' https://fonts.gstatic.com;";
   cspHeader +=
     " img-src 'self' data: blob: https: https://www.google-analytics.com https://drive.google.com placehold.co;";
