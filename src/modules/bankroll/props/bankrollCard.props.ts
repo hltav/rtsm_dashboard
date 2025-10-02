@@ -4,4 +4,5 @@ export interface BankrollCardProps {
   bankroll: BankrollDto;
   onEdit: (id: number) => void;
   onViewDetails: (id: number) => void;
+  onDelete: (id: number) => void;
 }

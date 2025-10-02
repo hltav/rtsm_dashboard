@@ -1,13 +1,14 @@
 import React from "react";
 import { Box, Typography, Button, Modal } from "@mui/material";
 import { modalStyle } from "@/modules/events/interfaces/modalStyle";
-import { BankrollModalProps } from "../props/bankrollModal.props";
+import { BankrollInfoModalProps } from "../props/bankrollModal.props";
 
-const BankrollInfoModal: React.FC<BankrollModalProps> = ({
+const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
   open,
   onClose,
   bankrollModal,
 }) => {
+  if (!bankrollModal) return null;
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>

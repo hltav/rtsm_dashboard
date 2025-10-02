@@ -9,7 +9,7 @@ const MainContent: React.FC = () => {
       <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
         Visão Geral do Dashboard
       </Typography>
-      <Paper sx={{ p: 4 }}>
+      <Paper elevation={0} sx={{ p: 4 }}>
         <Typography variant="h5" gutterBottom>
           Bem-vindo ao seu Dashboard, Usuário!
         </Typography>
@@ -33,6 +33,7 @@ const MainContent: React.FC = () => {
           }}
         >
           <Paper
+            elevation={0}
             sx={{
               p: 2,
               textAlign: "center",
@@ -44,6 +45,7 @@ const MainContent: React.FC = () => {
             <Typography variant="h4">R$ 5.000,00</Typography>
           </Paper>
           <Paper
+            elevation={0}
             sx={{
               p: 2,
               textAlign: "center",
@@ -55,10 +57,12 @@ const MainContent: React.FC = () => {
             <Typography variant="h4">3</Typography>
           </Paper>
           <Paper
+            elevation={0}
             sx={{
               p: 2,
               textAlign: "center",
-              bgcolor: "background.paper",
+              bgcolor: "primary.light",
+              color: "white",
             }}
           >
             <Typography variant="h6">Previsões Ativas</Typography>

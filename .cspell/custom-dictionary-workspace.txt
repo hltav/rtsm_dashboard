@@ -125,6 +125,7 @@ destaque
 Detalhado
 Detecta
 devem
+diálogo
 digitado
 dinheiro
 direitos
@@ -158,6 +159,7 @@ Euroliga
 evento
 Evento
 evolua
+exclusão
 executando
 existia
 expandir
@@ -188,6 +190,7 @@ Força
 França
 Funciona
 funcionar
+fundos
 Futebol
 futuras
 Ganho
@@ -197,6 +200,7 @@ Gerencie
 gols
 gráficos
 Grêmio
+Guarda
 habilidades
 hidratação
 hipotética
@@ -316,6 +320,7 @@ Pequena
 pequeno
 perdas
 Pereira
+permanece
 permanente
 permitindo
 permitir
@@ -344,6 +349,7 @@ processamento
 processo
 promessa
 pronunciada
+prosseguir
 protegida
 próximo
 quebra
@@ -368,6 +374,7 @@ resto
 resultado
 Resultado
 resultados
+Retirar
 retornada
 retornadas
 Retornamos
@@ -378,6 +385,7 @@ Risco
 roda
 Saiba
 Saldo
+Salvou
 SAMEORIGIN
 Seção
 secundário
@@ -398,6 +406,7 @@ Substituindo
 substituir
 Superliga
 tabela
+temos
 temporárias
 Tenha
 Tênis

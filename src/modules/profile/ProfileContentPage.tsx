@@ -73,8 +73,6 @@ const ProfileContentPage: React.FC = () => {
     setIsEditing(false);
   };
 
-  console.log("User data in ProfileContentPage:", user);
-
   if (!user) {
     return <div>Carregando perfil...</div>;
   }
@@ -106,7 +104,7 @@ const ProfileContentPage: React.FC = () => {
           }}
         >
           <Paper
-            elevation={3}
+            elevation={0}
             sx={{
               display: "flex",
               flexDirection: "column",

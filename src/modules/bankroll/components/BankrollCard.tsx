@@ -13,11 +13,13 @@ import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
 import { BankrollCardProps } from "../props/bankrollCard.props";
 import { formatCurrency } from "@/utils/formatCurrency";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 
 export const BankrollCard = ({
   bankroll,
   onEdit,
   onViewDetails,
+  onDelete,
 }: BankrollCardProps) => {
   const theme = useTheme();
 
@@ -25,9 +27,9 @@ export const BankrollCard = ({
     <Card
       elevation={0}
       sx={{
-        height: "85%",
+        height: "100%",
         display: "flex",
-        flexDirection: "column",
+        flexDirection: "row",
         minWidth: 220,
         maxWidth: 350,
         width: "100%",
@@ -62,30 +64,6 @@ export const BankrollCard = ({
           >
             {bankroll.name}
           </Typography>
-          <Box
-            sx={{
-              display: "flex",
-              gap: 0.5,
-              alignItems: "center",
-            }}
-          >
-            <IconButton
-              sx={{
-                color: theme.palette.success.main,
-                fontSize: "10px",
-              }}
-              onClick={() => onViewDetails(bankroll.id)}
-            >
-              <InfoIcon />
-            </IconButton>
-            <IconButton
-              size="small"
-              sx={{ color: theme.palette.warning.main }}
-              onClick={() => onEdit(bankroll.id)}
-            >
-              <EditIcon />
-            </IconButton>
-          </Box>
         </Box>
         <Stack spacing={0.5}>
           <Typography variant="caption" sx={{ color: "#D0D0D0" }}>
@@ -104,6 +82,38 @@ export const BankrollCard = ({
           </Typography>
         </Stack>
       </CardContent>
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          gap: 0.5,
+          alignItems: "center",
+        }}
+      >
+        <IconButton
+          sx={{
+            color: theme.palette.success.main,
+            fontSize: "10px",
+          }}
+          onClick={() => onViewDetails(bankroll.id)}
+        >
+          <InfoIcon />
+        </IconButton>
+        <IconButton
+          size="small"
+          sx={{ color: theme.palette.warning.main }}
+          onClick={() => onEdit(bankroll.id)}
+        >
+          <EditIcon />
+        </IconButton>
+        <IconButton
+          size="small"
+          sx={{ color: theme.palette.error.main }}
+          onClick={() => onDelete(bankroll.id)} // ← aqui chamamos a função
+        >
+          <DeleteForeverOutlinedIcon />
+        </IconButton>
+      </Box>
     </Card>
   );
 };

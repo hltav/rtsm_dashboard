@@ -1,13 +1,20 @@
 import { SelectChangeEvent } from "@mui/material";
-import { BankrollItem } from "../interface/bankrollItem.interface";
+import { BankrollEditItem, BankrollItem } from "../interface/bankrollItem.interface";
 
-export interface BankrollModalProps {
+export interface BankrollEditModalProps {
   open: boolean;
   onClose: () => void;
-  bankrollModal: BankrollItem | null;
+  bankrollItemModal: BankrollEditItem | null;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
   onSelectChange: (e: SelectChangeEvent<string>) => void;
   onSave: (e: React.FormEvent) => void;
+}
+
+
+export interface BankrollInfoModalProps {
+  open: boolean;
+  onClose: () => void;
+  bankrollModal: BankrollItem | null;
 }
