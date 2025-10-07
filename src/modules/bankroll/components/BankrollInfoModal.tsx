@@ -1,68 +1,141 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
-import { Box, Typography, Button, Modal } from "@mui/material";
+import { Box, Typography, Button, Modal, Divider } from "@mui/material";
+import { BankrollDto } from "../schema/bankroll.schema";
 import { modalStyle } from "@/modules/events/interfaces/modalStyle";
-import { BankrollInfoModalProps } from "../props/bankrollModal.props";
+import { formatCurrency } from "@/utils/formatCurrency";
+
+interface BankrollInfoModalProps {
+  open: boolean;
+  onClose: () => void;
+  bankrollModal: BankrollDto;
+}
 
 const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
   open,
   onClose,
   bankrollModal,
 }) => {
-  if (!bankrollModal) return null;
+  const withdrawals = 0;
+  const addedBalance = 0;
+  const gains = 0;
+  const losses = 0;
+  const profitAndLoss = gains - losses;
+  const result = bankrollModal.balance - (addedBalance - withdrawals);
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
-        <Typography variant="h5" component="h2" mb={4}>
+        <Typography variant="h5" component="h2" mb={3}>
           Detalhes da Banca
         </Typography>
-        {bankrollModal && (
-          <Box>
-            <Typography>
-              <Typography component="span" fontWeight="bold">
-                ID:
-              </Typography>
-              {bankrollModal.id}
-            </Typography>
-            <Typography>
-              <Typography component="span" fontWeight="bold">
-                Retiradas:
-              </Typography>
-              {bankrollModal.withdrawals}
-            </Typography>
-            <Typography>
-              <Typography component="span" fontWeight="bold">
-                Saldo Adicionado:
-              </Typography>
-              {bankrollModal.addedBalance}
-            </Typography>
-            <Typography>
-              <Typography component="span" fontWeight="bold">
-                Ganhos:
-              </Typography>
-              {bankrollModal.gains}
-            </Typography>
-            <Typography>
-              <Typography component="span" fontWeight="bold">
-                Perdas:
-              </Typography>
-              {bankrollModal.losses}
-            </Typography>
-            <Typography>
-              <Typography component="span" fontWeight="bold">
-                Lucro/Prejuízo:
-              </Typography>
-              ${bankrollModal.profitAndLoss}
-            </Typography>
-            <Typography>
-              <Typography component="span" fontWeight="bold">
-                Resultado:
-              </Typography>
-              {bankrollModal.result}
-            </Typography>
-          </Box>
-        )}
+
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="subtitle2" color="white">
+            Nome
+          </Typography>
+          <Typography variant="body1" fontWeight="medium">
+            {bankrollModal.name}
+          </Typography>
+        </Box>
+
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="subtitle2" color="white">
+            Casa de Apostas
+          </Typography>
+          <Typography variant="body1" fontWeight="medium">
+            {bankrollModal.bookmaker}
+          </Typography>
+        </Box>
+
+        <Divider sx={{ my: 2 }} />
+
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="subtitle2" color="white">
+            Saldo Atual
+          </Typography>
+          <Typography variant="h6" fontWeight="bold" color="white">
+            {formatCurrency(bankrollModal.balance)}
+          </Typography>
+        </Box>
+
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="subtitle2" color="white">
+            Valor da Unidade
+          </Typography>
+          <Typography variant="body1" fontWeight="medium">
+            {formatCurrency(bankrollModal.unidValue)}
+          </Typography>
+        </Box>
+
+        <Divider sx={{ my: 2 }} />
+
+        <Typography variant="subtitle1" fontWeight="bold" mb={2}>
+          Movimentações
+        </Typography>
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+          <Typography variant="body2" color="white">
+            Depósitos:
+          </Typography>
+          <Typography variant="body2" color="success.main" fontWeight="bold">
+            + {formatCurrency(addedBalance)}
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+          <Typography variant="body2" color="white">
+            Retiradas:
+          </Typography>
+          <Typography variant="body2" color="error.main" fontWeight="bold">
+            - {formatCurrency(withdrawals)}
+          </Typography>
+        </Box>
+
+        <Divider sx={{ my: 2 }} />
+
+        <Typography variant="subtitle1" fontWeight="bold" mb={2}>
+          Resultados
+        </Typography>
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+          <Typography variant="body2" color="white">
+            Ganhos:
+          </Typography>
+          <Typography variant="body2" color="success.main" fontWeight="bold">
+            + {formatCurrency(gains)}
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+          <Typography variant="body2" color="white">
+            Perdas:
+          </Typography>
+          <Typography variant="body2" color="error.main" fontWeight="bold">
+            - {formatCurrency(losses)}
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+          <Typography variant="body2" fontWeight="bold">
+            Lucro/Prejuízo:
+          </Typography>
+          <Typography
+            variant="body2"
+            fontWeight="bold"
+            color={profitAndLoss >= 0 ? "success.main" : "error.main"}
+          >
+            {profitAndLoss >= 0 ? "+" : ""}
+            {formatCurrency(profitAndLoss)}
+          </Typography>
+        </Box>
+
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 4 }}>
-          <Button onClick={onClose} variant="outlined">
+          <Button
+            onClick={onClose}
+            variant="contained"
+            sx={{ bgcolor: "white", color: "#1A2B42" }}
+          >
             Fechar
           </Button>
         </Box>

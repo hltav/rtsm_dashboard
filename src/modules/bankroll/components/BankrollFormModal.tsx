@@ -14,6 +14,7 @@ import { AlertColor } from "@mui/material/Alert";
 import { useAuth } from "@/components/Providers/AuthContext";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import { formatCurrency } from "@/utils/formatCurrency";
+import { parseCurrency } from "@/utils/parseCurrency";
 
 export const BankrollFormModal = ({
   open,
@@ -46,13 +47,6 @@ export const BankrollFormModal = ({
       });
     }
   }, [open, bankroll]);
-
-  const parseCurrency = (value: string): number => {
-    if (!value) return 0;
-    const cleaned = value.replace(/\D/g, "");
-    if (!cleaned) return 0;
-    return Number(cleaned) / 100;
-  };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -278,6 +272,11 @@ export const BankrollFormModal = ({
               color="primary"
               onClick={handleSave}
               disabled={loading}
+              sx={{
+                color: "#1A2B42",
+                backgroundColor: "#FFFFFF",
+                "&:hover": { backgroundColor: "#FFFFFF", opacity: 0.8 },
+              }}
             >
               {loading ? "Salvando..." : "Salvar"}
             </Button>

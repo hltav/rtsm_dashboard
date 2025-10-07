@@ -85,9 +85,16 @@ const DashboardPageContent: React.FC<DashboardPageProps> = ({ children }) => {
         handleThemeToggle={handleThemeToggle}
       />
 
-      <main style={{ width: "100%", marginTop: "6%", marginLeft: 10 }}>
+      <Box
+        component="main"
+        sx={{
+          width: "100%",
+          ml: "10px",
+          mt: { xs: "15%", sm: "6%" },
+        }}
+      >
         {children || <MenuContent />}
-      </main>
+      </Box>
 
       <CompleteProfileModal
         open={hasIncompleteProfile}

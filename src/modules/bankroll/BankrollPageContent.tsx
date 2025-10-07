@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+// /* eslint-disable @typescript-eslint/no-unused-vars */
 // "use client";
-// import React, { useEffect, useState } from "react";
+// import React, { useState } from "react";
 // import {
 //   Box,
 //   Typography,
@@ -8,15 +8,24 @@
 //   Container,
 //   CssBaseline,
 //   Grid,
+//   SelectChangeEvent,
 // } from "@mui/material";
 // import { BankrollDto } from "./schema/bankroll.schema";
 // import { BankrollCard } from "./components/BankrollCard";
 // import { useThemeMode } from "@/components/Providers/ThemeRegistry";
 // import { BankrollFormModal } from "./components/BankrollFormModal";
+// import BankrollEditModal from "./components/BankrollEditModal";
+// import BankrollInfoModal from "./components/BankrollInfoModal";
 // import { useAuth } from "@/components/Providers/AuthContext";
 // import { CreateBankrollDto } from "./schema/createBankroll.schema";
 // import { useNotification } from "@/components/Providers/NotificationSnackbar";
-// import { useBankrolls, useCreateBankroll } from "@/hooks/useBankrolls";
+// import {
+//   useBankrolls,
+//   useCreateBankroll,
+//   useDeleteBankroll,
+// } from "@/modules/bankroll/hook/useBankrolls";
+// import { BankrollItem } from "./interface/bankrollItem.interface";
+// import { AlertConfirmDialog } from "@/utils/AlertConfirmDialog";
 
 // const BankrollPageContent = () => {
 //   const { user } = useAuth();
@@ -37,40 +46,75 @@
 //     isError,
 //     error: queryError,
 //   } = useBankrolls(user?.id ?? 0);
-
 //   const createBankroll = useCreateBankroll(user?.id ?? 0);
+//   const deleteBankroll = useDeleteBankroll(user?.id ?? 0);
+//   const [alertOpen, setAlertOpen] = React.useState(false);
 
-//   useEffect(() => {
-//     if (isError && queryError) {
-//       const apiError = queryError as { status?: number; statusCode?: number };
-//       if (apiError.status === 404 || apiError.statusCode === 404) {
-//         showNotification(
-//           "Você ainda não possui uma banca registrada. Registre e comece a aproveitar!",
-//           "warning",
-//           3000
-//         );
-//       } else {
-//         showNotification(
-//           "Ops. Aconteceu algo estranho. Recarregue a página e tente novamente!",
-//           "error",
-//           3000
-//         );
-//       }
-//     }
-//   }, [isError, queryError, showNotification]);
+//   const [editOpen, setEditOpen] = useState(false);
+//   const [infoOpen, setInfoOpen] = useState(false);
+//   const [selectedBankroll, setSelectedBankroll] = useState<BankrollItem | null>(
+//     null
+//   );
+//   const [bankrollIdToDelete, setBankrollIdToDelete] = useState<string | null>(
+//     null
+//   );
 
-//   const handleEditClick = (id: number) => {
-//     console.log("Editar banca:", id);
+//   const mapDtoToItem = (dto: BankrollDto): BankrollItem => ({
+//     id: dto.id,
+//     withdrawals: 0,
+//     addedBalance: 0,
+//     gains: 0,
+//     losses: 0,
+//     profitAndLoss: 0,
+//     result: 0,
+//     unidValue: dto.unidValue,
+//     editBalance: "" as "" | "withdrawals" | "addedBalance",
+//     balance: dto.balance,
+//   });
+
+//   const handleEditClick = (bankroll: BankrollDto) => {
+//     setSelectedBankroll(mapDtoToItem(bankroll));
+//     setEditOpen(true);
 //   };
 
-//   const handleViewDetailsClick = (id: number) => {
-//     console.log("Ver detalhes da banca:", id);
+//   const handleViewDetailsClick = (bankroll: BankrollDto) => {
+//     setSelectedBankroll(mapDtoToItem(bankroll));
+//     setInfoOpen(true);
 //   };
 
-//   const handleOpenModal = () => {
-//     setOpenModal(true);
+//   // const handleEditChange = (
+//   //   e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+//   // ) => {
+//   //   if (!selectedBankroll) return;
+//   //   const { name, value } = e.target;
+//   //   setSelectedBankroll({ ...selectedBankroll, [name]: value });
+//   // };
+
+//   const handleEditChange = (
+//     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+//   ) => {
+//     if (!selectedBankroll) return;
+//     const { name, value } = e.target;
+//     const cleanValue = value.replace(/[^\d,.-]/g, "").replace(",", ".");
+//     setSelectedBankroll({
+//       ...selectedBankroll,
+//       [name]: Number(cleanValue) || 0,
+//     });
 //   };
 
+//   const handleEditSelectChange = (e: SelectChangeEvent<string>) => {
+//     if (!selectedBankroll) return;
+//     const typedValue = e.target.value as "" | "withdrawals" | "addedBalance";
+//     setSelectedBankroll({ ...selectedBankroll, editBalance: typedValue });
+//   };
+
+//   const handleSaveEdit = (e: React.FormEvent) => {
+//     e.preventDefault();
+//     console.log("Salvou edição:", selectedBankroll);
+//     setEditOpen(false);
+//   };
+
+//   const handleOpenModal = () => setOpenModal(true);
 //   const handleCloseModal = () => {
 //     setOpenModal(false);
 //     setNewBankroll({
@@ -86,7 +130,25 @@
 //     savedBankroll: Omit<BankrollDto, "id" | "userId">
 //   ) => {
 //     try {
-//       await createBankroll.mutateAsync(savedBankroll);
+//       console.log("📤 DADOS ENVIADOS:", {
+//         balance: savedBankroll.balance,
+//         unidValue: savedBankroll.unidValue,
+//       });
+//       const result = await createBankroll.mutateAsync(savedBankroll);
+
+//       // CONSOLE.LOG DEPOIS DO CREATE - COMPARAÇÃO
+//       console.log("🔄 COMPARAÇÃO - ANTES vs DEPOIS:");
+//       console.log("💰 Balance:", {
+//         Enviado: savedBankroll.balance,
+//         Salvo: result.balance,
+//         Iguais: savedBankroll.balance === result.balance,
+//       });
+//       console.log("🎯 UnidValue:", {
+//         Enviado: savedBankroll.unidValue,
+//         Salvo: result.unidValue,
+//         Iguais: savedBankroll.unidValue === result.unidValue,
+//       });
+//       console.log("✅ Banca criada com ID:", result.id);
 //       showNotification("Banca criada com sucesso!", "success", 2000);
 //       setOpenModal(false);
 //       setNewBankroll({
@@ -105,13 +167,35 @@
 //     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
 //   ) => {
 //     const { name, value } = e.target;
-
 //     setNewBankroll((prev) => ({
 //       ...prev,
 //       [name]: value,
 //     }));
 //   };
 
+//   const handleDeleteClick = (id: string) => {
+//     setBankrollIdToDelete(id);
+//     setAlertOpen(true);
+//   };
+
+//   const handleDeleteConfirm = async () => {
+//     setAlertOpen(false);
+
+//     if (!bankrollIdToDelete) return;
+
+//     try {
+//       await deleteBankroll.mutateAsync(bankrollIdToDelete);
+//       showNotification("Banca deletada com sucesso!", "success", 2000);
+//     } catch {
+//       showNotification(
+//         "Erro ao deletar a banca. Tente novamente.",
+//         "error",
+//         3000
+//       );
+//     } finally {
+//       setBankrollIdToDelete(null);
+//     }
+//   };
 //   return (
 //     <div className={mode === "dark" ? "dark-mode-styles" : "light-mode-styles"}>
 //       <CssBaseline />
@@ -127,16 +211,7 @@
 //           width: "100%",
 //         }}
 //       >
-//         <Container
-//           maxWidth={false}
-//           sx={{
-//             display: "flex",
-//             flexDirection: "column",
-//             alignItems: "center",
-//             width: "100%",
-//             py: 0,
-//           }}
-//         >
+//         <Container maxWidth={false}>
 //           <Box
 //             sx={{
 //               display: "flex",
@@ -148,48 +223,18 @@
 //               gap: { xs: 2, sm: 0 },
 //             }}
 //           >
-//             <Typography
-//               variant="h5"
-//               component="h1"
-//               gutterBottom
-//               sx={{
-//                 fontWeight: 700,
-//                 mb: { xs: 0, sm: 0 },
-//                 color: "text.primary",
-//                 transition: "color 0.3s ease",
-//               }}
-//             >
+//             <Typography variant="h5" component="h1" gutterBottom>
 //               Minhas Bancas
 //             </Typography>
-//             <Button
-//               variant="contained"
-//               color="primary"
-//               size="small"
-//               onClick={handleOpenModal}
-//               sx={{
-//                 flexShrink: 0,
-//               }}
-//             >
+//             <Button variant="contained" size="small" onClick={handleOpenModal}>
 //               Nova Banca
 //             </Button>
 //           </Box>
 
-//           <Grid
-//             container
-//             spacing={2}
-//             justifyContent="flex-start"
-//             sx={{ width: "100%" }}
-//           >
+//           <Grid container spacing={2} justifyContent="flex-start">
 //             {loading ? (
 //               <Box sx={{ p: 2, textAlign: "center", width: "100%" }}>
 //                 <p>Carregando bancas...</p>
-//               </Box>
-//             ) : isError ? (
-//               <Box sx={{ p: 2, textAlign: "center", width: "100%" }}>
-//                 <p>
-//                   Você ainda não possui bancas. Crie sua primeira banca para
-//                   começar.
-//                 </p>
 //               </Box>
 //             ) : bankrolls.length === 0 ? (
 //               <Box sx={{ p: 2, textAlign: "center", width: "100%" }}>
@@ -208,12 +253,12 @@
 //                   lg={4}
 //                   xl={2.5}
 //                   key={bankroll.id}
-//                   sx={{ p: { sm: 0 } }}
 //                 >
 //                   <BankrollCard
 //                     bankroll={bankroll}
-//                     onEdit={handleEditClick}
-//                     onViewDetails={handleViewDetailsClick}
+//                     onEdit={() => handleEditClick(bankroll)}
+//                     onViewDetails={() => handleViewDetailsClick(bankroll)}
+//                     onDelete={() => handleDeleteClick(bankroll.id.toString())}
 //                   />
 //                 </Grid>
 //               ))
@@ -221,12 +266,46 @@
 //           </Grid>
 //         </Container>
 //       </Box>
+
+//       {/* Modal de criação */}
 //       <BankrollFormModal
 //         open={openModal}
 //         onClose={handleCloseModal}
 //         bankroll={newBankroll}
 //         onChange={handleNewBankrollChange}
 //         onSave={handleBankrollSaved}
+//       />
+
+//       {/* Modal de edição */}
+//       {selectedBankroll && (
+//         <BankrollEditModal
+//           open={editOpen}
+//           onClose={() => setEditOpen(false)}
+//           bankrollItemModal={selectedBankroll}
+//           onChange={handleEditChange}
+//           onSelectChange={handleEditSelectChange}
+//           onSave={handleSaveEdit}
+//         />
+//       )}
+
+//       {/* Modal de informações */}
+//       {selectedBankroll && (
+//         <BankrollInfoModal
+//           open={infoOpen}
+//           onClose={() => setInfoOpen(false)}
+//           bankrollModal={selectedBankroll}
+//         />
+//       )}
+//       <AlertConfirmDialog
+//         open={alertOpen}
+//         title="Atenção"
+//         message="Você tem certeza que deseja deletar esta banca?"
+//         severity="error"
+//         onConfirm={handleDeleteConfirm}
+//         onCancel={() => {
+//           setAlertOpen(false);
+//           setBankrollIdToDelete(null);
+//         }}
 //       />
 //     </div>
 //   );
@@ -243,28 +322,33 @@ import {
   Container,
   CssBaseline,
   Grid,
-  SelectChangeEvent,
 } from "@mui/material";
 import { BankrollDto } from "./schema/bankroll.schema";
 import { BankrollCard } from "./components/BankrollCard";
 import { useThemeMode } from "@/components/Providers/ThemeRegistry";
-import { BankrollFormModal } from "./components/BankrollFormModal";
-import BankrollEditModal from "./components/BankrollEditModal";
-import BankrollInfoModal from "./components/BankrollInfoModal";
 import { useAuth } from "@/components/Providers/AuthContext";
-import { CreateBankrollDto } from "./schema/createBankroll.schema";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import {
   useBankrolls,
   useCreateBankroll,
   useDeleteBankroll,
-} from "@/hooks/useBankrolls";
-import { BankrollItem } from "./interface/bankrollItem.interface";
+} from "@/modules/bankroll/hook/useBankrolls";
 import { AlertConfirmDialog } from "@/utils/AlertConfirmDialog";
+import BankrollEditModal from "./components/BankrollEditModal";
+import BankrollInfoModal from "./components/BankrollInfoModal";
+import { BankrollFormModal } from "./components/BankrollFormModal";
+import { CreateBankrollDto } from "./schema/createBankroll.schema";
 
 const BankrollPageContent = () => {
   const { user } = useAuth();
-  const [openModal, setOpenModal] = useState(false);
+  const { showNotification } = useNotification();
+  const { mode } = useThemeMode();
+
+  // Estados para modais
+  const [openCreateModal, setOpenCreateModal] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [infoOpen, setInfoOpen] = useState(false);
+  const [alertOpen, setAlertOpen] = useState(false);
   const [newBankroll, setNewBankroll] = useState<CreateBankrollDto>({
     userId: user?.id ?? 0,
     name: "",
@@ -272,95 +356,55 @@ const BankrollPageContent = () => {
     unidValue: 0,
     bookmaker: "",
   });
-  const { showNotification } = useNotification();
-  const { mode } = useThemeMode();
 
-  const {
-    data: bankrolls = [],
-    isLoading: loading,
-    isError,
-    error: queryError,
-  } = useBankrolls(user?.id ?? 0);
-  const createBankroll = useCreateBankroll(user?.id ?? 0);
-  const deleteBankroll = useDeleteBankroll(user?.id ?? 0);
-  const [alertOpen, setAlertOpen] = React.useState(false);
-
-  const [editOpen, setEditOpen] = useState(false);
-  const [infoOpen, setInfoOpen] = useState(false);
-  const [selectedBankroll, setSelectedBankroll] = useState<BankrollItem | null>(
+  // Banca selecionada
+  const [selectedBankroll, setSelectedBankroll] = useState<BankrollDto | null>(
     null
   );
   const [bankrollIdToDelete, setBankrollIdToDelete] = useState<string | null>(
     null
   );
 
-  const mapDtoToItem = (dto: BankrollDto): BankrollItem => ({
-    id: dto.id.toString(),
-    withdrawals: "",
-    addedBalance: "",
-    gains: "0",
-    losses: "0",
-    profitAndLoss: "0",
-    result: "",
-    unidValue: dto.unidValue.toString(),
-    editBalance: "",
-  });
+  // Queries e mutations
+  const { data: bankrolls = [], isLoading: loading } = useBankrolls(
+    user?.id ?? 0
+  );
+  const createBankroll = useCreateBankroll(user?.id ?? 0);
+  const deleteBankroll = useDeleteBankroll(user?.id ?? 0);
 
+  // Handlers para edição
   const handleEditClick = (bankroll: BankrollDto) => {
-    setSelectedBankroll(mapDtoToItem(bankroll));
+    setSelectedBankroll(bankroll);
     setEditOpen(true);
   };
 
+  // Handlers para visualização de detalhes
   const handleViewDetailsClick = (bankroll: BankrollDto) => {
-    setSelectedBankroll(mapDtoToItem(bankroll));
+    setSelectedBankroll(bankroll);
     setInfoOpen(true);
   };
 
-  const handleEditChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    if (!selectedBankroll) return;
-    const { name, value } = e.target;
-    setSelectedBankroll({ ...selectedBankroll, [name]: value });
-  };
+  // Handlers para criação
+  const handleOpenCreateModal = () => setOpenCreateModal(true);
 
-  const handleEditSelectChange = (e: SelectChangeEvent<string>) => {
-    if (!selectedBankroll) return;
-    setSelectedBankroll({ ...selectedBankroll, editBalance: e.target.value });
-  };
-
-  const handleSaveEdit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Salvou edição:", selectedBankroll);
-    setEditOpen(false);
-  };
-
-  const handleOpenModal = () => setOpenModal(true);
-  const handleCloseModal = () => {
-    setOpenModal(false);
-    setNewBankroll({
-      userId: user?.id ?? 0,
-      name: "",
-      balance: 0,
-      unidValue: 0,
-      bookmaker: "",
-    });
+  const handleCloseCreateModal = () => {
+    setOpenCreateModal(false);
   };
 
   const handleBankrollSaved = async (
     savedBankroll: Omit<BankrollDto, "id" | "userId">
   ) => {
     try {
-      await createBankroll.mutateAsync(savedBankroll);
-      showNotification("Banca criada com sucesso!", "success", 2000);
-      setOpenModal(false);
-      setNewBankroll({
-        userId: user?.id ?? 0,
-        name: "",
-        balance: 0,
-        unidValue: 0,
-        bookmaker: "",
+      console.log("📤 DADOS ENVIADOS:", {
+        balance: savedBankroll.balance,
+        unidValue: savedBankroll.unidValue,
       });
+
+      const result = await createBankroll.mutateAsync(savedBankroll);
+
+      console.log("✅ Banca criada com ID:", result.id);
+      showNotification("Banca criada com sucesso!", "success", 2000);
+      setOpenCreateModal(false);
     } catch {
       showNotification("Erro ao criar banca. Tente novamente!", "error", 3000);
     }
@@ -376,18 +420,15 @@ const BankrollPageContent = () => {
     }));
   };
 
+  // Handlers para deleção
   const handleDeleteClick = (id: string) => {
-    // Guarda o ID para ser usado na confirmação
     setBankrollIdToDelete(id);
-    // Abre o diálogo
     setAlertOpen(true);
   };
 
   const handleDeleteConfirm = async () => {
-    // Fecha o diálogo imediatamente
     setAlertOpen(false);
 
-    // Garante que temos um ID antes de prosseguir
     if (!bankrollIdToDelete) return;
 
     try {
@@ -400,10 +441,10 @@ const BankrollPageContent = () => {
         3000
       );
     } finally {
-      // Limpa o ID após a tentativa de exclusão
       setBankrollIdToDelete(null);
     }
   };
+
   return (
     <div className={mode === "dark" ? "dark-mode-styles" : "light-mode-styles"}>
       <CssBaseline />
@@ -434,7 +475,11 @@ const BankrollPageContent = () => {
             <Typography variant="h5" component="h1" gutterBottom>
               Minhas Bancas
             </Typography>
-            <Button variant="contained" size="small" onClick={handleOpenModal}>
+            <Button
+              variant="contained"
+              size="small"
+              onClick={handleOpenCreateModal}
+            >
               Nova Banca
             </Button>
           </Box>
@@ -477,22 +522,19 @@ const BankrollPageContent = () => {
 
       {/* Modal de criação */}
       <BankrollFormModal
-        open={openModal}
-        onClose={handleCloseModal}
-        bankroll={newBankroll}
+        open={openCreateModal}
+        onClose={handleCloseCreateModal}
+        bankroll={newBankroll} // <--- necessário
         onChange={handleNewBankrollChange}
         onSave={handleBankrollSaved}
       />
 
-      {/* Modal de edição */}
+      {/* Modal de edição - agora autossuficiente */}
       {selectedBankroll && (
         <BankrollEditModal
           open={editOpen}
           onClose={() => setEditOpen(false)}
-          bankrollItemModal={selectedBankroll}
-          onChange={handleEditChange}
-          onSelectChange={handleEditSelectChange}
-          onSave={handleSaveEdit}
+          bankroll={selectedBankroll}
         />
       )}
 
@@ -504,17 +546,17 @@ const BankrollPageContent = () => {
           bankrollModal={selectedBankroll}
         />
       )}
+
+      {/* Dialog de confirmação de deleção */}
       <AlertConfirmDialog
         open={alertOpen}
         title="Atenção"
         message="Você tem certeza que deseja deletar esta banca?"
         severity="error"
-        // Quando o usuário CLICAR em 'Confirmar' no modal, chama a função de exclusão
         onConfirm={handleDeleteConfirm}
-        // Quando o usuário CLICAR em 'Cancelar' ou fora do modal, fecha o modal e limpa o ID
         onCancel={() => {
           setAlertOpen(false);
-          setBankrollIdToDelete(null); // Limpa o ID, caso a exclusão seja cancelada
+          setBankrollIdToDelete(null);
         }}
       />
     </div>
