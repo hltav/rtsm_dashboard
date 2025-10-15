@@ -98,10 +98,12 @@ coluna
 começar
 Comece
 completamente
+completude
 concretos
 condicionalmente
 configuradas
 conseguiu
+Constrói
 continuar
 contínuo
 contraste
@@ -156,6 +158,8 @@ Espaçamento
 espaços
 específica
 especificado
+espera
+esperado
 esportes
 essa
 essas
@@ -315,6 +319,7 @@ nesta
 nível
 nocaute
 nosniff
+notificação
 novos
 numérico
 números
@@ -350,6 +355,7 @@ permanece
 permanente
 permitindo
 permitir
+Persiste
 pesquisar
 Pesquisar
 Política
@@ -410,11 +416,13 @@ retornadas
 Retornamos
 retorno
 Retrátil
+Reverte
 revisitar
 Risco
 roda
 Saiba
 Saldo
+salvas
 Salvou
 SAMEORIGIN
 Seção
@@ -429,6 +437,7 @@ separadores
 Série
 símbolos
 Simplesmente
+Sincroniza
 sobrescrever
 sobrescrito
 Sombra
@@ -441,6 +450,7 @@ Superliga
 tabela
 temos
 temporárias
+temporário
 Tenha
 Tênis
 tentamos

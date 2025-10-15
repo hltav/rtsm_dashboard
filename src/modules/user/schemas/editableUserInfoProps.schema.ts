@@ -11,6 +11,15 @@ export const EditableUserDataSchema = z.object({
 
 export type EditableUserData = z.infer<typeof EditableUserDataSchema>;
 
+export const UploadProfileDataSchema = z.object({
+  phone: z.string(),
+  neighborhood: z.string(),
+  city: z.string(),
+  state: z.string(),
+});
+
+export type UploadProfileData = z.infer<typeof UploadProfileDataSchema>;
+
 export const IBGEStateSchema = z.object({
   sigla: z.string(),
   nome: z.string(),

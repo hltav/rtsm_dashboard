@@ -53,6 +53,7 @@ export const clientDataService = {
       const res = await apiClient.put(`/client-data/${id}`, data, {
         withCredentials: true,
       });
+
       return { success: true, data: res.data };
     } catch (error: unknown) {
       let message = "Erro ao atualizar clientData";
@@ -62,7 +63,6 @@ export const clientDataService = {
           error.response?.data?.message ||
           error.response?.data?.error ||
           message;
-        console.error(message);
       }
 
       throw new Error(message);

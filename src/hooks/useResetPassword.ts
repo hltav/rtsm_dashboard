@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import apiClient from "@/lib/api/apiBaseUrl";
@@ -23,7 +23,6 @@ export function useResetPassword() {
     }
 
     if (!token) {
-      console.log(token);
       setError("Token inválido ou expirado.");
       return;
     }
@@ -31,11 +30,6 @@ export function useResetPassword() {
     try {
       setLoading(true);
       setError(null);
-
-      console.log("Enviando para /auth/reset-password:", {
-        token,
-        newPassword,
-      });
 
       await apiClient.post("/auth/reset-password", { token, newPassword });
 

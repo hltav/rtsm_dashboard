@@ -14,10 +14,102 @@ import {
 import { ProfileImageEditor } from "./components/ProfileImageEditor";
 import { UserFormFields } from "./components/UserFormFields";
 import { useAuth } from "../../components/Providers/AuthContext";
+import { getImageUrl } from "@/lib/getImageUrl";
+import { useUserAvatar } from "@/hooks/useUserAvatar";
+import { useNotification } from "@/components/Providers/NotificationSnackbar";
+import { clientDataService } from "@/lib/api/clientData/clientDataApi";
+
+// const ProfileContentPage: React.FC = () => {
+//   const { user, updateUser } = useAuth();
+//   const [isEditing, setIsEditing] = useState(false);
+//   const { uploadAvatar } = useUserAvatar(user?.id);
+
+//   const [formData, setFormData] = useState({
+//     image: user?.clientData?.image || "",
+//     city: user?.clientData?.address?.city || "",
+//     state: user?.clientData?.address?.state || "",
+//     neighborhood: user?.clientData?.address?.neighborhood || "",
+//   });
+
+//   const imageUrl = getImageUrl(user?.clientData?.image);
+
+//   const handleTextFieldChange = (
+//     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+//   ) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//   };
+
+//   const handleSelectChange = (e: SelectChangeEvent<string>) => {
+//     const { name, value } = e.target;
+//     setFormData((prev) => ({ ...prev, [name]: value }));
+//   };
+
+//   // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+//   //   const file = event.target.files?.[0] || null;
+//   //   if (file) {
+//   //     const imageUrl = URL.createObjectURL(file);
+//   //     setFormData((prev) => ({ ...prev, image: imageUrl }));
+//   //   }
+//   // };
+
+//   const handleImageChange = async (
+//     event: React.ChangeEvent<HTMLInputElement>
+//   ) => {
+//     const file = event.target.files?.[0];
+
+//     if (!file) return;
+
+//     try {
+//       const imageUrl = URL.createObjectURL(file);
+//       setFormData((prev) => ({ ...prev, image: imageUrl }));
+
+//       const response = await uploadAvatar(file);
+
+//       if (response?.url) {
+//         setFormData((prev) => ({ ...prev, image: response.url }));
+//       }
+
+//       URL.revokeObjectURL(imageUrl);
+//     } catch (error) {
+//       console.error("Erro ao fazer upload do avatar:", error);
+//     }
+//   };
+
+//   const handleEditSave = (event: React.FormEvent) => {
+//     event.preventDefault();
+//     if (isEditing && updateUser && user) {
+//       updateUser({
+//         ...user,
+//         clientData: {
+//           ...user.clientData,
+//           image: formData.image,
+//           address: {
+//             ...user.clientData?.address,
+//             city: formData.city,
+//             state: formData.state,
+//             neighborhood: formData.neighborhood,
+//           },
+//         },
+//       });
+//       alert("Perfil atualizado com sucesso!");
+//       setIsEditing(false);
+//     } else {
+//       setIsEditing(true);
+//     }
+//   };
+
+//   const handleCancel = () => {
+//     setIsEditing(false);
+//   };
 
 const ProfileContentPage: React.FC = () => {
   const { user, updateUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
+  const { uploadAvatar } = useUserAvatar(user?.id);
+  const [avatarKey, setAvatarKey] = useState(Date.now());
+
+  const { showNotification } = useNotification();
 
   const [formData, setFormData] = useState({
     image: user?.clientData?.image || "",
@@ -25,6 +117,10 @@ const ProfileContentPage: React.FC = () => {
     state: user?.clientData?.address?.state || "",
     neighborhood: user?.clientData?.address?.neighborhood || "",
   });
+
+  const imageUrl = formData.image
+    ? `${getImageUrl(formData.image)}?v=${avatarKey}`
+    : getImageUrl(user?.clientData?.image);
 
   const handleTextFieldChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -38,32 +134,115 @@ const ProfileContentPage: React.FC = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0] || null;
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setFormData((prev) => ({ ...prev, image: imageUrl }));
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    try {
+      const tempImageUrl = URL.createObjectURL(file);
+      setFormData((prev) => ({ ...prev, image: tempImageUrl }));
+
+      const response = await uploadAvatar(file);
+
+      if (response?.url) {
+        const newAvatarUrl = response.url;
+        setFormData((prev) => ({ ...prev, image: newAvatarUrl }));
+        setAvatarKey(Date.now());
+
+        if (updateUser && user) {
+          updateUser({
+            ...user,
+            clientData: {
+              ...user.clientData,
+              image: newAvatarUrl,
+            },
+          });
+        }
+        showNotification("Avatar atualizado com sucesso!", "success");
+      }
+
+      URL.revokeObjectURL(tempImageUrl);
+    } catch (error) {
+      console.error("Erro ao fazer upload do avatar:", error);
+      showNotification(
+        "Erro ao fazer upload do avatar. Tente novamente.",
+        "error"
+      );
+      setFormData((prev) => ({
+        ...prev,
+        image: user?.clientData?.image || "",
+      }));
     }
   };
 
-  const handleEditSave = (event: React.FormEvent) => {
+  // const handleEditSave = async (event: React.FormEvent) => {
+  //   event.preventDefault();
+
+  //   if (isEditing && updateUser && user) {
+  //     try {
+  //       await updateUser({
+  //         ...user,
+  //         clientData: {
+  //           ...user.clientData,
+  //           image: formData.image,
+  //           address: {
+  //             ...user.clientData?.address,
+  //             city: formData.city,
+  //             state: formData.state,
+  //             neighborhood: formData.neighborhood,
+  //           },
+  //         },
+  //       });
+
+  //       showNotification("Perfil atualizado com sucesso!", "success");
+  //       setIsEditing(false);
+  //     } catch (error) {
+  //       console.error("Erro ao salvar perfil:", error);
+  //       showNotification("Erro ao atualizar perfil. Tente novamente.", "error");
+  //     }
+  //   } else {
+  //     setIsEditing(true);
+  //   }
+  // };
+
+  const handleEditSave = async (event: React.FormEvent) => {
     event.preventDefault();
-    if (isEditing && updateUser && user) {
-      updateUser({
-        ...user,
-        clientData: {
-          ...user.clientData,
-          image: formData.image,
-          address: {
-            ...user.clientData?.address,
-            city: formData.city,
-            state: formData.state,
-            neighborhood: formData.neighborhood,
-          },
+
+    if (isEditing && user && user.clientData?.id) {
+      const clientDataId = user.clientData.id;
+
+      const dataToUpdate = {
+        ...user.clientData,
+        image: formData.image,
+        address: {
+          ...user.clientData.address,
+          city: formData.city,
+          state: formData.state,
+          neighborhood: formData.neighborhood,
         },
-      });
-      alert("Perfil atualizado com sucesso!");
-      setIsEditing(false);
+      };
+
+      try {
+        const response = await clientDataService.update(
+          clientDataId,
+          dataToUpdate
+        );
+
+        if (updateUser) {
+          updateUser({
+            ...user,
+            clientData: response.data,
+          });
+        }
+
+        showNotification("Perfil atualizado com sucesso!", "success");
+        setIsEditing(false);
+      } catch (error) {
+        console.error("Erro ao salvar perfil:", error);
+        showNotification("Erro ao atualizar perfil. Tente novamente.", "error");
+      }
     } else {
       setIsEditing(true);
     }
@@ -71,6 +250,12 @@ const ProfileContentPage: React.FC = () => {
 
   const handleCancel = () => {
     setIsEditing(false);
+    setFormData({
+      image: user?.clientData?.image || "",
+      city: user?.clientData?.address?.city || "",
+      state: user?.clientData?.address?.state || "",
+      neighborhood: user?.clientData?.address?.neighborhood || "",
+    });
   };
 
   if (!user) {
@@ -153,10 +338,9 @@ const ProfileContentPage: React.FC = () => {
               </Typography>
 
               <ProfileImageEditor
-                profileImage={formData.image}
+                profileImage={imageUrl}
                 isEditing={isEditing}
                 onImageChange={handleImageChange}
-                
               />
 
               <UserFormFields
@@ -191,7 +375,7 @@ const ProfileContentPage: React.FC = () => {
                     variant="contained"
                     color="secondary"
                     size="large"
-                    sx={{ py: 1.5, flex: 1 }}
+                    sx={{ py: 1.5, flex: 1, color: "#1A2B42" }}
                   >
                     Salvar
                   </Button>
@@ -202,7 +386,7 @@ const ProfileContentPage: React.FC = () => {
                   color="secondary"
                   fullWidth
                   size="large"
-                  sx={{ py: 1.5 }}
+                  sx={{ py: 1.5, color: "#1A2B42" }}
                   onClick={() => setIsEditing(true)}
                 >
                   Editar Perfil

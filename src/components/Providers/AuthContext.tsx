@@ -84,6 +84,40 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     [checkProfileCompletion]
   );
 
+  // const updateUser = useCallback(
+  //   async (userData: GetUser) => {
+  //     if (!userData.id) {
+  //       console.error("Erro: ID do usuário ausente para atualização.");
+  //       throw new Error("ID do usuário ausente.");
+  //     }
+
+  //     const clientData = userData.clientData;
+  //     if (!clientData) throw new Error("clientData ausente.");
+
+  //     const dataToSend = {
+  //       phone: clientData.phone ?? "",
+  //       neighborhood: clientData.address?.neighborhood ?? "",
+  //       city: clientData.address?.city ?? "",
+  //       state: clientData.address?.state ?? "",
+  //     };
+
+  //     try {
+  //       const updatedUser = await userApi.updateDataUser(
+  //         userData.id,
+  //         dataToSend // Envia apenas a parte de `clientData` conforme a sua `EditableUserData`
+  //       );
+  //       setUser(updatedUser);
+  //       checkProfileCompletion(updatedUser);
+  //       return updatedUser;
+  //     } catch (error) {
+  //       console.error("Erro ao atualizar usuário no backend:", error);
+
+  //       throw error;
+  //     }
+  //   },
+  //   [checkProfileCompletion]
+  // );
+
   const profileImageUrl = user?.clientData?.image ?? null;
 
   return (

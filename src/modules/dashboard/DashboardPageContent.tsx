@@ -33,9 +33,6 @@ const DashboardPageContent: React.FC<DashboardPageProps> = ({ children }) => {
   }, [loading, isAuthenticated, router]);
 
   const handleProfileComplete = async () => {
-    console.log(
-      "Perfil completado! Fechando o modal e recarregando dados via contexto."
-    );
     await checkAuthStatus();
   };
 

@@ -1,15 +1,18 @@
 import { GetUser } from "@/modules/user/schemas/user.schema";
 import apiClient from "../apiBaseUrl";
+import { UploadProfileData } from "@/modules/user/schemas/editableUserInfoProps.schema";
 
-
-export const getUserProfile = async (): Promise<GetUser> => {
-  try {
-    const response = await apiClient.get('/auth/me');
-    console.log('DATA EM GET_USER_PROFILE',response)
+export const userApi = {
+  async getUserById(userId: number): Promise<GetUser> {
+    const response = await apiClient.get<GetUser>(`/users/${userId}`);
     return response.data;
+  },
 
-  } catch (error) {
-    console.error("Erro ao buscar perfil do usuário:", error);
-    throw error;
-  }
+  async updateDataUser(
+    userId: number,
+    data: Partial<UploadProfileData>
+  ): Promise<GetUser> {
+    const response = await apiClient.put<GetUser>(`/users/${userId}`, data);
+    return response.data;
+  },
 };

@@ -23,9 +23,9 @@ export function middleware(request: NextRequest) {
   cspHeader += " https://fonts.googleapis.com;";
   cspHeader += " font-src 'self' https://fonts.gstatic.com;";
   cspHeader +=
-    " img-src 'self' data: blob: https: https://www.google-analytics.com https://drive.google.com placehold.co;";
+    " img-src 'self' data: blob: https: https://localhost:3000 https://localhost:3001 https://www.google-analytics.com https://drive.google.com placehold.co;";
   cspHeader +=
-    " connect-src 'self' http://localhost:3000 ws://localhost:3000 https://api.rtsportsmanager.com https://www.google-analytics.com https://servicodados.ibge.gov.br;";
+    " connect-src 'self' https://localhost:3000 ws://localhost:3000 https://api.rtsportsmanager.com https://www.google-analytics.com https://servicodados.ibge.gov.br;";
   cspHeader += " frame-src 'self' https://www.youtube.com;";
   cspHeader += " worker-src 'self' blob:;";
   cspHeader += " base-uri 'self';";

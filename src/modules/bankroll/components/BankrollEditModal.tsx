@@ -147,15 +147,6 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
     };
 
     try {
-      console.log("📤 Atualizando banca:", {
-        id: bankroll.id,
-        balanceAnterior: currentBalance,
-        addedBalance: addedBalanceValue,
-        withdrawals: withdrawalsValue,
-        novoBalance: newBalance,
-        unidValue: formState.unidValue,
-      });
-
       await updateBankroll.mutateAsync({
         id: bankroll.id.toString(),
         data: updatePayload,

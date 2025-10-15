@@ -45,13 +45,11 @@ export const ConfirmationSide = ({
       return;
     }
 
-    console.log("Tentando reenviar para:", email);
     setLoading(true);
     setMessage(null);
 
     try {
       const res = await resendEmailConfirmation(email);
-      console.log("Resposta da API:", res);
       setMessage(res.message);
     } catch (error) {
       console.error("Erro ao reenviar:", error);
