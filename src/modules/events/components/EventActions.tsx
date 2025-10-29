@@ -51,7 +51,15 @@ const EventActions: React.FC<EventActionsProps> = ({
         <Button
           variant="contained"
           onClick={onAddClick}
-          sx={{ bgcolor: "#E0A800" }}
+          sx={{
+            bgcolor: "#E0A800",
+            color: "#1A2B42",
+            transition: "all 0.2s ease-in-out",
+            "&:hover": {
+              color: "#E0E0E0", // muda a cor do texto no hover
+              // mantém o fundo igual
+            },
+          }}
           startIcon={<AddIcon />}
         >
           Adicionar

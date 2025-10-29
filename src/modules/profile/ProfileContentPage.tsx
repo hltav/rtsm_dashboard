@@ -269,7 +269,7 @@ const ProfileContentPage: React.FC = () => {
         color="primary"
         sx={{
           width: "100%",
-          minHeight: "100vh",
+          minHeight: "100%",
           display: "flex",
           alignItems: "flex-start",
           justifyContent: "flex-start",

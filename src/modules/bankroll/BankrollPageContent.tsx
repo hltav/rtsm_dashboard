@@ -129,7 +129,7 @@ const BankrollPageContent = () => {
       <CssBaseline />
       <Box
         sx={{
-          minHeight: "100vh",
+          minHeight: "100%",
           display: "flex",
           flexDirection: "column",
           alignItems: "center",

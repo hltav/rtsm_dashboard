@@ -63,13 +63,13 @@ const FilterModal: React.FC<FilterModalProps> = ({
           }}
         >
           <FormControl fullWidth>
-            <InputLabel id="category-label">Categoria</InputLabel>
+            <InputLabel id="odd-label">Odds</InputLabel>
             <Select
-              labelId="category-label"
-              name="category"
-              value={filters.category}
+              labelId="odd-label"
+              name="odds"
+              value={filters.odd}
               onChange={onFilterChange}
-              label="Categoria"
+              label="Odds"
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueCategories.map((cat) => (

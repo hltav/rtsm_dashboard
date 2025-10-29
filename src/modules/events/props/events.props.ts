@@ -10,8 +10,8 @@ export interface AddEventModalProps {
   ) => void;
   onSelectChange: (e: SelectChangeEvent<string>) => void;
   onSave: (e: React.FormEvent) => void;
+  validationErrors: Record<string, string>;
 }
-
 
 export interface EditEventModalProps {
   open: boolean;
@@ -34,7 +34,7 @@ export interface FilterModalProps {
   open: boolean;
   onClose: () => void;
   filters: {
-    category: string;
+    odd: string;
     eventType: string;
     event: string;
     market: string;
@@ -49,7 +49,6 @@ export interface FilterModalProps {
   uniqueMarkets: string[];
   amountRanges: string[];
 }
-
 
 export interface EventActionsProps {
   isMobile: boolean;

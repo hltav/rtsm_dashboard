@@ -72,7 +72,7 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
           <Button
             variant="outlined"
             color="secondary"
-            sx={{ ml: 1, px: 3 }}
+            sx={{ ml: 1, px: 3, color: "#1A2B42" }}
             LinkComponent="a"
             href="/login"
           >

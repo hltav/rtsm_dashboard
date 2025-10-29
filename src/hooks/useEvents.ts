@@ -1,4 +1,4 @@
-import { getEvents } from "@/lib/api/events/methodsApiEvents";
+import { getEvents } from "@/lib/api/events/eventsApi";
 import { EventItem } from "@/modules/events/interfaces/EventItem";
 import { useState, useEffect } from "react";
 
@@ -9,14 +9,14 @@ interface UseFetchEventsResult {
   refetch: () => void;
 }
 
-export const useFetchEvents = (): UseFetchEventsResult => {
+export const useEvents = (): UseFetchEventsResult => {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [shouldRefetch, setShouldRefetch] = useState<number>(0);
 
   useEffect(() => {
-    const fetchEvents = async () => {
+    const callEvents = async () => {
       try {
         setLoading(true);
         setError(null);
@@ -34,7 +34,7 @@ export const useFetchEvents = (): UseFetchEventsResult => {
       }
     };
 
-    fetchEvents();
+    callEvents();
   }, [shouldRefetch]);
 
   const refetch = () => {

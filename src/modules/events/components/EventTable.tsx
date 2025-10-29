@@ -17,20 +17,20 @@ import { EventItem } from "../interfaces/EventItem";
 
 interface EventTableProps {
   events: EventItem[];
-  isMobile: boolean;
   onInfoClick: (event: EventItem) => void;
   onEditClick: (event: EventItem) => void;
 }
 
+const StyledTableCell = styled(TableCell)(() => ({
+  color: "#fff",
+}));
+
 const EventTable: React.FC<EventTableProps> = ({
   events,
-  isMobile,
   onInfoClick,
   onEditClick,
 }) => {
-  const StyledTableCell = styled(TableCell)(() => ({
-    color: "#fff",
-  }));
+  console.log(events);
   return (
     <TableContainer
       component={Paper}
@@ -42,22 +42,38 @@ const EventTable: React.FC<EventTableProps> = ({
       <Table aria-label="events table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Evento</StyledTableCell>
-            <StyledTableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
-              Categoria
+            <StyledTableCell align="center" sx={{ paddingRight: "" }}>
+              Evento
             </StyledTableCell>
-            <StyledTableCell sx={{ display: { xs: "none", sm: "table-cell" } }}>
+            <StyledTableCell
+              align="center"
+              sx={{ display: { xs: "none", sm: "table-cell" } }}
+            >
+              Modalidade
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              sx={{ display: { xs: "none", sm: "table-cell" } }}
+            >
+              Liga
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              sx={{ display: { xs: "none", sm: "table-cell" } }}
+            >
               Mercado
             </StyledTableCell>
             <StyledTableCell
-              align="right"
+              align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
-              Valor
+              Unids
             </StyledTableCell>
-            <StyledTableCell align="right">Resultado</StyledTableCell>
+            <StyledTableCell align="center">Odd</StyledTableCell>
+            <StyledTableCell align="center">Banca</StyledTableCell>
+            <StyledTableCell align="center">Resultado</StyledTableCell>
             <StyledTableCell
-              align="right"
+              align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
               Ações
@@ -68,7 +84,14 @@ const EventTable: React.FC<EventTableProps> = ({
           {events.length > 0 ? (
             events.map((event) => (
               <TableRow key={event.id}>
-                <StyledTableCell component="th" scope="row">
+                <StyledTableCell
+                  component="th"
+                  scope="row"
+                  sx={{
+                    display: { xs: "table-cell", sm: "none" },
+                    bgcolor: "#1A2B42",
+                  }}
+                >
                   <Box
                     sx={{
                       display: "flex",
@@ -79,6 +102,7 @@ const EventTable: React.FC<EventTableProps> = ({
                     <Typography variant="subtitle1" fontWeight="bold" noWrap>
                       {event.event}
                     </Typography>
+                    {/* Mobile info */}
                     <Typography
                       variant="body2"
                       sx={{
@@ -86,7 +110,34 @@ const EventTable: React.FC<EventTableProps> = ({
                         color: "text.secondary",
                       }}
                     >
-                      {`${event.category} - ${event.market}`}
+                      {event.modality}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        display: { xs: "block", sm: "none" },
+                        color: "text.secondary",
+                      }}
+                    >
+                      {event.league}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        display: { xs: "block", sm: "none" },
+                        color: "text.secondary",
+                      }}
+                    >
+                      {event.market}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{
+                        display: { xs: "block", sm: "none" },
+                        color: "text.secondary",
+                      }}
+                    >
+                      Valor: {event.amount} unids
                     </Typography>
                     <Box
                       sx={{
@@ -110,30 +161,52 @@ const EventTable: React.FC<EventTableProps> = ({
                     </Box>
                   </Box>
                 </StyledTableCell>
+                {/* Desktop columns */}
                 <StyledTableCell
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
+                  align="center"
                 >
-                  {event.category}
+                  {event.event}
                 </StyledTableCell>
                 <StyledTableCell
+                align="center"
+                  sx={{ display: { xs: "none", sm: "table-cell" } }}
+                >
+                  {event.modality}
+                </StyledTableCell>
+                <StyledTableCell
+                align="center"
+                  sx={{ display: { xs: "none", sm: "table-cell" } }}
+                >
+                  {event.league}
+                </StyledTableCell>
+                <StyledTableCell
+                align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
                   {event.market}
                 </StyledTableCell>
                 <StyledTableCell
-                  align="right"
+                  align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  ${event.amount}
+                  {event.amount}
                 </StyledTableCell>
                 <StyledTableCell
-                  align="right"
-                  sx={{ width: isMobile ? "30%" : "auto" }}
+                align="center"
+                  sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  {event.result}
+                  {event.odd}
                 </StyledTableCell>
                 <StyledTableCell
-                  align="right"
+                align="center"
+                  sx={{ display: { xs: "none", sm: "table-cell" } }}
+                >
+                  {event.bankId}
+                </StyledTableCell>
+                <StyledTableCell align="center">{event.result}</StyledTableCell>
+                <StyledTableCell
+                  align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
                   <IconButton
@@ -153,7 +226,7 @@ const EventTable: React.FC<EventTableProps> = ({
             ))
           ) : (
             <TableRow>
-              <StyledTableCell colSpan={5} align="center">
+              <StyledTableCell colSpan={7} align="center">
                 Nenhum evento encontrado.
               </StyledTableCell>
             </TableRow>
