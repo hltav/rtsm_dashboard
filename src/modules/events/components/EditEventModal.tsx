@@ -33,7 +33,7 @@ const EditEventModal: React.FC<EditEventModalProps> = ({
           fullWidth
           label="Categoria"
           name="category"
-          value={event.category}
+          value={event.odd}
           onChange={onChange}
           margin="normal"
         />
