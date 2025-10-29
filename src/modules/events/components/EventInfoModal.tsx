@@ -26,7 +26,7 @@ const EventInfoModal: React.FC<EventInfoModalProps> = ({
               <Typography component="span" fontWeight="bold">
                 Categoria:
               </Typography>
-              {event.category}
+              {event.odd}
             </Typography>
             <Typography>
               <Typography component="span" fontWeight="bold">
