@@ -1,6 +1,6 @@
-import { EventItem } from "./EventItem";
+import { FullEvent } from "./EventItem";
 
-export const initialEventState: Omit<EventItem, "id"> = {
+export const initialEventState: Omit<FullEvent, "id"> = {
   bankId: 0,
   modality: "",
   eventType: "",
@@ -14,6 +14,10 @@ export const initialEventState: Omit<EventItem, "id"> = {
   odd: "",
   result: "pending",
   userId: 0,
+  apiEventId: null,
+  homeTeam: null,
+  awayTeam: null,
+  eventDate: null,
   createdAt: new Date(),
   updatedAt: new Date(),
 };

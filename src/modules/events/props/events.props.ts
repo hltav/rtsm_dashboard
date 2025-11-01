@@ -1,10 +1,10 @@
 import { SelectChangeEvent } from "@mui/material";
-import { EventItem } from "../interfaces/EventItem";
+import { FullEvent } from "../interfaces/EventItem";
 
 export interface AddEventModalProps {
   open: boolean;
   onClose: () => void;
-  newEvent: Omit<EventItem, "id">;
+  newEvent: Omit<FullEvent, "id">;
   onNewEventChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
@@ -16,7 +16,7 @@ export interface AddEventModalProps {
 export interface EditEventModalProps {
   open: boolean;
   onClose: () => void;
-  event: EventItem | null;
+  event: FullEvent | null;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
@@ -27,7 +27,7 @@ export interface EditEventModalProps {
 export interface EventInfoModalProps {
   open: boolean;
   onClose: () => void;
-  event: EventItem | null;
+  event: FullEvent | null;
 }
 
 export interface FilterModalProps {

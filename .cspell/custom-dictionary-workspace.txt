@@ -204,6 +204,7 @@ Datas
 decisões
 definitiva
 deleção
+deletado
 demais
 demonstração
 Depósitos
@@ -211,6 +212,7 @@ Desativado
 Descubra
 desempenho
 desenvolvendo
+desfeita
 desmontar
 desnecessário
 destaque
@@ -277,6 +279,7 @@ esperado
 esporte
 esportes
 Esportivo
+esquerdo
 Esqui
 essa
 essas
@@ -297,6 +300,7 @@ evento
 Evento
 evolua
 Exato
+excluir
 exclusão
 executando
 existia
@@ -634,6 +638,7 @@ quebra
 Queniana
 Radicais
 rapidamente
+realmente
 Rebaixamento
 Rebotes
 Recarregue

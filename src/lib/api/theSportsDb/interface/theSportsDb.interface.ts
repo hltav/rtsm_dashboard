@@ -29,7 +29,7 @@ export const LeagueSchema = z.object({
   idLeague: z.string(),
   strLeague: z.string(),
   strSport: z.string(),
-  strBadge: nullableUrl.optional(),
+  strBadge: z.string().nullable(),
   strLogo: nullableUrl.optional(),
   strCountry: z.string().nullable().optional(),
   strDescriptionEN: z.string().nullable().optional(),

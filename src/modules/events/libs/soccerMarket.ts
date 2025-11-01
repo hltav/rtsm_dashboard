@@ -45,7 +45,7 @@ export const soccerMarket: Record<
     },
   },
   Gols: {
-    "Total de Gols (Over/Under)": {
+    "Gols (Over/Under)": {
       options: [
         "Mais de 0.5",
         "Mais de 1.5",
@@ -108,7 +108,7 @@ export const soccerMarket: Record<
     },
   },
   Escanteios: {
-    "Total de Escanteios (Over/Under)": {
+    "Escanteios (Over/Under)": {
       options: [
         "Mais de 5.5",
         "Mais de 6.5",
@@ -134,7 +134,7 @@ export const soccerMarket: Record<
     "Último Escanteio": { options: ["Casa", "Fora"] },
   },
   Cartões: {
-    "Total de Cartões (Over/Under)": {
+    "Cartões (Over/Under)": {
       options: [
         "Mais de 2.5",
         "Mais de 3.5",

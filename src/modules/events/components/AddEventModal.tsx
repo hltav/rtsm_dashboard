@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { Box, Modal, Typography, SelectChangeEvent } from "@mui/material";
 import { modalStyle } from "../interfaces/modalStyle";
@@ -8,20 +9,23 @@ import { ModalEventActions } from "./addEvents/EventActions";
 import { createEvent } from "@/lib/api/events/eventsApi";
 import { useAuth } from "@/components/Providers/AuthContext";
 import {
-  EventItem,
-  EventItemSchema,
+  FullEventSchema,
+  FullEvent,
 } from "@/modules/events/interfaces/EventItem";
-import { ZodError, ZodIssue } from "zod";
+import { ZodError } from "zod";
 import { initialEventState } from "../interfaces/initialEventsStates";
+import { theSportsDbService } from "@/lib/api/theSportsDb/apiTheSportsDb";
+import { League } from "@/lib/api/theSportsDb/interface/theSportsDb.interface";
 
 const AddEventModal: React.FC<{
   open: boolean;
   onClose: () => void;
-}> = ({ open, onClose }) => {
+  onAdd?: (newEvent: FullEvent) => void;
+}> = ({ open, onClose, onAdd }) => {
   const { user } = useAuth();
 
   const [newEvent, setNewEvent] =
-    useState<Omit<EventItem, "id">>(initialEventState);
+    useState<Omit<FullEvent, "id">>(initialEventState);
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
   >({});
@@ -30,47 +34,113 @@ const AddEventModal: React.FC<{
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = e.target;
-
     setNewEvent((prev) => ({
       ...prev,
-      [name]:
-        name === "amount" || name === "odd" || name === "bankId"
-          ? Number(value)
-          : value,
+      [name]: ["amount", "odd", "bankId"].includes(name)
+        ? Number(value)
+        : value,
     }));
 
     if (validationErrors[name]) {
-      setValidationErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
+      const newErrors = { ...validationErrors };
+      delete newErrors[name];
+      setValidationErrors(newErrors);
     }
   };
 
   const handleSelectChange = (e: SelectChangeEvent<string>) => {
     const { name, value } = e.target;
     if (!name) return;
-
-    setNewEvent((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setNewEvent((prev) => ({ ...prev, [name]: value }));
 
     if (validationErrors[name]) {
-      setValidationErrors((prev) => {
-        const newErrors = { ...prev };
-        delete newErrors[name];
-        return newErrors;
-      });
+      const newErrors = { ...validationErrors };
+      delete newErrors[name];
+      setValidationErrors(newErrors);
     }
   };
 
   const handleOddChange = (odd: string) => {
-    setNewEvent((prev) => ({
-      ...prev,
-      odd,
-    }));
+    setNewEvent((prev) => ({ ...prev, odd }));
+  };
+
+  // const handleEventSelect = async (apiEventId: string) => {
+  //   console.log("🔍 Buscando evento pelo ID:", apiEventId);
+
+  //   try {
+  //     const event = await theSportsDbService.getEventById(apiEventId);
+
+  //     if (!event) {
+  //       console.warn("⚠️ Evento não encontrado para o ID:", apiEventId);
+  //       return;
+  //     }
+
+  //     setNewEvent((prev) => ({
+  //       ...prev,
+  //       event: event.strEvent,
+  //       apiEventId: event.idEvent,
+  //       homeTeam: event.strHomeTeam || null,
+  //       awayTeam: event.strAwayTeam || null,
+  //       eventDate: event.strTimestamp || null,
+  //       strBadge: event.strBadge || null,
+  //       strHomeTeamBadge: event.strHomeTeamBadge || null,
+  //       strAwayTeamBadge: event.strAwayTeamBadge || null,
+  //     }));
+
+  //     console.log("✅ Evento encontrado:", event);
+  //   } catch (err) {
+  //     console.error("❌ Erro ao buscar evento externo:", err);
+  //   }
+  // };
+
+  const handleEventSelect = async (apiEventId: string) => {
+    console.log("🔍 Buscando evento pelo ID:", apiEventId);
+
+    try {
+      const event = await theSportsDbService.getEventById(apiEventId);
+
+      if (!event) {
+        console.warn("⚠️ Evento não encontrado para o ID:", apiEventId);
+        return;
+      }
+
+      console.log("📋 Dados do evento:", event); // ✅ Debug: ver se tem idLeague
+
+      // ✅ Busca dados da liga se tiver idLeague
+      let leagueData: League | null = null;
+
+      // Verifica se o evento tem idLeague (pode ser idLeague, league_id, etc)
+      const leagueId = event.idLeague ?? null;
+
+      if (leagueId) {
+        console.log("🔍 Buscando liga pelo ID:", leagueId);
+        leagueData = await theSportsDbService.getLeagueById(String(leagueId));
+        console.log("📋 Dados da liga:", leagueData);
+      } else {
+        console.warn("⚠️ Evento não possui idLeague");
+      }
+
+      setNewEvent((prev) => ({
+        ...prev,
+        event: event.strEvent,
+        apiEventId: event.idEvent,
+        homeTeam: event.strHomeTeam || null,
+        awayTeam: event.strAwayTeam || null,
+        eventDate: event.strTimestamp || null,
+        league: leagueData?.strLeague || event.strLeague || prev.league,
+        // ✅ Dados da LIGA
+        strBadge: leagueData?.strBadge || null,
+        strCountry: leagueData?.strCountry || null,
+        strLeague: leagueData?.strLeague || null,
+        // ✅ Dados dos TIMES
+        strHomeTeamBadge: event.strHomeTeamBadge || null,
+        strAwayTeamBadge: event.strAwayTeamBadge || null,
+      }));
+
+      console.log("✅ Evento e liga configurados com sucesso");
+    } catch (err) {
+      console.error("❌ Erro ao buscar evento externo:", err);
+    }
   };
 
   const handleSave = async (e: React.FormEvent) => {
@@ -82,20 +152,21 @@ const AddEventModal: React.FC<{
     }
 
     try {
-      const validationSchema = EventItemSchema.omit({ id: true });
-      const validatedEvent = validationSchema.parse({
+      const validatedEvent = FullEventSchema.omit({ id: true }).parse({
         ...newEvent,
         userId: user.id,
+        eventType: newEvent.eventType === "" ? null : newEvent.eventType,
       });
 
-      const payload = {
-        ...validatedEvent,
-        eventType:
-          validatedEvent.eventType === "" ? null : validatedEvent.eventType,
-        market: validatedEvent.market,
-      };
+      const savedEvent = await createEvent(
+        validatedEvent,
+        user.id,
+        validatedEvent.bankId
+      );
 
-      await createEvent(payload, user.id, newEvent.bankId);
+      console.log("Dados Salvos", savedEvent);
+
+      onAdd?.(savedEvent);
 
       setNewEvent(initialEventState);
       setValidationErrors({});
@@ -103,8 +174,7 @@ const AddEventModal: React.FC<{
     } catch (error) {
       if (error instanceof ZodError) {
         const errors: Record<string, string> = {};
-
-        error.issues.forEach((issue: ZodIssue) => {
+        error.issues.forEach((issue) => {
           const field = issue.path[0] as string;
           errors[field] = issue.message;
         });
@@ -132,7 +202,10 @@ const AddEventModal: React.FC<{
         <EventBasicInfo
           newEvent={newEvent}
           onNewEventChange={handleNewEventChange}
-          onSelectChange={handleSelectChange}
+          onSelectChange={(e) => {
+            handleSelectChange(e);
+            if (e.target.name === "event") handleEventSelect(e.target.value);
+          }}
           validationErrors={validationErrors}
         />
         <EventDetails

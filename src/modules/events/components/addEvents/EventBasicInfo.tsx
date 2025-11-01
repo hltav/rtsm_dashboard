@@ -44,7 +44,10 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
     data: eventsData,
     loading: loadingEvents,
     error: errorEvents,
-  } = useTheSportsDb("events", selectedLeagueId || undefined);
+  } = useTheSportsDb(
+    "events",
+    selectedLeagueId ? String(selectedLeagueId) : undefined
+  );
 
   // Hook de tradução
   const { getTranslatedSportsList, getTranslatedLeaguesList } =
@@ -91,6 +94,8 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
   const handleLeagueChange = (event: SelectChangeEvent<string>) => {
     const leagueName = event.target.value;
 
+    console.log(leagueName);
+
     // Atualiza no formulário pai
     onSelectChange({
       ...event,
@@ -105,6 +110,8 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
     const selectedLeague = translatedLeagues.find(
       (l) => l.strLeague === leagueName
     );
+
+    console.log(selectedLeague);
 
     setSelectedLeagueId(
       selectedLeague ? Number(selectedLeague.idLeague) : null
@@ -173,7 +180,7 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
         <InputLabel>Evento</InputLabel>
         <Select
           name="event"
-          value={newEvent.event}
+          value={newEvent.apiEventId || ""}
           onChange={onSelectChange}
           label="Evento"
         >
@@ -187,7 +194,7 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
 
           {Array.isArray(eventsData) &&
             (eventsData as NextEvents[]).map((e) => (
-              <MenuItem key={e.idEvent} value={e.strEvent}>
+              <MenuItem key={e.idEvent} value={e.idEvent}>
                 {e.strEvent}
               </MenuItem>
             ))}

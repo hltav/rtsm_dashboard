@@ -7,6 +7,7 @@ import { DashboardProvider } from "./DashboardContext";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { EventsProvider } from "./EventsContext";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -46,7 +47,9 @@ export function AppProviders({ children, nonce }: AppProvidersProps) {
         <ThemeRegistry>
           <NotificationProvider>
             <AuthProvider>
-              <DashboardProvider>{children}</DashboardProvider>
+              <EventsProvider>
+                <DashboardProvider>{children} </DashboardProvider>
+              </EventsProvider>
             </AuthProvider>
           </NotificationProvider>
         </ThemeRegistry>

@@ -18,6 +18,7 @@ import EditEventModal from "./components/EditEventModal";
 import EventInfoModal from "./components/EventInfoModal";
 import FilterModal from "./components/FilterModal";
 import { getEvents } from "@/lib/api/events/eventsApi";
+import { useResultUpdater } from "@/hooks/useResultUpdater";
 
 const EventContentPage = () => {
   const isMobile = useMediaQuery(darkTheme.breakpoints.down("sm"));
@@ -38,11 +39,13 @@ const EventContentPage = () => {
   const [filterResult, setFilterResult] = useState("");
 
   const [loading, setLoading] = useState(false);
+  const { updateAllResults } = useResultUpdater();
 
   const loadEvents = async () => {
     try {
       setLoading(true);
       const data = await getEvents();
+      console.log(data);
       setEvents(data);
     } catch (error) {
       console.error("Erro ao carregar eventos:", error);
@@ -52,8 +55,22 @@ const EventContentPage = () => {
   };
 
   useEffect(() => {
-    loadEvents();
-  }, []);
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        // 1️⃣ Atualiza todos os resultados primeiro
+        await updateAllResults();
+        // 2️⃣ Depois carrega os eventos atualizados do banco
+        await loadEvents();
+      } catch (error) {
+        console.error("Erro ao atualizar e carregar eventos:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [updateAllResults]);
 
   const handleCloseEditModal = () => {
     setOpenEditModal(false);
@@ -179,103 +196,6 @@ const EventContentPage = () => {
     return arr.filter((item): item is string => item != null);
   };
 
-  // return (
-  //   <div>
-  //     <CssBaseline />
-  //     <Box
-  //       sx={{
-  //         minHeight: "100%",
-  //         bgcolor: "background.default",
-  //         p: { xs: 2, sm: 4 },
-  //       }}
-  //     >
-  //       <Container maxWidth={false} sx={{ p: 0 }}>
-  //         <Box
-  //           sx={{
-  //             display: "flex",
-  //             flexDirection: { xs: "column", sm: "row" },
-  //             justifyContent: "space-between",
-  //             alignItems: { xs: "stretch", sm: "center" },
-  //             mb: 4,
-  //             gap: { xs: 2, sm: 0 },
-  //           }}
-  //         >
-  //           <Typography variant="h4" component="h1" fontWeight="bold">
-  //             Eventos
-  //           </Typography>
-
-  //           <EventActions
-  //             isMobile={isMobile}
-  //             onAddClick={() => setOpenAddModal(true)}
-  //             onFilterClick={() => setOpenFilterModal(true)}
-  //           />
-  //         </Box>
-
-  //         <EventTable
-  //           events={filteredEvents}
-  //           onInfoClick={(event) => {
-  //             setSelectedEventForInfo(event);
-  //             setOpenInfoModal(true);
-  //           }}
-  //           onEditClick={(event) => {
-  //             setSelectedEventForEdit(event);
-  //             setOpenEditModal(true);
-  //           }}
-  //         />
-
-  //         <AddEventModal
-  //           open={openAddModal}
-  //           onClose={() => {
-  //             setOpenAddModal(false);
-  //             setNewEvent({ ...initialEventState });
-  //           }}
-  //         />
-
-  //         <EditEventModal
-  //           open={openEditModal}
-  //           onClose={() => {
-  //             setOpenEditModal(false);
-  //             setSelectedEventForEdit(null);
-  //           }}
-  //           event={selectedEventForEdit}
-  //           onChange={handleEditedEventChange}
-  //           onSelectChange={handleEditedEventChange}
-  //           onSave={handleSaveEditedEvent}
-  //         />
-
-  //         <EventInfoModal
-  //           open={openInfoModal}
-  //           onClose={() => {
-  //             setOpenInfoModal(false);
-  //             setSelectedEventForInfo(null);
-  //           }}
-  //           event={selectedEventForInfo}
-  //         />
-
-  //         <FilterModal
-  //           open={openFilterModal}
-  //           onClose={() => setOpenFilterModal(false)}
-  //           filters={{
-  //             odd: filterOdd,
-  //             eventType: filterEventType,
-  //             event: filterEvent,
-  //             market: filterMarket,
-  //             amountRange: filterAmountRange,
-  //             result: filterResult,
-  //           }}
-  //           onFilterChange={handleFilterChange}
-  //           onClearFilters={handleClearFilters}
-  //           uniqueCategories={filterNonNullable(uniqueCategories)}
-  //           uniqueEventTypes={filterNonNullable(uniqueEventTypes)}
-  //           uniqueEvents={filterNonNullable(uniqueEvents)}
-  //           uniqueMarkets={filterNonNullable(uniqueMarkets)}
-  //           amountRanges={amountRanges}
-  //         />
-  //       </Container>
-  //     </Box>
-  //   </div>
-  // );
-
   return (
     <div>
       <CssBaseline />
@@ -331,6 +251,9 @@ const EventContentPage = () => {
                 setSelectedEventForEdit(event);
                 setOpenEditModal(true);
               }}
+              onEventDeleted={(deletedId) =>
+                setEvents((prev) => prev.filter((e) => e.id !== deletedId))
+              }
             />
           )}
 
@@ -340,6 +263,7 @@ const EventContentPage = () => {
             onClose={() => {
               setOpenAddModal(false);
             }}
+            onAdd={(newEvent) => setEvents((prev) => [newEvent, ...prev])}
           />
 
           <EditEventModal

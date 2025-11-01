@@ -29,7 +29,7 @@ export const updateEvent = async (
   return response.data;
 };
 
-export const deleteEvent = async (id: string) => {
+export const deleteEvent = async (id: number | string) => {
   const response = await apiClient.delete<EventItem>(`/events/${id}`);
   return response.data;
 };
