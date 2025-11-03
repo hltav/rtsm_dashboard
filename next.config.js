@@ -17,6 +17,12 @@ const nextConfig = {
         protocol: "https",
         hostname: "drive.google.com",
       },
+       {
+        protocol: "https",
+        hostname: "flagcdn.com",
+        port: "",
+        pathname: "/**",
+      },
     ],
   },
   async rewrites() {

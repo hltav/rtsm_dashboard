@@ -17,6 +17,8 @@ import {
 } from "@/lib/api/theSportsDb/interface/theSportsDb.interface";
 import { EventBasicInfoProps } from "../../props/modalAddEvent.props";
 import { useSportsTranslation } from "@/hooks/useSportsTranslation";
+import { leagueTranslations } from "@/utils/leaguesMap";
+import Image from "next/image";
 
 export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
   newEvent,
@@ -161,13 +163,120 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
               : "Selecione uma modalidade primeiro"}
           </MenuItem>
 
-          {filteredLeagues.map((l) => (
-            <MenuItem key={l.idLeague} value={l.strLeague}>
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                <Typography>{l.translatedLeague}</Typography>
-              </Box>
-            </MenuItem>
-          ))}
+          {/* {filteredLeagues.map((l) => {
+            const translation = leagueTranslations[l.strLeague];
+            if (!translation) {
+              console.log("Sem tradução:", l.strLeague);
+            }
+            return (
+              <MenuItem key={l.idLeague} value={l.strLeague}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  {translation?.flag && (
+                    <Typography>{translation.flag}</Typography>
+                  )}
+                  <Typography>
+                    {translation?.name ?? l.strLeague}{" "}
+                    
+                  </Typography>
+                </Box>
+              </MenuItem>
+            );
+          })} */}
+
+          {/* {filteredLeagues.map((l) => {
+            const translation = leagueTranslations[l.strLeague];
+            return (
+              <MenuItem key={l.idLeague} value={l.strLeague}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  {translation?.flag && (
+                    <Box sx={{ width: 20, height: 15, position: "relative" }}>
+                      <Image
+                        src={`https://flagcdn.com/w40/${translation.flag}.png`}
+                        alt={translation.name}
+                        fill
+                        style={{ objectFit: "cover" }}
+                      />
+                    </Box>
+                  )}
+                  <Typography>{translation?.name ?? l.strLeague}</Typography>
+                </Box>
+              </MenuItem>
+            );
+          })} */}
+
+          {/* {filteredLeagues.map((l) => {
+            const translation = leagueTranslations[l.strLeague];
+
+            // Função que verifica se o flag é um código de país (2 letras)
+            const isCountryCode = (flag?: string) =>
+              flag && /^[A-Z]{2}$/.test(flag);
+
+            return (
+              <MenuItem key={l.idLeague} value={l.strLeague}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  {translation?.flag && isCountryCode(translation.flag) ? (
+                    <Box sx={{ width: 20, height: 15, position: "relative" }}>
+                      <Image
+                        src={`https://flagcdn.com/w40/${translation.flag.toLowerCase()}.png`}
+                        alt={translation.name}
+                        fill
+                        style={{ objectFit: "cover" }}
+                      />
+                    </Box>
+                  ) : (
+                    <Typography>{translation?.flag}</Typography> // fallback: emoji ou texto
+                  )}
+                  <Typography>{translation?.name ?? l.strLeague}</Typography>
+                </Box>
+              </MenuItem>
+            );
+          })} */}
+          {filteredLeagues.map((l) => {
+            const translation = leagueTranslations[l.strLeague];
+
+            const isCountryCode = (flag?: string) =>
+              flag && /^[A-Z]{2}$/.test(flag);
+
+            return (
+              <MenuItem key={l.idLeague} value={l.strLeague}>
+                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                  {translation?.logo ? (
+                    // Logo da competição
+                    <Box
+                      sx={{
+                        width: 30,
+                        height: 25,
+                        position: "relative",
+                        flexShrink: 0,
+                      }}
+                    >
+                      <Image
+                        src={translation.logo}
+                        alt={translation.name}
+                        width={25}
+                        height={25}
+                        style={{ objectFit: "contain" }}
+                      />
+                    </Box>
+                  ) : translation?.flag && isCountryCode(translation.flag) ? (
+                    <Box sx={{ width: 30, height: 25, flexShrink: 0 }}>
+                      <Image
+                        src={`https://flagcdn.com/w40/${translation.flag.toLowerCase()}.png`}
+                        alt={translation.name}
+                        width={25}
+                        height={25}
+                        style={{ objectFit: "cover" }}
+                      />
+                    </Box>
+                  ) : (
+                    <Typography>{translation?.flag}</Typography>
+                  )}
+
+                  <Typography>{translation?.name ?? l.strLeague}</Typography>
+                </Box>
+              </MenuItem>
+            );
+          })}
         </Select>
       </FormControl>
 

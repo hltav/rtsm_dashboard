@@ -366,7 +366,7 @@ const EventTable: React.FC<EventTableProps> = ({
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  {renderLeagueWithBadge(translateLeague(event.league), event.strBadge)}
+                  {renderLeagueWithBadge(translateLeague(event.league).name, event.strBadge)}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
