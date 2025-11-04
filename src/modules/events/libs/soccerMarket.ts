@@ -59,6 +59,20 @@ export const soccerMarket: Record<
         "Menos de 4.5",
       ],
     },
+    "Gols 1º Tempo": {
+      options: [
+        "Mais de 0.5",
+        "Mais de 1.5",
+        "Mais de 2.5",
+        "Mais de 3.5",
+        "Mais de 4.5",
+        "Menos de 0.5",
+        "Menos de 1.5",
+        "Menos de 2.5",
+        "Menos de 3.5",
+        "Menos de 4.5",
+      ],
+    },
     "Ambas as Equipes Marcam (BTTS)": {
       options: [
         "Ambos marcam - Sim",

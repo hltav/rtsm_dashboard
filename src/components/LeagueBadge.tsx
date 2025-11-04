@@ -18,7 +18,7 @@ export const renderLeagueWithBadge = (
       {strBadge && (
         <SafeImage
           src={strBadge}
-          alt={`${leagueName} badge`}
+          alt={""}
           width={badgeSize}
           height={badgeSize}
         />

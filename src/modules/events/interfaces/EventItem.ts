@@ -39,6 +39,13 @@ export const EventIntegrationSchema = z.object({
   homeTeam: z.string().optional().nullable(),
   awayTeam: z.string().optional().nullable(),
   eventDate: z.string().optional().nullable(),
+  strCountry: z.string().optional().nullable(),
+  strTimestamp: z.string().optional().nullable(),
+  strTime: z.string().optional().nullable(),
+  strTimeLocal: z.string().optional().nullable(),
+  dateEvent: z.string().optional().nullable(),
+  dateEventLocal: z.string().optional().nullable(),
+  timezone: z.string().optional().nullable(),
 });
 
 export const EventVisualsSchema = z.object({

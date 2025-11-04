@@ -23,7 +23,7 @@ import { AlertConfirmDialog } from "@/utils/AlertConfirmDialog";
 import { translateLeague } from "@/utils/leaguesMap";
 import { translateSport } from "@/utils/sportsMap";
 import { renderLeagueWithBadge } from "@/components/LeagueBadge";
-
+import { formatEventDate } from "@/utils/date.utils";
 
 interface EventTableProps {
   events: FullEvent[];
@@ -41,7 +41,6 @@ const EventTable: React.FC<EventTableProps> = ({
   onInfoClick,
   onEventDeleted,
 }) => {
-
   const [openConfirm, setOpenConfirm] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const { showNotification } = useNotification();
@@ -55,8 +54,6 @@ const EventTable: React.FC<EventTableProps> = ({
     if (!bankrolls) return new Map();
     return new Map(bankrolls.map((bank) => [bank.id, bank.name]));
   }, [bankrolls]);
-
- 
 
   const handleDelete = async (id: number) => {
     if (isDeleting) return;
@@ -73,6 +70,29 @@ const EventTable: React.FC<EventTableProps> = ({
       setOpenConfirm(null);
     }
   };
+
+  const sortedEvents = useMemo(() => {
+    return [...events].sort((a, b) => {
+      const aPending = a.result === "pending";
+      const bPending = b.result === "pending";
+
+      // 1️⃣ Pendentes primeiro
+      if (aPending && !bPending) return -1;
+      if (!aPending && bPending) return 1;
+
+      // 2️⃣ Se ambos são pendentes → ordenar por data mais próxima (ascendente)
+      if (aPending && bPending) {
+        const aDate = new Date(a.eventDate ?? 0).getTime();
+        const bDate = new Date(b.eventDate ?? 0).getTime();
+        return aDate - bDate;
+      }
+
+      // 3️⃣ Se ambos finalizados → ordenar por data mais recente (descendente)
+      const aDate = new Date(a.eventDate ?? 0).getTime();
+      const bDate = new Date(b.eventDate ?? 0).getTime();
+      return bDate - aDate;
+    });
+  }, [events]);
 
   return (
     <TableContainer
@@ -139,8 +159,8 @@ const EventTable: React.FC<EventTableProps> = ({
           </TableRow>
         </TableHead>
         <TableBody>
-          {events.length > 0 ? (
-            events.map((event) => (
+          {sortedEvents.length > 0 ? (
+            sortedEvents.map((event) => (
               <TableRow key={event.id}>
                 <StyledTableCell
                   component="th"
@@ -305,8 +325,8 @@ const EventTable: React.FC<EventTableProps> = ({
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                   align="center"
                 >
-                  <Box sx={{fontSize:"12px", color:"#9e9da2"}}>
-                    {event.eventDate}
+                  <Box sx={{ fontSize: "12px", color: "#9e9da2" }}>
+                    {formatEventDate(event.eventDate, "long")}
                   </Box>
                   <Box
                     sx={{
@@ -366,7 +386,10 @@ const EventTable: React.FC<EventTableProps> = ({
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  {renderLeagueWithBadge(translateLeague(event.league).name, event.strBadge)}
+                  {renderLeagueWithBadge(
+                    translateLeague(event.league).name,
+                    event.strBadge
+                  )}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"

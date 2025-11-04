@@ -64,35 +64,6 @@ const AddEventModal: React.FC<{
     setNewEvent((prev) => ({ ...prev, odd }));
   };
 
-  // const handleEventSelect = async (apiEventId: string) => {
-  //   console.log("🔍 Buscando evento pelo ID:", apiEventId);
-
-  //   try {
-  //     const event = await theSportsDbService.getEventById(apiEventId);
-
-  //     if (!event) {
-  //       console.warn("⚠️ Evento não encontrado para o ID:", apiEventId);
-  //       return;
-  //     }
-
-  //     setNewEvent((prev) => ({
-  //       ...prev,
-  //       event: event.strEvent,
-  //       apiEventId: event.idEvent,
-  //       homeTeam: event.strHomeTeam || null,
-  //       awayTeam: event.strAwayTeam || null,
-  //       eventDate: event.strTimestamp || null,
-  //       strBadge: event.strBadge || null,
-  //       strHomeTeamBadge: event.strHomeTeamBadge || null,
-  //       strAwayTeamBadge: event.strAwayTeamBadge || null,
-  //     }));
-
-  //     console.log("✅ Evento encontrado:", event);
-  //   } catch (err) {
-  //     console.error("❌ Erro ao buscar evento externo:", err);
-  //   }
-  // };
-
   const handleEventSelect = async (apiEventId: string) => {
     console.log("🔍 Buscando evento pelo ID:", apiEventId);
 
@@ -127,14 +98,19 @@ const AddEventModal: React.FC<{
         homeTeam: event.strHomeTeam || null,
         awayTeam: event.strAwayTeam || null,
         eventDate: event.strTimestamp || null,
+        strCountry: event.strCountry || null,
         league: leagueData?.strLeague || event.strLeague || prev.league,
         // ✅ Dados da LIGA
         strBadge: leagueData?.strBadge || null,
-        strCountry: leagueData?.strCountry || null,
         strLeague: leagueData?.strLeague || null,
         // ✅ Dados dos TIMES
         strHomeTeamBadge: event.strHomeTeamBadge || null,
         strAwayTeamBadge: event.strAwayTeamBadge || null,
+        strTimestamp: event.strTimestamp || null,
+        strTime: event.strTime || null,
+        strTimeLocal: event.strTimeLocal || null,
+        dateEvent: event.dateEvent || null,
+        dateEventLocal: event.dateEventLocal || null,
       }));
 
       console.log("✅ Evento e liga configurados com sucesso");

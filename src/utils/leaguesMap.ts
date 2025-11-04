@@ -214,17 +214,32 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Polish Ekstraklasa": { name: "Ekstraklasa Polônia", flag: "PL" },
 
   // 🌍🏆 Competições Internacionais
-  "FIFA World Cup": { name: "Copa do Mundo FIFA", flag: "🌍" },
+  "FIFA World Cup": {
+    name: "Copa do Mundo FIFA",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
   "American NASL": { name: "NASL - EUA", flag: "US" },
   "Norwegian 1. Divisjon": { name: "1. Divisjon Norueguesa", flag: "NO" },
   "Welsh Premier League": {
     name: "Premier League Galesa",
     logo: `/badges_leagues/Flag_of_Wales.png`,
   },
-  "UEFA Nations League": { name: "UEFA Nations League", flag: "EU" },
-  "African Cup of Nations": { name: "Copa das Nações Africanas", flag: "🌍" },
-  "Confederations Cup": { name: "Copa das Confederações", flag: "🌎" },
-  "Copa America": { name: "Copa América", flag: "🌎" },
+  "UEFA Nations League": {
+    name: "UEFA Nations League",
+    logo: `/badges_leagues/uefa-nations-league.png`,
+  },
+  "African Cup of Nations": {
+    name: "Copa das Nações Africanas",
+    logo: `/badges_leagues/caf.svg`,
+  },
+  "Confederations Cup": {
+    name: "Copa das Confederações",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
+  "Copa America": {
+    name: "Copa América",
+    logo: `/badges_leagues/conmebol-logo.svg`,
+  },
   "UEFA European Championships": {
     name: "Campeonato Europeu",
     logo: `/badges_leagues/UEFA_Logo.png`,
@@ -235,7 +250,7 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   },
   "International Champions Cup": {
     name: "International Champions Cup",
-    flag: "🌍",
+    logo: `/badges_leagues/fifa_logo_1.png`,
   },
   "Supercoppa Italiana": {
     name: "Supercopa Italiana",
@@ -271,13 +286,22 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     name: "Supercopa Inglesa",
     logo: `/badges_leagues/Flag_of_England.svg`,
   },
-  "International Friendlies": { name: "Amistosos Internacionais", flag: "🌍" },
-  "FIFA Womens World Cup": { name: "Copa do Mundo Feminina", flag: "🌍" },
+  "International Friendlies": {
+    name: "Amistosos Internacionais",
+    logo: `/badges_leagues/amistoso.png`,
+  },
+  "FIFA Womens World Cup": {
+    name: "Copa do Mundo Feminina",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
   "UEFA European Under-21 Championship": {
     name: "Euro Sub-21",
     logo: `/badges_leagues/UEFA_Logo.png`,
   },
-  "Club Friendlies": { name: "Amistosos de Clubes", flag: "🌍" },
+  "Club Friendlies": {
+    name: "Amistosos de Clubes",
+    logo: `/badges_leagues/amistoso.png`,
+  },
   "English National League": {
     name: "National League Inglesa",
     logo: `/badges_leagues/Flag_of_England.svg`,
@@ -411,12 +435,15 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Swiss Challenge League": { name: "Challenge League Suíça", flag: "CH" },
   "AFC Champions League Elite": {
     name: "Liga dos Campeões da AFC",
-    flag: "🌏",
+    logo: `/badges_leagues/afc.svg`,
   },
-  "CAF Champions League": { name: "Liga dos Campeões da CAF", flag: "🌍" },
+  "CAF Champions League": {
+    name: "Liga dos Campeões da CAF",
+    logo: `/badges_leagues/caf.svg`,
+  },
   "CONCACAF Champions Cup": {
     name: "Copa dos Campeões da CONCACAF",
-    flag: "🌎",
+    logo: `/badges_leagues/concacaf-logo.svg`,
   },
   "Scottish FA Cup": {
     name: "Copa da Escócia",
@@ -424,7 +451,7 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   },
   "CONCACAF Central American Cup": {
     name: "Copa da América Central",
-    flag: "🌎",
+    logo: `/badges_leagues/concacaf-logo.svg`,
   },
   "Iranian Azadegan League": { name: "Liga Azadegan Iraniana", flag: "IR" },
   "Iranian Persian Gulf Pro League": {
@@ -444,7 +471,7 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Italy Serie D Girone I": { name: "Série D Italiana Girone I", flag: "IT" },
   "Italy Serie D Girone A": { name: "Série D Italiana Girone A", flag: "IT" },
 
-  "FA Trophy": { name: "FA Trophy", flag: "🏴" },
+  "FA Trophy": { name: "FA Trophy", flag: "GB" },
   "Malaysian Premier League": { name: "Liga Premier da Malásia", flag: "MY" },
   "Indonesian Super League": { name: "Liga Super Indonésia", flag: "ID" },
   "Indian Super League": { name: "Superliga Indiana", flag: "IN" },
@@ -464,7 +491,7 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Vietnamese V.League 1": { name: "V.League 1 Vietnamita", flag: "VN" },
   "AFC Champions League Two": {
     name: "Liga dos Campeões da AFC 2",
-    flag: "🌏",
+    logo: `/badges_leagues/afc.svg`,
   },
   "Australian A-League Women": {
     name: "A-League Feminina Australiana",
@@ -474,9 +501,9 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     name: "Primera División Nicaraguense",
     flag: "NI",
   },
-  "_No League Soccer": { name: "Futebol Sem Liga", flag: "⚽" },
+
   "Swedish Division 1 South": { name: "Division 1 Sul Sueca", flag: "SE" },
-  "EFL Trophy": { name: "EFL Trophy", flag: "🏴" },
+  "EFL Trophy": { name: "EFL Trophy", flag: "GB" },
   "English Womens Super League": {
     name: "Superliga Feminina Inglesa",
     logo: `/badges_leagues/Flag_of_England.svg`,
@@ -485,12 +512,15 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     name: "Euro Feminino",
     logo: `/badges_leagues/UEFA_Logo.png`,
   },
-  "AFC Asian Cup": { name: "Copa da Ásia", flag: "🌏" },
-  "OFC Nations Cup": { name: "Copa das Nações da OFC", flag: "🌏" },
-  "CONCACAF Gold Cup": { name: "Copa Ouro da CONCACAF", flag: "🌎" },
-
-  "_No League": { name: "Sem Liga", flag: "⚽" },
-  "_Defunct Soccer Teams": { name: "Times Extintos", flag: "🪦" },
+  "AFC Asian Cup": { name: "Copa da Ásia", logo: `/badges_leagues/afc.svg` },
+  "OFC Nations Cup": {
+    name: "Copa das Nações da OFC",
+    logo: `/badges_leagues/ofc.svg`,
+  },
+  "CONCACAF Gold Cup": {
+    name: "Copa Ouro da CONCACAF",
+    logo: `/badges_leagues/concacaf-logo.svg`,
+  },
 
   "Mexican Primera League": { name: "Liga MX", flag: "MX" },
   "Chile Primera B": { name: "Primera B Chilena", flag: "CL" },
@@ -907,14 +937,20 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   },
   "ASEAN Club Championship": {
     name: "Campeonato de Clubes da ASEAN",
-    flag: "🌏",
+    logo: `/badges_leagues/afc.svg`,
   },
-  "AFC Challenge League": { name: "Liga Challenge da AFC", flag: "🌏" },
+  "AFC Challenge League": {
+    name: "Liga Challenge da AFC",
+    logo: `/badges_leagues/afc.svg`,
+  },
   "AFC Womens Champions League": {
     name: "Liga dos Campeões Feminina da AFC",
-    flag: "🌏",
+    logo: `/badges_leagues/afc.svg`,
   },
-  "Asian Cup Women": { name: "Copa da Ásia Feminina", flag: "🌏" },
+  "Asian Cup Women": {
+    name: "Copa da Ásia Feminina",
+    logo: `/badges_leagues/afc.svg`,
+  },
 
   // ÁFRICA
   "Egyptian Premier League": { name: "Premier League Egípcia", flag: "EG" },
@@ -964,18 +1000,21 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Eswatini Premier League": { name: "Premier League de Eswatini", flag: "SZ" },
   "CAF Confederation Cup": {
     name: "Copa das Confederações da CAF",
-    flag: "🌍",
+    logo: `/badges_leagues/caf.svg`,
   },
-  "CECAFA Club Cup": { name: "Copa de Clubes CECAFA", flag: "🌍" },
-  "COSAFA Cup": { name: "Copa COSAFA", flag: "🌍" },
+  "CECAFA Club Cup": {
+    name: "Copa de Clubes CECAFA",
+    logo: `/badges_leagues/caf.svg`,
+  },
+  "COSAFA Cup": { name: "Copa COSAFA", logo: `/badges_leagues/caf.svg` },
   "South-Africa 8 Cup": { name: "Copa Sul-Africana", flag: "ZA" },
   "Africa Cup of Nations Women": {
     name: "Copa Africana de Nações Feminina",
-    flag: "🌍",
+    logo: `/badges_leagues/caf.svg`,
   },
   "CAF Womens Olympic Qualifying Tournament": {
     name: "Qualificatória Olímpica CAF Feminina",
-    flag: "🌍",
+    logo: `/badges_leagues/caf.svg`,
   },
 
   // OCEANIA
@@ -1020,7 +1059,10 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   },
   "Australia Tasmania NPL": { name: "NPL Tasmânia", flag: "AU" },
   "Fijian Premier League": { name: "Premier League de Fiji", flag: "FJ" },
-  "OFC Mens Champions League": { name: "Liga dos Campeões da OFC", flag: "🌏" },
+  "OFC Mens Champions League": {
+    name: "Liga dos Campeões da OFC",
+    logo: `/badges_leagues/ofc.svg`,
+  },
 
   // BRASIL - Estaduais
   "Brazilian Campeonato Acreano": { name: "Campeonato Acreano", flag: "BR" },
@@ -1055,7 +1097,7 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Irish First Division": { name: "Primeira Divisão da Irlanda", flag: "IE" },
   "FA Womens League Cup": {
     name: "Copa da Liga Feminina da Inglaterra",
-    flag: "🏴",
+    flag: "GB",
   },
   "Scottish League Cup": {
     name: "Copa da Liga Escocia",
@@ -1068,15 +1110,24 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Dominican LDF": { name: "Liga Dominicana de Futebol", flag: "DO" },
   "Ecuadorian Serie B": { name: "Série B do Equador", flag: "EC" },
   "Liechtenstein Cup": { name: "Copa do Liechtenstein", flag: "LI" },
-  "Olympics Soccer": { name: "Futebol Olímpico", flag: "🌎" },
+  "Olympics Soccer": {
+    name: "Futebol Olímpico",
+    logo: `/badges_leagues/olympic-games.svg`,
+  },
   "Brazil Serie D": { name: "Série D do Brasil", flag: "BR" },
-  "FIFA Arab Cup": { name: "Copa Árabe FIFA", flag: "🌎" },
+  "FIFA Arab Cup": {
+    name: "Copa Árabe FIFA",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
   "Copa Colombia": { name: "Copa Colômbia", flag: "CO" },
   "Finnish Cup": { name: "Copa da Finlândia", flag: "FI" },
   "Italy Coppa Italia Serie C": { name: "Coppa Italia Série C", flag: "IT" },
   "Malaysia Cup": { name: "Copa da Malásia", flag: "MY" },
   "Russia Cup": { name: "Copa da Rússia", flag: "RU" },
-  "SAFF Championship": { name: "Campeonato SAFF", flag: "🌏" },
+  "SAFF Championship": {
+    name: "Campeonato SAFF",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
   "San Marino Coppa Titano": { name: "Coppa Titano de San Marino", flag: "SM" },
   "Slovenia Cup": { name: "Copa da Eslovênia", flag: "SI" },
   "US Open Cup": { name: "Copa dos EUA", flag: "US" },
@@ -1118,19 +1169,31 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     name: "Premier Soccer League do Zimbábue",
     flag: "ZW",
   },
-  "SheBelieves Cup": { name: "SheBelieves Cup", flag: "🌎" },
-  "CONCACAF Nations League": { name: "Liga das Nações CONCACAF", flag: "🌎" },
-  "Leagues Cup": { name: "Copa das Ligas", flag: "🌎" },
+  "SheBelieves Cup": {
+    name: "SheBelieves Cup",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
+  "CONCACAF Nations League": {
+    name: "Liga das Nações CONCACAF",
+    logo: `/badges_leagues/concacaf-logo.svg`,
+  },
+  "Leagues Cup": {
+    name: "Copa das Ligas",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
   "Copa Chile": { name: "Copa do Chile", flag: "CL" },
-  "Olympics Soccer Women": { name: "Futebol Olímpico Feminino", flag: "🌎" },
+  "Olympics Soccer Women": {
+    name: "Futebol Olímpico Feminino",
+    logo: `/badges_leagues/olympic-games.svg`,
+  },
   "International Friendlies Women": {
     name: "Amistosos Internacionais Femininos",
-    flag: "🌎",
+    logo: `/badges_leagues/fifa_logo_1.png`,
   },
   "DFB-Pokal Frauen": { name: "Copa da Alemanha Feminina", flag: "DE" },
   "Campeonato Nacional Feminino": {
     name: "Campeonato Nacional Feminino",
-    flag: "🌎",
+    flag: "DE",
   },
   "UEFA Womens Nations League": {
     name: "Liga das Nações Feminina UEFA",
@@ -1144,7 +1207,10 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     name: "Campeonato Europeu Sub-17 UEFA",
     logo: `/badges_leagues/UEFA_Logo.png`,
   },
-  "FIFA U-17 World Cup": { name: "Copa do Mundo Sub-17 FIFA", flag: "🌎" },
+  "FIFA U-17 World Cup": {
+    name: "Copa do Mundo Sub-17 FIFA",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
   "UEFA Youth League": {
     name: "Liga Jovem UEFA",
     logo: `/badges_leagues/UEFA_Logo.png`,
@@ -1157,8 +1223,11 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     name: "Torneio Pré-Olímpico CONMEBOL",
     flag: "BR",
   },
-  "CONCACAF W Gold Cup": { name: "Copa Ouro Feminina CONCACAF", flag: "🌎" },
-  "FA Womens Challenge Cup": { name: "Copa Feminina Challenge FA", flag: "🏴" },
+  "CONCACAF W Gold Cup": {
+    name: "Copa Ouro Feminina CONCACAF",
+    logo: `/badges_leagues/concacaf-logo.svg`,
+  },
+  "FA Womens Challenge Cup": { name: "Copa Feminina Challenge FA", flag: "GB" },
   "Chile Segunda División": { name: "Segunda Divisão do Chile", flag: "CL" },
   "Russia FNL 2 Division A Gold Group": {
     name: "FNL 2 Rússia - Grupo Ouro",
@@ -1170,31 +1239,37 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   },
   "USL Super League": { name: "USL Super League", flag: "US" },
   "Copa Paraguay": { name: "Copa do Paraguai", flag: "PY" },
-  "Asian Games Soccer": { name: "Futebol nos Jogos Asiáticos", flag: "🌏" },
+  "Asian Games Soccer": {
+    name: "Futebol nos Jogos Asiáticos",
+    logo: `/badges_leagues/afc.svg`,
+  },
   "Pan American Games Soccer": {
     name: "Futebol nos Jogos Pan-Americanos",
-    flag: "🌎",
+    logo: `/badges_leagues/panamericana.svg`,
   },
-  "Pacific Games Soccer": { name: "Futebol nos Jogos do Pacífico", flag: "🌏" },
+  "Pacific Games Soccer": {
+    name: "Futebol nos Jogos do Pacífico",
+    logo: `/badges_leagues/afc.svg`,
+  },
   "World Cup Qualifying AFC": {
     name: "Eliminatórias Copa do Mundo AFC",
-    flag: "🌏",
+    logo: `/badges_leagues/afc.svg`,
   },
   "World Cup Qualifying CAF": {
     name: "Eliminatórias Copa do Mundo CAF",
-    flag: "🌍",
+    logo: `/badges_leagues/caf.svg`,
   },
   "World Cup Qualifying CONMEBOL": {
     name: "Eliminatórias Copa do Mundo CONMEBOL",
-    flag: "BR",
+    logo: `/badges_leagues/conmebol-logo.svg`,
   },
   "World Cup Qualifying CONCACAF": {
     name: "Eliminatórias Copa do Mundo CONCACAF",
-    flag: "🌎",
+    logo: `/badges_leagues/concacaf-logo.svg`,
   },
   "World Cup Qualifying OFC": {
     name: "Eliminatórias Copa do Mundo OFC",
-    flag: "🌏",
+    logo: `/badges_leagues/ofc.svg`,
   },
   "World Cup Qualifying UEFA": {
     name: "Eliminatórias Copa do Mundo UEFA",
@@ -1206,15 +1281,15 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   },
   "African Cup of Nations Qualifying": {
     name: "Eliminatórias Copa Africana de Nações",
-    flag: "🌍",
+    logo: `/badges_leagues/caf.svg`,
   },
   "AFC Asian Cup Qualifying": {
     name: "Eliminatórias Copa Asiática AFC",
-    flag: "🌏",
+    logo: `/badges_leagues/afc.svg`,
   },
   "CONCACAF Gold Cup Qualifying": {
     name: "Eliminatórias Copa Ouro CONCACAF",
-    flag: "🌎",
+    logo: `/badges_leagues/concacaf-logo.svg`,
   },
   "Argentina Torneo Federal A": {
     name: "Torneio Federal A da Argentina",
@@ -1232,16 +1307,22 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Irish FAI Cup": { name: "Copa FAI da Irlanda", flag: "IE" },
   "CONCACAF W Champions Cup": {
     name: "Copa das Campeãs Feminina CONCACAF",
-    flag: "🌎",
+    logo: `/badges_leagues/concacaf-logo.svg`,
   },
-  "FIFA U20 World Cup": { name: "Copa do Mundo Sub-20 FIFA", flag: "🌎" },
+  "FIFA U20 World Cup": {
+    name: "Copa do Mundo Sub-20 FIFA",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
   "English Premier League Summer Series": {
     name: "Série de Verão da Premier League Inglesa",
     logo: `/badges_leagues/Flag_of_England.svg`,
   },
   "Emirates Cup": { name: "Copa Emirates", flag: "AE" },
   "USL Cup": { name: "USL Cup", flag: "US" },
-  "Copa America Femenina": { name: "Copa América Feminina", flag: "AR" },
+  "Copa America Femenina": {
+    name: "Copa América Feminina",
+    logo: `/badges_leagues/conmebol-logo.svg`,
+  },
   "Lithuanian Football Cup": { name: "Copa da Lituânia", flag: "LT" },
   "Lithuanian Supercup": { name: "Supercopa da Lituânia", flag: "LT" },
   "Copa Venezuela": { name: "Copa da Venezuela", flag: "VE" },
@@ -1258,11 +1339,17 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     name: "Troféu de Campeões Argentina",
     flag: "AR",
   },
-  "Recopa Sudamericana": { name: "Recopa Sul-Americana", flag: "🌎" },
+  "Recopa Sudamericana": {
+    name: "Recopa Sul-Americana",
+    logo: `/badges_leagues/Conmebol_Recopa.png`,
+  },
   "Copa Paulista": { name: "Copa Paulista", flag: "BR" },
   "Brazilian Copa do Nordeste": { name: "Copa do Nordeste", flag: "BR" },
   "Brazilian Copa Verde": { name: "Copa Verde", flag: "BR" },
-  "CAFA Nations Cup": { name: "Copa das Nações CAFA", flag: "🌏" },
+  "CAFA Nations Cup": {
+    name: "Copa das Nações CAFA",
+    logo: `/badges_leagues/afc.svg`,
+  },
   "Brazilian Campeonato Catarinense": {
     name: "Campeonato Catarinense",
     flag: "BR",
@@ -1273,22 +1360,25 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Brazilian Copa FGF": { name: "Copa FGF", flag: "BR" },
   "FIFA Intercontinental Cup": {
     name: "Copa Intercontinental FIFA",
-    flag: "🌎",
+    logo: `/badges_leagues/FIFA_Intercontinental_Cup.png`,
   },
   "Supercopa de Chile": { name: "Supercopa do Chile", flag: "CL" },
   "UEFA Womens Europa Cup": {
     name: "Liga Europa Feminina UEFA",
     logo: `/badges_leagues/UEFA_Logo.png`,
   },
-  "CONCACAF Caribbean Cup": { name: "Copa do Caribe CONCACAF", flag: "🌎" },
+  "CONCACAF Caribbean Cup": {
+    name: "Copa do Caribe CONCACAF",
+    logo: `/badges_leagues/concacaf-logo.svg`,
+  },
   "Copa Libertadores Femenina": {
     name: "Copa Libertadores Feminina",
-    flag: "AR",
+    logo: `/badges_leagues/conmebol-logo.svg`,
   },
   "Latvian Cup": { name: "Copa da Letônia", flag: "LV" },
   "FIFA Womens U17 World Cup": {
     name: "Copa do Mundo Sub-17 Feminina FIFA",
-    flag: "🌎",
+    logo: `/badges_leagues/fifa_logo_1.png`,
   },
 };
 

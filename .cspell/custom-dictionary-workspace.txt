@@ -11,6 +11,7 @@ adição
 ADICIONEI
 ÁFRICA
 Africanas
+Agrupa
 Agrupamento
 aguardando
 Ajusta
@@ -28,6 +29,8 @@ ALTERADA
 alternar
 alternativo
 altura
+amanhã
+Amanhã
 Amapaense
 amarelo
 Amazonense
@@ -70,6 +73,7 @@ Armênia
 arredondada
 Artes
 Artilheiro
+ascendente
 Ásia
 Asiática
 Asiático
@@ -121,6 +125,7 @@ branco
 Brasileira
 Brasileirão
 brasileiro
+Brasília
 Brasiliense
 bruta
 BTTS
@@ -165,6 +170,7 @@ células
 chamamos
 Chamar
 Championnat
+chave
 Chilena
 Chinesa
 Ciclismo
@@ -194,6 +200,7 @@ Comece
 Competição
 Competições
 completamente
+completas
 completude
 comuns
 CONCACAF
@@ -204,6 +211,7 @@ Conferência
 configuradas
 CONMEBOL
 conseguiu
+Considera
 Constrói
 consumir
 Continuação
@@ -250,6 +258,7 @@ demonstração
 Depósitos
 Derde
 Desativado
+descendente
 Descubra
 desempenho
 desenvolvendo
@@ -377,6 +386,7 @@ Federação
 Federacion
 Federación
 Federer
+feira
 Femenil
 Femenina
 Feminil
@@ -393,6 +403,7 @@ filtros
 Filtros
 finais
 Finalização
+finalizados
 Finlandesa
 Finlândia
 fizer
@@ -453,6 +464,8 @@ hipotética
 Histórica
 histórico
 Histórico
+hoje
+Hoje
 Holandesa
 Hondurenha
 Honneur
@@ -507,6 +520,8 @@ interromper
 Intervalo
 intuição
 invadir
+invalida
+inválida
 Inverno
 Iraniana
 Iraque
@@ -643,6 +658,7 @@ Nordost
 Norueguesa
 nosniff
 notificação
+novembro
 novos
 NPFL
 nulos
@@ -658,10 +674,12 @@ ocultados
 Oeste
 Olímpica
 Olímpico
+Ontem
 opcionais
 opções
 operação
 oportunidade
+ordenar
 Otimizada
 Ouro
 Pacífico
@@ -690,6 +708,8 @@ Paulista
 Pede
 Pega
 Pênalti
+pendentes
+Pendentes
 Pequena
 pequeno
 perdas
@@ -766,6 +786,7 @@ Rebaixamento
 Rebotes
 Recarregue
 recebe
+recente
 recolher
 Reconheça
 Recopa
@@ -884,6 +905,7 @@ Tenha
 Tênis
 tentamos
 tentativa
+terça
 Tercera
 termina
 terminou
