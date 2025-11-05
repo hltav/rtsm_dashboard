@@ -17,7 +17,7 @@ const HeroSection: React.FC = () => {
         color: "white",
         p: { xs: 4, md: 8 },
         gap: { xs: 4, md: 8 },
-        mt: { xs: "33px", md: 0 }, 
+        mt: { xs: "33px", md: 0 },
       }}
     >
       <Container
@@ -37,7 +37,7 @@ const HeroSection: React.FC = () => {
           <Typography variant="h5" component="p" sx={{ mb: 4, opacity: 0.9 }}>
             Seus palpites, seus dados, seus resultados. A ferramenta definitiva
             para você transformar sua paixão por apostas esportivas em um
-            aprendizado contínuo, sem riscos reais.
+            aprendizado contínuo.
           </Typography>
           <Box
             sx={{
@@ -51,7 +51,12 @@ const HeroSection: React.FC = () => {
               variant="contained"
               color="secondary"
               size="large"
-              sx={{ px: 4, py: 1.5 }}
+              sx={{
+                px: 4,
+                py: 1.5,
+                color: "#1A2B42",
+                backgroundColor: "#E0A800",
+              }}
               LinkComponent="a"
               href="/register"
             >
@@ -64,8 +69,8 @@ const HeroSection: React.FC = () => {
               sx={{
                 px: 4,
                 py: 1.5,
-                borderColor: "secondary.light",
-                color: "secondary.light",
+                borderColor: "#E0A800",
+                color: "#E0A800",
               }}
             >
               Saiba Mais

@@ -23,6 +23,8 @@ const CtaSection: React.FC = () => {
             py: 1.8,
             fontSize: '1.1rem',
             boxShadow: '0px 6px 15px rgba(0, 0, 0, 0.2)',
+            color: "#1A2B42",
+            backgroundColor: "#E0A800",
           }}
           LinkComponent="a"
           href="/register"

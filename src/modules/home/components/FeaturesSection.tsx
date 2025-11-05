@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import React from 'react';
 import { Container, Typography, Grid, Card, CardContent, Box } from '@mui/material';
@@ -24,11 +25,11 @@ const features = [
     title: 'Histórico Completo',
     description: 'Tenha acesso fácil ao seu histórico de apostas, permitindo revisitar decisões e aprender com o passado.'
   },
-  {
-    icon: <SecurityIcon sx={{ fontSize: 70, color: 'primary.main', mb: 2 }} />,
-    title: 'Sem Risco Real',
-    description: 'Aprimore suas habilidades de apostador em um ambiente seguro, sem envolver dinheiro real.'
-  }
+  // {
+  //   icon: <SecurityIcon sx={{ fontSize: 70, color: 'primary.main', mb: 2 }} />,
+  //   title: 'Sem Risco Real',
+  //   description: 'Aprimore suas habilidades de apostador em um ambiente seguro, sem envolver dinheiro real.'
+  // }
 ];
 
 const FeaturesSection: React.FC = () => {

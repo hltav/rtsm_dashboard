@@ -76,18 +76,15 @@ const EventTable: React.FC<EventTableProps> = ({
       const aPending = a.result === "pending";
       const bPending = b.result === "pending";
 
-      // 1️⃣ Pendentes primeiro
       if (aPending && !bPending) return -1;
       if (!aPending && bPending) return 1;
 
-      // 2️⃣ Se ambos são pendentes → ordenar por data mais próxima (ascendente)
       if (aPending && bPending) {
         const aDate = new Date(a.eventDate ?? 0).getTime();
         const bDate = new Date(b.eventDate ?? 0).getTime();
         return aDate - bDate;
       }
 
-      // 3️⃣ Se ambos finalizados → ordenar por data mais recente (descendente)
       const aDate = new Date(a.eventDate ?? 0).getTime();
       const bDate = new Date(b.eventDate ?? 0).getTime();
       return bDate - aDate;
