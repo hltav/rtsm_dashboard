@@ -65,28 +65,19 @@ const AddEventModal: React.FC<{
   };
 
   const handleEventSelect = async (apiEventId: string) => {
-    console.log("🔍 Buscando evento pelo ID:", apiEventId);
-
     try {
       const event = await theSportsDbService.getEventById(apiEventId);
 
       if (!event) {
-        console.warn("⚠️ Evento não encontrado para o ID:", apiEventId);
         return;
       }
 
-      console.log("📋 Dados do evento:", event); // ✅ Debug: ver se tem idLeague
-
-      // ✅ Busca dados da liga se tiver idLeague
       let leagueData: League | null = null;
 
-      // Verifica se o evento tem idLeague (pode ser idLeague, league_id, etc)
       const leagueId = event.idLeague ?? null;
 
       if (leagueId) {
-        console.log("🔍 Buscando liga pelo ID:", leagueId);
         leagueData = await theSportsDbService.getLeagueById(String(leagueId));
-        console.log("📋 Dados da liga:", leagueData);
       } else {
         console.warn("⚠️ Evento não possui idLeague");
       }
@@ -100,10 +91,8 @@ const AddEventModal: React.FC<{
         eventDate: event.strTimestamp || null,
         strCountry: event.strCountry || null,
         league: leagueData?.strLeague || event.strLeague || prev.league,
-        // ✅ Dados da LIGA
         strBadge: leagueData?.strBadge || null,
         strLeague: leagueData?.strLeague || null,
-        // ✅ Dados dos TIMES
         strHomeTeamBadge: event.strHomeTeamBadge || null,
         strAwayTeamBadge: event.strAwayTeamBadge || null,
         strTimestamp: event.strTimestamp || null,
@@ -112,8 +101,6 @@ const AddEventModal: React.FC<{
         dateEvent: event.dateEvent || null,
         dateEventLocal: event.dateEventLocal || null,
       }));
-
-      console.log("✅ Evento e liga configurados com sucesso");
     } catch (err) {
       console.error("❌ Erro ao buscar evento externo:", err);
     }
@@ -139,8 +126,6 @@ const AddEventModal: React.FC<{
         user.id,
         validatedEvent.bankId
       );
-
-      console.log("Dados Salvos", savedEvent);
 
       onAdd?.(savedEvent);
 

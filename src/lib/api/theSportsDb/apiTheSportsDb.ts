@@ -16,7 +16,6 @@ export const theSportsDbService = {
   async getLeagueById(leagueId: string): Promise<League | null> {
     try {
       const response = await apiClient.get(`/sportsdb/leagues/${leagueId}`);
-      console.log(response)
       return response.data?.data ?? null;
     } catch (error) {
       console.error(`Erro ao buscar liga com ID ${leagueId}:`, error);

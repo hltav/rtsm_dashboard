@@ -45,7 +45,6 @@ const EventContentPage = () => {
     try {
       setLoading(true);
       const data = await getEvents();
-      console.log(data);
       setEvents(data);
     } catch (error) {
       console.error("Erro ao carregar eventos:", error);
@@ -58,9 +57,8 @@ const EventContentPage = () => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // 1️⃣ Atualiza todos os resultados primeiro
+
         await updateAllResults();
-        // 2️⃣ Depois carrega os eventos atualizados do banco
         await loadEvents();
       } catch (error) {
         console.error("Erro ao atualizar e carregar eventos:", error);

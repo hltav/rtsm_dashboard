@@ -47,17 +47,11 @@ export const EventSchema = z.object({
   strAwayTeam: z.string().nullable().optional(),
   intHomeScore: nullableNumber.optional(),
   intAwayScore: nullableNumber.optional(),
-
   dateEvent: z.string().nullable().optional(),
-  // horário local (string "16:30:00")
   strTimeLocal: z.string().nullable().optional(),
   strStatus: z.string().nullable().optional(),
-
-  // imagens (thumb/poster) são URLs ou null/empty
   strThumb: nullableUrl.optional(),
   strPoster: nullableUrl.optional(),
-
-  // outros campos úteis (opcionais)
   strVenue: z.string().nullable().optional(),
   idHomeTeam: z.string().nullable().optional(),
   idAwayTeam: z.string().nullable().optional(),

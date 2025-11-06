@@ -16,7 +16,7 @@ import {
   NextEvents,
 } from "@/lib/api/theSportsDb/interface/theSportsDb.interface";
 import { EventBasicInfoProps } from "../../props/modalAddEvent.props";
-import { useSportsTranslation } from "@/hooks/useSportsTranslation";
+import { useSportsTranslation } from "@/modules/events/hooks/useSportsTranslation";
 import { leagueTranslations } from "@/utils/leaguesMap";
 import Image from "next/image";
 
@@ -75,7 +75,6 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
     if (errorEvents) console.error("Erro ao buscar eventos:", errorEvents);
   }, [errorSports, errorLeagues, errorEvents]);
 
-  /** Ao mudar a modalidade */
   const handleSportChange = (event: SelectChangeEvent<string>) => {
     const sport = event.target.value;
     setSelectedSport(sport);
@@ -92,13 +91,9 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
     onSelectChange(syntheticEvent);
   };
 
-  /** Ao mudar a liga */
   const handleLeagueChange = (event: SelectChangeEvent<string>) => {
     const leagueName = event.target.value;
 
-    console.log(leagueName);
-
-    // Atualiza no formulário pai
     onSelectChange({
       ...event,
       target: {
@@ -108,12 +103,9 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
       },
     } as SelectChangeEvent<string>);
 
-    // Localiza o ID da liga selecionada
     const selectedLeague = translatedLeagues.find(
       (l) => l.strLeague === leagueName
     );
-
-    console.log(selectedLeague);
 
     setSelectedLeagueId(
       selectedLeague ? Number(selectedLeague.idLeague) : null
@@ -123,7 +115,7 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
   return (
     <>
       {/* SELECT de Modalidade */}
-      <FormControl fullWidth margin="normal">
+      {/* <FormControl fullWidth margin="normal">
         <InputLabel>Modalidade</InputLabel>
         <Select
           name="modality"
@@ -142,6 +134,30 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
                 {sport.label}
               </MenuItem>
             ))
+          )}
+        </Select>
+      </FormControl> */}
+      <FormControl fullWidth margin="normal">
+        <InputLabel>Modalidade</InputLabel>
+        <Select
+          name="modality"
+          value={selectedSport}
+          onChange={handleSportChange}
+          label="Modalidade"
+        >
+          {loadingSports ? (
+            <MenuItem value="" disabled>
+              <CircularProgress size={20} sx={{ mr: 1 }} />
+              Carregando modalidades...
+            </MenuItem>
+          ) : (
+            translatedSports
+              .filter((sport) => sport.value === "Soccer") // 👈 mostra apenas Futebol
+              .map((sport) => (
+                <MenuItem key={sport.value} value={sport.value}>
+                  {sport.label}
+                </MenuItem>
+              ))
           )}
         </Select>
       </FormControl>

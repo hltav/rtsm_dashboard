@@ -644,6 +644,7 @@ Nadal
 NASL
 Natação
 negativo
+negativos
 Neozelandês
 nesta
 Nicaraguense
@@ -838,6 +839,7 @@ salvas
 Salvou
 SAMEORIGIN
 Sanmarinense
+Saques
 Saudita
 Seção
 secundário
@@ -859,6 +861,8 @@ símbolos
 Simón
 Simplesmente
 Sincroniza
+Sincronizado
+Sincronizando
 Singapura
 Sinuca
 Síria

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import React from "react";
 import { Box, Typography, Button, Modal, Divider } from "@mui/material";
 import { BankrollDto } from "../schema/bankroll.schema";
@@ -16,12 +15,16 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
   onClose,
   bankrollModal,
 }) => {
-  const withdrawals = 0;
-  const addedBalance = 0;
-  const gains = 0;
-  const losses = 0;
-  const profitAndLoss = gains - losses;
-  const result = bankrollModal.balance - (addedBalance - withdrawals);
+  const withdrawals = bankrollModal.lastHistory?.withdrawals ?? 0;
+  const addedBalance = bankrollModal.lastHistory?.addedBalance ?? 0;
+  const gains = bankrollModal.lastHistory?.gains ?? 0;
+  const losses = bankrollModal.lastHistory?.losses ?? 0;
+  const profitAndLoss =
+    bankrollModal.lastHistory?.profitAndLoss ?? gains - losses;
+  const result =
+    bankrollModal.lastHistory?.result ??
+    bankrollModal.balance - (addedBalance - withdrawals);
+  const deposits = bankrollModal.lastHistory?.deposits ?? 0;
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -61,10 +64,30 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
 
         <Box sx={{ mb: 2 }}>
           <Typography variant="subtitle2" color="white">
+            Saldo Inicial
+          </Typography>
+          <Typography variant="body1" fontWeight="medium">
+            {formatCurrency(bankrollModal.initialBalance)}
+          </Typography>
+        </Box>
+
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="subtitle2" color="white">
             Valor da Unidade
           </Typography>
           <Typography variant="body1" fontWeight="medium">
             {formatCurrency(bankrollModal.unidValue)}
+          </Typography>
+        </Box>
+
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="subtitle2" color="white">
+            Status de Sincronização
+          </Typography>
+          <Typography variant="body1" fontWeight="medium">
+            {bankrollModal.statusSync === "Synchronized"
+              ? "Sincronizado"
+              : "Sincronizando..."}
           </Typography>
         </Box>
 
@@ -77,6 +100,15 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
         <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
           <Typography variant="body2" color="white">
             Depósitos:
+          </Typography>
+          <Typography variant="body2" color="success.main" fontWeight="bold">
+            + {formatCurrency(deposits)}
+          </Typography>
+        </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 1 }}>
+          <Typography variant="body2" color="white">
+            Saldo Adicionado:
           </Typography>
           <Typography variant="body2" color="success.main" fontWeight="bold">
             + {formatCurrency(addedBalance)}
@@ -129,6 +161,31 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
             {formatCurrency(profitAndLoss)}
           </Typography>
         </Box>
+
+        <Box sx={{ display: "flex", justifyContent: "space-between", mb: 2 }}>
+          <Typography variant="body2" fontWeight="bold">
+            Resultado Final:
+          </Typography>
+          <Typography
+            variant="body2"
+            fontWeight="bold"
+            color={result >= 0 ? "success.main" : "error.main"}
+          >
+            {result >= 0 ? "+" : ""}
+            {formatCurrency(result)}
+          </Typography>
+        </Box>
+
+        {bankrollModal.lastHistory && (
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="caption" color="gray">
+              Última atualização:{" "}
+              {new Date(bankrollModal.lastHistory.date).toLocaleDateString(
+                "pt-BR"
+              )}
+            </Typography>
+          </Box>
+        )}
 
         <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 4 }}>
           <Button
