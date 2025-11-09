@@ -144,6 +144,8 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
       bookmaker: bankroll.bookmaker,
       balance: newBalance,
       unidValue: formState.unidValue,
+      initialBalance: bankroll.initialBalance,
+      statusSync: "Synchronized",
     };
 
     try {
