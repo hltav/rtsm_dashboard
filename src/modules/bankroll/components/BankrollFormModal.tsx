@@ -86,10 +86,12 @@ export const BankrollFormModal = ({
 
     const payload = {
       ...formState,
-      balance,
-      unidValue,
+      balance: Number(balance),
+      unidValue: Number(unidValue),
       name: formState.name || "",
       bookmaker: formState.bookmaker || "",
+      initialBalance: Number(formState.balance), 
+      statusSync: "Synchronized" as const,
     };
 
     try {
