@@ -167,6 +167,7 @@ Cazaquistão
 Cearense
 CECAFA
 células
+chamadas
 chamamos
 Chamar
 Championnat
@@ -292,6 +293,8 @@ Dominicana
 Druga
 Duelo
 Dupla
+duplicada
+duplicadas
 Ecuabet
 EDITÁVEL
 Eerste
@@ -478,6 +481,7 @@ Húngara
 Ícone
 Ícones
 identificando
+ignora
 Ignorando
 Ignorar
 Iguais
@@ -509,6 +513,7 @@ inofensivo
 inserção
 insere
 inseridos
+integração
 Inteligente
 Inteligentes
 interatividade
@@ -860,6 +865,7 @@ signup
 símbolos
 Simón
 Simplesmente
+simultâneas
 Sincroniza
 Sincronizado
 Sincronizando
@@ -977,6 +983,7 @@ Vietnamita
 vírgula
 visibilidade
 Visitante
+visuais
 visualização
 vitória
 Vitória

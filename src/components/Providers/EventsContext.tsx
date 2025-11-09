@@ -1,6 +1,8 @@
-import React, { createContext, useCallback } from "react";
+"use client";
+import React, { createContext, useCallback, useEffect, useState } from "react";
 import { getEvents } from "@/lib/api/events/eventsApi";
-import { EventItem } from "@/modules/events/interfaces/EventItem";
+import { useResultUpdater } from "@/hooks/useResultUpdater";
+import { EventItem } from "@/modules/events/schemas/EventItem";
 
 interface EventsContextType {
   events: EventItem[];
@@ -18,15 +20,18 @@ interface EventsProviderProps {
 }
 
 export const EventsProvider: React.FC<EventsProviderProps> = ({ children }) => {
-  const [events, setEvents] = React.useState<EventItem[]>([]);
-  const [loading, setLoading] = React.useState<boolean>(true);
-  const [error, setError] = React.useState<Error | null>(null);
-  const [shouldRefetch, setShouldRefetch] = React.useState<number>(0);
+  const [events, setEvents] = useState<EventItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
+  const [shouldRefetch, setShouldRefetch] = useState<number>(0);
+
+  const { updateAllResults } = useResultUpdater();
 
   const fetchEvents = useCallback(async () => {
     try {
       setLoading(true);
       setError(null);
+      await updateAllResults();
       const data = await getEvents();
       setEvents(data);
     } catch (err) {
@@ -37,9 +42,9 @@ export const EventsProvider: React.FC<EventsProviderProps> = ({ children }) => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [updateAllResults]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchEvents();
   }, [fetchEvents, shouldRefetch]);
 

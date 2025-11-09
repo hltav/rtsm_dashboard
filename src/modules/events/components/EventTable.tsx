@@ -13,7 +13,7 @@ import {
   styled,
 } from "@mui/material";
 import { Info as InfoIcon, RemoveCircle } from "@mui/icons-material";
-import { FullEvent } from "../interfaces/EventItem";
+import { FullEvent } from "../schemas/EventItem";
 import { useBankrolls } from "@/modules/bankroll/hook/useBankrolls";
 import { useAuth } from "@/components/Providers/AuthContext";
 import { SafeImage } from "@/components/SafeImage";

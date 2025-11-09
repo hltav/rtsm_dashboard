@@ -1,15 +1,14 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   Typography,
   Box,
+  CircularProgress,
   useMediaQuery,
   SelectChangeEvent,
-  CircularProgress,
 } from "@mui/material";
 import { CssBaseline } from "@mui/material";
-import { EventItem } from "./interfaces/EventItem";
 import { darkTheme } from "@/components/theme/dark-theme";
 import EventActions from "./components/EventActions";
 import EventTable from "./components/EventTable";
@@ -17,12 +16,12 @@ import AddEventModal from "./components/AddEventModal";
 import EditEventModal from "./components/EditEventModal";
 import EventInfoModal from "./components/EventInfoModal";
 import FilterModal from "./components/FilterModal";
-import { getEvents } from "@/lib/api/events/eventsApi";
-import { useResultUpdater } from "@/hooks/useResultUpdater";
+import { useEvents } from "./hooks/useEvents";
+import { EventItem } from "./schemas/EventItem";
 
 const EventContentPage = () => {
+  const { events, loading, refetch } = useEvents();
   const isMobile = useMediaQuery(darkTheme.breakpoints.down("sm"));
-  const [events, setEvents] = useState<EventItem[]>([]);
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openInfoModal, setOpenInfoModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
@@ -31,100 +30,18 @@ const EventContentPage = () => {
     useState<EventItem | null>(null);
   const [selectedEventForEdit, setSelectedEventForEdit] =
     useState<EventItem | null>(null);
-  const [filterOdd, setFilterOdd] = useState("");
-  const [filterEventType, setFilterEventType] = useState("");
-  const [filterEvent, setFilterEvent] = useState("");
-  const [filterMarket, setFilterMarket] = useState("");
-  const [filterAmountRange, setFilterAmountRange] = useState("");
-  const [filterResult, setFilterResult] = useState("");
-
-  const [loading, setLoading] = useState(false);
-  const { updateAllResults } = useResultUpdater();
-
-  const loadEvents = async () => {
-    try {
-      setLoading(true);
-      const data = await getEvents();
-      setEvents(data);
-    } catch (error) {
-      console.error("Erro ao carregar eventos:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const [filters, setFilters] = useState({
+    odd: "",
+    eventType: "",
+    event: "",
+    market: "",
+    amountRange: "",
+    result: "",
+  });
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-
-        await updateAllResults();
-        await loadEvents();
-      } catch (error) {
-        console.error("Erro ao atualizar e carregar eventos:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, [updateAllResults]);
-
-  const handleCloseEditModal = () => {
-    setOpenEditModal(false);
-    setSelectedEventForEdit(null);
-  };
-
-  const handleEditedEventChange = (
-    e:
-      | React.ChangeEvent<
-          HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-        >
-      | SelectChangeEvent<string>
-  ) => {
-    const { name, value } = e.target;
-    setSelectedEventForEdit((prev) => {
-      if (!prev) return null;
-
-      return {
-        ...prev,
-        [name]: value,
-      };
-    });
-  };
-
-  const handleSaveEditedEvent = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (
-      !selectedEventForEdit?.odd ||
-      !selectedEventForEdit?.eventType ||
-      !selectedEventForEdit?.event ||
-      !selectedEventForEdit?.market ||
-      selectedEventForEdit?.amount === 0 ||
-      !selectedEventForEdit?.result
-    ) {
-      console.error("Por favor, preencha todos os campos para edição.");
-      return;
-    }
-
-    const amountNum = parseFloat(String(selectedEventForEdit.amount));
-
-    if (isNaN(amountNum) || amountNum <= 0) {
-      console.error(
-        "Valor da unidade apostada deve ser um número válido e maior que zero para edição."
-      );
-      return;
-    }
-
-    setEvents((prevEvents) =>
-      prevEvents.map((event) =>
-        event.id === selectedEventForEdit.id
-          ? { ...selectedEventForEdit, amount: amountNum }
-          : event
-      )
-    );
-    handleCloseEditModal();
-  };
+    refetch();
+  }, [refetch]);
 
   const handleFilterChange = (
     e:
@@ -132,67 +49,43 @@ const EventContentPage = () => {
       | SelectChangeEvent<string>
   ) => {
     const { name, value } = e.target;
-    switch (name) {
-      case "category":
-        setFilterOdd(value);
-        break;
-      case "eventType":
-        setFilterEventType(value);
-        break;
-      case "event":
-        setFilterEvent(value);
-        break;
-      case "market":
-        setFilterMarket(value);
-        break;
-      case "amountRange":
-        setFilterAmountRange(value);
-        break;
-      case "result":
-        setFilterResult(value);
-        break;
-      default:
-        break;
-    }
+    setFilters((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleClearFilters = () => {
-    setFilterOdd("");
-    setFilterEventType("");
-    setFilterEvent("");
-    setFilterMarket("");
-    setFilterAmountRange("");
-    setFilterResult("");
-  };
-
-  const uniqueCategories = Array.from(new Set(events.map((e) => e.odd)));
-  const uniqueEventTypes = Array.from(new Set(events.map((e) => e.eventType)));
-  const uniqueEvents = Array.from(new Set(events.map((e) => e.event)));
-  const uniqueMarkets = Array.from(new Set(events.map((e) => e.market)));
-  const amountRanges = ["", "0-10", "10-20", "20-50", "50+"];
+  const handleClearFilters = () =>
+    setFilters({
+      odd: "",
+      eventType: "",
+      event: "",
+      market: "",
+      amountRange: "",
+      result: "",
+    });
 
   const filteredEvents = events.filter((event) => {
     let amountValid = true;
-    if (filterAmountRange) {
-      const [minStr, maxStr] = filterAmountRange.split("-");
+    if (filters.amountRange) {
+      const [minStr, maxStr] = filters.amountRange.split("-");
       const min = parseInt(minStr, 10);
       const max = maxStr && maxStr !== "+" ? parseInt(maxStr, 10) : Infinity;
       amountValid = event.amount >= min && event.amount <= max;
     }
 
     return (
-      (filterOdd === "" || event.odd === filterOdd) &&
-      (filterEventType === "" || event.eventType === filterEventType) &&
-      (filterEvent === "" || event.event === filterEvent) &&
-      (filterMarket === "" || event.market === filterMarket) &&
+      (!filters.odd || event.odd === filters.odd) &&
+      (!filters.eventType || event.eventType === filters.eventType) &&
+      (!filters.event || event.event === filters.event) &&
+      (!filters.market || event.market === filters.market) &&
       amountValid &&
-      (filterResult === "" || event.result === filterResult)
+      (!filters.result || event.result === filters.result)
     );
   });
 
-  const filterNonNullable = (arr: (string | null | undefined)[]): string[] => {
-    return arr.filter((item): item is string => item != null);
-  };
+  const uniqueCategories = Array.from(new Set(events.map((e) => e.odd)));
+  const uniqueEventTypes = Array.from(new Set(events.map((e) => e.eventType)));
+  const uniqueEvents = Array.from(new Set(events.map((e) => e.event)));
+  const uniqueMarkets = Array.from(new Set(events.map((e) => e.market)));
+  const amountRanges = ["", "0-10", "10-20", "20-50", "50+"];
 
   return (
     <div>
@@ -226,13 +119,11 @@ const EventContentPage = () => {
             />
           </Box>
 
-          {/* 👇 Aqui entra o loading visual */}
           {loading ? (
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
-                alignItems: "center",
                 minHeight: "200px",
               }}
             >
@@ -249,19 +140,15 @@ const EventContentPage = () => {
                 setSelectedEventForEdit(event);
                 setOpenEditModal(true);
               }}
-              onEventDeleted={(deletedId) =>
-                setEvents((prev) => prev.filter((e) => e.id !== deletedId))
-              }
+              onEventDeleted={() => refetch()}
             />
           )}
 
           {/* Modais */}
           <AddEventModal
             open={openAddModal}
-            onClose={() => {
-              setOpenAddModal(false);
-            }}
-            onAdd={(newEvent) => setEvents((prev) => [newEvent, ...prev])}
+            onClose={() => setOpenAddModal(false)}
+            onAdd={() => refetch()}
           />
 
           <EditEventModal
@@ -270,10 +157,10 @@ const EventContentPage = () => {
               setOpenEditModal(false);
               setSelectedEventForEdit(null);
             }}
+            onChange={() => {}}
+            onSelectChange={() => {}}
             event={selectedEventForEdit}
-            onChange={handleEditedEventChange}
-            onSelectChange={handleEditedEventChange}
-            onSave={handleSaveEditedEvent}
+            onSave={() => refetch()}
           />
 
           <EventInfoModal
@@ -288,20 +175,13 @@ const EventContentPage = () => {
           <FilterModal
             open={openFilterModal}
             onClose={() => setOpenFilterModal(false)}
-            filters={{
-              odd: filterOdd,
-              eventType: filterEventType,
-              event: filterEvent,
-              market: filterMarket,
-              amountRange: filterAmountRange,
-              result: filterResult,
-            }}
+            filters={filters}
             onFilterChange={handleFilterChange}
             onClearFilters={handleClearFilters}
-            uniqueCategories={filterNonNullable(uniqueCategories)}
-            uniqueEventTypes={filterNonNullable(uniqueEventTypes)}
-            uniqueEvents={filterNonNullable(uniqueEvents)}
-            uniqueMarkets={filterNonNullable(uniqueMarkets)}
+            uniqueCategories={uniqueCategories}
+            uniqueEventTypes={uniqueEventTypes.filter((e): e is string => !!e)}
+            uniqueEvents={uniqueEvents}
+            uniqueMarkets={uniqueMarkets}
             amountRanges={amountRanges}
           />
         </Container>

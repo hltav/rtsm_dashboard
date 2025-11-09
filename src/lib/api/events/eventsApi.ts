@@ -1,4 +1,4 @@
-import { EventItem } from "@/modules/events/interfaces/EventItem";
+import { EventItem } from "@/modules/events/schemas/EventItem";
 import apiClient from "../apiBaseUrl";
 
 export const createEvent = async (

@@ -1,4 +1,4 @@
-import { FullEvent } from "./EventItem";
+import { FullEvent } from "../schemas/EventItem";
 
 export const initialEventState: Omit<FullEvent, "id"> = {
   bankId: 0,

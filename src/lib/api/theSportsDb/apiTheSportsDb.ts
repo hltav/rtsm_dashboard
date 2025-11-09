@@ -1,6 +1,6 @@
 import apiClient from "../apiBaseUrl";
 import { League, NextEvents, Sport } from "./interface/theSportsDb.interface";
-import { LookupEvent } from "@/modules/events/interfaces/Lookup.schema";
+import { LookupEvent } from "@/modules/events/schemas/Lookup.schema";
 
 export const theSportsDbService = {
   async getAllSports(): Promise<Sport[]> {

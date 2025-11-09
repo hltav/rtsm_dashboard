@@ -1,7 +1,7 @@
 import { EventsContext } from "@/components/Providers/EventsContext";
 import { useContext } from "react";
 
-export const useEventsContext = () => {
+export const useEvents = () => {
   const context = useContext(EventsContext);
 
   if (context === undefined) {

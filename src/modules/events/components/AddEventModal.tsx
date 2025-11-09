@@ -11,7 +11,7 @@ import { useAuth } from "@/components/Providers/AuthContext";
 import {
   FullEventSchema,
   FullEvent,
-} from "@/modules/events/interfaces/EventItem";
+} from "@/modules/events/schemas/EventItem";
 import { ZodError } from "zod";
 import { initialEventState } from "../interfaces/initialEventsStates";
 import { theSportsDbService } from "@/lib/api/theSportsDb/apiTheSportsDb";

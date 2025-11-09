@@ -1,5 +1,5 @@
 import { SelectChangeEvent } from "@mui/material";
-import { FullEvent } from "../interfaces/EventItem";
+import { FullEvent } from "../schemas/EventItem";
 
 export interface AddEventModalProps {
   open: boolean;
