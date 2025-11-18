@@ -1,75 +1,117 @@
 "use client";
-
-import React from "react";
-import { Box, Paper, Typography } from "@mui/material";
+import { Box, Container, Typography, Tabs, Tab } from "@mui/material";
+import ZoomLineChart from "../charts/ZoomLineChart";
+import { useBankrollContext } from "@/components/Providers/BankrollContext";
+import { useSearchParams, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import DashboardMainPage from "./main/DashboardMain";
+import MonthlyPLChart from "../charts/main/MonthlyPLChart";
 
 const MainContent: React.FC = () => {
+  const { isLoading } = useBankrollContext();
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const initialTab = Number(searchParams.get("tab") || 0);
+  const [tab, setTab] = useState(initialTab);
+
+  useEffect(() => {
+    setTab(Number(searchParams.get("tab") || 0));
+  }, [searchParams]);
+
+  const handleChange = (_: unknown, newValue: number) => {
+    setTab(newValue);
+    router.push(`/dashboard?tab=${newValue}`);
+  };
+
+  if (isLoading) {
+    return (
+      <Box
+        sx={{
+          minHeight: "100vh",
+          bgcolor: "background.default",
+          color: "text.primary",
+          p: { xs: 2, sm: 4 },
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography>Carregando bancas...</Typography>
+      </Box>
+    );
+  }
+
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-      <Typography variant="h4" gutterBottom sx={{ mb: 4 }}>
-        Visão Geral do Dashboard
-      </Typography>
-      <Paper elevation={0} sx={{ p: 4 }}>
-        <Typography variant="h5" gutterBottom>
-          Bem-vindo ao seu Dashboard, Usuário!
+    <Box
+      sx={{
+        minHeight: "100vh",
+        bgcolor: "background.default",
+        color: "text.primary",
+        p: { xs: 2, sm: 4 },
+      }}
+    >
+      <Container maxWidth={false} sx={{ p: 0 }}>
+        <Typography variant="h4" component="h1" fontWeight="bold" mb={2}>
+          Dashboard
         </Typography>
-        <Typography variant="body1" color="text.secondary">
-          Aqui você terá acesso rápido às suas principais estatísticas, eventos
-          e previsões. Utilize o menu lateral para navegar entre as diferentes
-          seções.
-          <br />
-          <br />
-        </Typography>
-        <Box
-          sx={{
-            mt: 4,
-            display: "grid",
-            gridTemplateColumns: {
-              xs: "1fr",
-              sm: "1fr 1fr",
-              md: "1fr 1fr 1fr",
-            },
-            gap: 3,
-          }}
+
+        <Tabs
+          value={tab}
+          onChange={handleChange}
+          sx={{ mb: 4 }}
+          variant="scrollable"
+          scrollButtons="auto"
         >
-          <Paper
-            elevation={0}
+          <Tab label="Evolução da Banca" />
+          <Tab label="Zoom Line Chart" />
+        </Tabs>
+
+        {tab === 0 && (
+          <Box
             sx={{
-              p: 2,
-              textAlign: "center",
-              bgcolor: "primary.light",
-              color: "white",
+              display: "flex",
+              flexDirection: { xs: "column", md: "row" },
+              gap: 4,
+              mt: 4,
+              width: "100%",
             }}
           >
-            <Typography variant="h6">Total de Bankrolls</Typography>
-            <Typography variant="h4">R$ 5.000,00</Typography>
-          </Paper>
-          <Paper
-            elevation={0}
-            sx={{
-              p: 2,
-              textAlign: "center",
-              bgcolor: "secondary.light",
-              color: "primary.main",
-            }}
-          >
-            <Typography variant="h6">Próximos Eventos</Typography>
-            <Typography variant="h4">3</Typography>
-          </Paper>
-          <Paper
-            elevation={0}
-            sx={{
-              p: 2,
-              textAlign: "center",
-              bgcolor: "primary.light",
-              color: "white",
-            }}
-          >
-            <Typography variant="h6">Previsões Ativas</Typography>
-            <Typography variant="h4">12</Typography>
-          </Paper>
-        </Box>
-      </Paper>
+            <DashboardMainPage />
+          </Box>
+        )}
+
+        {tab === 1 && (
+          <Box sx={{ mt: 4 }}>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", md: "row" },
+                gap: 4,
+                mt: 4,
+                width: "100%",
+              }}
+            >
+              <Box
+                sx={{
+                  flex: { xs: "1 1 100%", md: "1 1 50%" },
+                }}
+              >
+                <MonthlyPLChart />
+              </Box>
+
+              <Box
+                sx={{
+                  flex: { xs: "1 1 100%", md: "1 1 50%" },
+                }}
+              >
+                <ZoomLineChart />
+              </Box>
+            </Box>
+          </Box>
+        )}
+      </Container>
     </Box>
   );
 };

@@ -45,7 +45,7 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
     editBalance: "",
     addedBalance: 0,
     withdrawals: 0,
-    unidValue: bankroll.unidValue,
+    unidValue: parseFloat(bankroll.unidValue.toString()) || 0,
   });
 
   useEffect(() => {
@@ -54,7 +54,7 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
         editBalance: "",
         addedBalance: 0,
         withdrawals: 0,
-        unidValue: Number(bankroll.unidValue) || 0,
+        unidValue: parseFloat(bankroll.unidValue.toString()) || 0,
       });
     }
   }, [open, bankroll]);
@@ -92,18 +92,11 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
     }));
   };
 
-  const parseCurrencyToNumber = (currencyString: string | number): number => {
-    if (typeof currencyString === "number") return currencyString;
-
-    const cleanString = currencyString.replace(/[^\d,]/g, "").replace(",", ".");
-
-    return parseFloat(cleanString) || 0;
-  };
-
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const currentBalance = parseCurrencyToNumber(bankroll.balance);
+    // Converte diretamente as strings do backend para números
+    const currentBalance = parseFloat(bankroll.balance.toString()) || 0;
     const addedBalanceValue = formState.addedBalance;
     const withdrawalsValue = formState.withdrawals;
 
@@ -144,8 +137,7 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
       bookmaker: bankroll.bookmaker,
       balance: newBalance,
       unidValue: formState.unidValue,
-      initialBalance: bankroll.initialBalance,
-      statusSync: "Synchronized",
+      initialBalance: parseFloat(bankroll.initialBalance.toString()) || 0,
     };
 
     try {
@@ -199,9 +191,7 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
             value={formatDisplayValue(formState.addedBalance)}
             onChange={handleInputChange}
             margin="normal"
-            helperText={`Saldo atual: ${formatCurrency(
-              parseCurrencyToNumber(bankroll.balance)
-            )}`}
+            helperText={`Saldo atual: ${formatCurrency(bankroll.balance)}`}
             sx={whiteTextField}
           />
         )}
@@ -215,10 +205,10 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
             onChange={handleInputChange}
             margin="normal"
             helperText={`Saldo disponível: ${formatCurrency(
-              parseCurrencyToNumber(bankroll.balance)
+              parseFloat(bankroll.balance.toString())
             )}`}
             error={
-              formState.withdrawals > parseCurrencyToNumber(bankroll.balance)
+              formState.withdrawals > parseFloat(bankroll.balance.toString())
             }
             sx={whiteTextField}
           />
@@ -232,10 +222,10 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
           onChange={handleInputChange}
           margin="normal"
           helperText={`Valor Atual da Unidade: ${formatCurrency(
-            parseCurrencyToNumber(bankroll.unidValue)
+            parseFloat(bankroll.unidValue.toString())
           )}`}
           error={
-            formState.withdrawals > parseCurrencyToNumber(bankroll.unidValue)
+            formState.withdrawals > parseFloat(bankroll.unidValue.toString())
           }
           sx={whiteTextField}
         />

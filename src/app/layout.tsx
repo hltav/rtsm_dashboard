@@ -15,7 +15,6 @@ export const metadata: Metadata = {
   description: "Seu App de Gestão Esportiva",
 };
 
-// 🔥 FORÇAR RENDERIZAÇÃO DINÂMICA - ESSENCIAL PARA NONCE
 export const dynamic = "force-dynamic";
 
 export default async function RootLayout({

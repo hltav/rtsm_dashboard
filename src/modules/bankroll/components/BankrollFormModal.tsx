@@ -14,7 +14,6 @@ import { AlertColor } from "@mui/material/Alert";
 import { useAuth } from "@/components/Providers/AuthContext";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { parseCurrency } from "@/utils/parseCurrency";
 
 export const BankrollFormModal = ({
   open,
@@ -28,8 +27,8 @@ export const BankrollFormModal = ({
   const userId = user?.id;
   const [formState, setFormState] = useState({
     ...bankroll,
-    balance: bankroll?.balance?.toString() ?? "",
-    unidValue: bankroll?.unidValue?.toString() ?? "",
+    balance: bankroll?.balance ?? 0,
+    unidValue: bankroll?.unidValue ?? 0,
   });
 
   const [snackbar, setSnackbar] = useState({
@@ -42,8 +41,8 @@ export const BankrollFormModal = ({
     if (open) {
       setFormState({
         ...bankroll,
-        balance: bankroll?.balance?.toString() ?? "",
-        unidValue: bankroll?.unidValue?.toString() ?? "",
+        balance: bankroll?.balance ?? 0,
+        unidValue: bankroll?.unidValue ?? 0,
       });
     }
   }, [open, bankroll]);
@@ -51,13 +50,32 @@ export const BankrollFormModal = ({
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
-    setFormState((prev) => ({
-      ...prev,
-      [name]:
-        name === "balance" || name === "unidValue"
-          ? value.replace(/[^\d]/g, "")
-          : value,
-    }));
+    if (name === "balance" || name === "unidValue") {
+      const digitsOnly = value.replace(/\D/g, "");
+
+      if (!digitsOnly) {
+        setFormState((prev) => ({
+          ...prev,
+          [name]: 0,
+        }));
+        return;
+      }
+
+      const numericValue = Number(digitsOnly) / 100;
+      setFormState((prev) => ({
+        ...prev,
+        [name]: numericValue,
+      }));
+    } else {
+      setFormState((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const formatDisplayValue = (value: number): string => {
+    return value === 0 ? "" : formatCurrency(value);
   };
 
   const handleSave = async () => {
@@ -66,32 +84,28 @@ export const BankrollFormModal = ({
       return;
     }
 
-    const balance = parseCurrency(formState.balance);
-    const unidValue = parseCurrency(formState.unidValue);
-
     if (!formState.name || formState.name.length < 3) {
       showNotification("Nome deve ter pelo menos 3 caracteres", "warning");
       return;
     }
 
-    if (balance <= 0) {
+    if (formState.balance <= 0) {
       showNotification("Saldo deve ser maior que zero", "warning");
       return;
     }
 
-    if (unidValue <= 0) {
+    if (formState.unidValue <= 0) {
       showNotification("Valor por unidade deve ser maior que zero", "warning");
       return;
     }
 
     const payload = {
       ...formState,
-      balance: Number(balance),
-      unidValue: Number(unidValue),
+      balance: formState.balance,
+      unidValue: formState.unidValue,
       name: formState.name || "",
       bookmaker: formState.bookmaker || "",
-      initialBalance: Number(formState.balance), 
-      statusSync: "Synchronized" as const,
+      initialBalance: formState.balance,
     };
 
     try {
@@ -170,7 +184,7 @@ export const BankrollFormModal = ({
           <TextField
             label="Saldo (R$)"
             name="balance"
-            value={formatCurrency(parseCurrency(formState.balance))}
+            value={formatDisplayValue(formState.balance)}
             onChange={onChange}
             fullWidth
             variant="outlined"
@@ -199,7 +213,7 @@ export const BankrollFormModal = ({
           <TextField
             label="Valor por Unid"
             name="unidValue"
-            value={formatCurrency(parseCurrency(formState.unidValue))}
+            value={formatDisplayValue(formState.unidValue)}
             onChange={onChange}
             fullWidth
             variant="outlined"

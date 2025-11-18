@@ -15,6 +15,7 @@ import { bankrollApi } from "@/lib/api/bankroll/bankrollApi";
 import { useAuth } from "@/components/Providers/AuthContext";
 import { BankrollDto } from "@/modules/bankroll/schema/bankroll.schema";
 import { parseCurrency } from "@/utils/parseCurrency";
+import { formatOdd } from "@/utils/formatOdd";
 
 export const EventResultSelect: React.FC<EventResultSelectProps> = ({
   newEvent,
@@ -50,11 +51,14 @@ export const EventResultSelect: React.FC<EventResultSelectProps> = ({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    const cleaned = value.replace(/\D/g, "");
-    setRawValue(cleaned);
-    const formatted = parseCurrency(cleaned).toFixed(2);
+
+    const formatted = formatOdd(value);
+
+    setRawValue(value);
     setDisplayValue(formatted);
-    onOddChange(formatted);
+
+    const normalized = formatted.replace(",", ".");
+    onOddChange(normalized);
   };
 
   const handleBankChange = (e: SelectChangeEvent<string>) => {

@@ -87,7 +87,7 @@ const DashboardPageContent: React.FC<DashboardPageProps> = ({ children }) => {
         sx={{
           width: "100%",
           ml: "10px",
-          mt: { xs: "15%", sm: "6%" },
+          mt: { xs: "15%", sm: "4%" },
         }}
       >
         {children || <MenuContent />}

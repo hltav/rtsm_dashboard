@@ -137,6 +137,8 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
           )}
         </Select>
       </FormControl> */}
+
+      {/* Filtra para deixar só Futebol */}
       <FormControl fullWidth margin="normal">
         <InputLabel>Modalidade</InputLabel>
         <Select
@@ -152,7 +154,7 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
             </MenuItem>
           ) : (
             translatedSports
-              .filter((sport) => sport.value === "Soccer") // 👈 mostra apenas Futebol
+              .filter((sport) => sport.value === "Soccer")
               .map((sport) => (
                 <MenuItem key={sport.value} value={sport.value}>
                   {sport.label}
@@ -189,7 +191,6 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
               <MenuItem key={l.idLeague} value={l.strLeague}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   {translation?.logo ? (
-                    // Logo da competição
                     <Box
                       sx={{
                         width: 30,

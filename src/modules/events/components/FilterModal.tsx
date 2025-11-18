@@ -16,6 +16,7 @@ import {
 } from "@mui/icons-material";
 import { modalStyle } from "../interfaces/modalStyle";
 import { FilterModalProps } from "../props/events.props";
+import { translateSport } from "@/utils/sportsMap";
 
 const FilterModal: React.FC<FilterModalProps> = ({
   open,
@@ -23,10 +24,12 @@ const FilterModal: React.FC<FilterModalProps> = ({
   filters,
   onFilterChange,
   onClearFilters,
-  uniqueCategories,
-  uniqueEventTypes,
   uniqueEvents,
+  uniqueModalities,
+  uniqueLeagues,
   uniqueMarkets,
+  uniqueOdds,
+  uniqueBanks,
   amountRanges,
 }) => {
   return (
@@ -63,40 +66,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
           }}
         >
           <FormControl fullWidth>
-            <InputLabel id="odd-label">Odds</InputLabel>
-            <Select
-              labelId="odd-label"
-              name="odds"
-              value={filters.odd}
-              onChange={onFilterChange}
-              label="Odds"
-            >
-              <MenuItem value="">Todos</MenuItem>
-              {uniqueCategories.map((cat) => (
-                <MenuItem key={cat} value={cat}>
-                  {cat}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
-            <InputLabel id="eventType-label">Tipo de Evento</InputLabel>
-            <Select
-              labelId="eventType-label"
-              name="eventType"
-              value={filters.eventType}
-              onChange={onFilterChange}
-              label="Tipo de Evento"
-            >
-              <MenuItem value="">Todos</MenuItem>
-              {uniqueEventTypes.map((type) => (
-                <MenuItem key={type} value={type}>
-                  {type}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <FormControl fullWidth>
             <InputLabel id="event-label">Evento</InputLabel>
             <Select
               labelId="event-label"
@@ -113,6 +82,43 @@ const FilterModal: React.FC<FilterModalProps> = ({
               ))}
             </Select>
           </FormControl>
+
+          <FormControl fullWidth>
+            <InputLabel id="modality-label">Modalidade</InputLabel>
+            <Select
+              labelId="modality-label"
+              name="modality"
+              value={filters.modality}
+              onChange={onFilterChange}
+              label="Modalidade"
+            >
+              <MenuItem value="">Todos</MenuItem>
+              {uniqueModalities.map((mod) => (
+                <MenuItem key={mod} value={mod}>
+                  {translateSport(mod)}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth>
+            <InputLabel id="league-label">Liga</InputLabel>
+            <Select
+              labelId="league-label"
+              name="league"
+              value={filters.league}
+              onChange={onFilterChange}
+              label="Liga"
+            >
+              <MenuItem value="">Todos</MenuItem>
+              {uniqueLeagues.map((league) => (
+                <MenuItem key={league} value={league}>
+                  {league}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           <FormControl fullWidth>
             <InputLabel id="market-label">Mercado</InputLabel>
             <Select
@@ -130,14 +136,15 @@ const FilterModal: React.FC<FilterModalProps> = ({
               ))}
             </Select>
           </FormControl>
+
           <FormControl fullWidth>
-            <InputLabel id="amountRange-label">Valor</InputLabel>
+            <InputLabel id="amountRange-label">Unids (Valor)</InputLabel>
             <Select
               labelId="amountRange-label"
               name="amountRange"
               value={filters.amountRange}
               onChange={onFilterChange}
-              label="Valor"
+              label="Unids (Valor)"
             >
               <MenuItem value="">Todos</MenuItem>
               {amountRanges.slice(1).map((range) => (
@@ -147,6 +154,43 @@ const FilterModal: React.FC<FilterModalProps> = ({
               ))}
             </Select>
           </FormControl>
+
+          <FormControl fullWidth>
+            <InputLabel id="odd-label">Odd</InputLabel>
+            <Select
+              labelId="odd-label"
+              name="odd"
+              value={filters.odd}
+              onChange={onFilterChange}
+              label="Odd"
+            >
+              <MenuItem value="">Todos</MenuItem>
+              {uniqueOdds.map((odd) => (
+                <MenuItem key={odd} value={odd}>
+                  {odd}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
+          <FormControl fullWidth>
+            <InputLabel id="bank-label">Banca</InputLabel>
+            <Select
+              labelId="bank-label"
+              name="bank"
+              value={filters.bank}
+              onChange={onFilterChange}
+              label="Banca"
+            >
+              <MenuItem value="">Todos</MenuItem>
+              {uniqueBanks.map((bank) => (
+                <MenuItem key={bank} value={bank}>
+                  {bank}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
+
           <FormControl fullWidth>
             <InputLabel id="result-label">Resultado</InputLabel>
             <Select
@@ -157,9 +201,9 @@ const FilterModal: React.FC<FilterModalProps> = ({
               label="Resultado"
             >
               <MenuItem value="">Todos</MenuItem>
-              <MenuItem value="Ganho">Ganho</MenuItem>
-              <MenuItem value="Perda">Perda</MenuItem>
-              <MenuItem value="Empate">Empate</MenuItem>
+              <MenuItem value="win">Ganha</MenuItem>
+              <MenuItem value="lose">Perdida</MenuItem>
+              <MenuItem value="void">Retornada</MenuItem>
             </Select>
           </FormControl>
         </Box>

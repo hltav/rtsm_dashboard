@@ -8,6 +8,7 @@ import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { EventsProvider } from "./EventsContext";
+import { BankrollProvider } from "./BankrollContext";
 
 interface AppProvidersProps {
   children: React.ReactNode;
@@ -48,7 +49,9 @@ export function AppProviders({ children, nonce }: AppProvidersProps) {
           <NotificationProvider>
             <AuthProvider>
               <EventsProvider>
-                <DashboardProvider>{children} </DashboardProvider>
+                <BankrollProvider>
+                  <DashboardProvider>{children} </DashboardProvider>
+                </BankrollProvider>
               </EventsProvider>
             </AuthProvider>
           </NotificationProvider>

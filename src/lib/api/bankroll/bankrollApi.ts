@@ -1,5 +1,6 @@
 import { BankrollDto } from "@/modules/bankroll/schema/bankroll.schema";
 import apiClient from "../apiBaseUrl";
+import { GetBankrollHistoryDTO } from "@/modules/bankroll/schema/bankrollHistory.schema";
 
 export const bankrollApi = {
   create: async (
@@ -20,7 +21,7 @@ export const bankrollApi = {
     return data;
   },
 
-  getById: async (id: number) => {
+  getById: async (id: number | null) => {
     const { data } = await apiClient.get<BankrollDto>(`/bankrolls/${id}`);
     return data;
   },
@@ -50,6 +51,21 @@ export const bankrollApi = {
   delete: async (id: string) => {
     const { data } = await apiClient.delete<{ message: string }>(
       `/bankrolls/${id}`
+    );
+    return data;
+  },
+
+  getHistoryByBankrollId: async (id: number) => {
+    const { data } = await apiClient.get<GetBankrollHistoryDTO[]>(
+      `/bankrolls/${id}/history`
+    );
+    return data;
+  },
+
+  // 🟦 Buscar o último registro do histórico da banca
+  getLastHistoryByBankrollId: async (id: number) => {
+    const { data } = await apiClient.get<GetBankrollHistoryDTO | null>(
+      `/bankrolls/${id}/history/last`
     );
     return data;
   },

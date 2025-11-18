@@ -34,20 +34,24 @@ export interface FilterModalProps {
   open: boolean;
   onClose: () => void;
   filters: {
-    odd: string;
-    eventType: string;
     event: string;
+    modality: string;
+    league: string;
     market: string;
     amountRange: string;
+    odd: string;
+    bank: string;
     result: string;
   };
   onFilterChange: (e: SelectChangeEvent<string>) => void;
   onClearFilters: () => void;
-  uniqueCategories: string[];
-  uniqueEventTypes: string[];
   uniqueEvents: string[];
+  uniqueModalities: string[];
+  uniqueLeagues: string[];
   uniqueMarkets: string[];
   amountRanges: string[];
+  uniqueOdds: string[];
+  uniqueBanks: string[];
 }
 
 export interface EventActionsProps {

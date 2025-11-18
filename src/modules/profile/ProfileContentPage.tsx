@@ -19,90 +19,6 @@ import { useUserAvatar } from "@/hooks/useUserAvatar";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import { clientDataService } from "@/lib/api/clientData/clientDataApi";
 
-// const ProfileContentPage: React.FC = () => {
-//   const { user, updateUser } = useAuth();
-//   const [isEditing, setIsEditing] = useState(false);
-//   const { uploadAvatar } = useUserAvatar(user?.id);
-
-//   const [formData, setFormData] = useState({
-//     image: user?.clientData?.image || "",
-//     city: user?.clientData?.address?.city || "",
-//     state: user?.clientData?.address?.state || "",
-//     neighborhood: user?.clientData?.address?.neighborhood || "",
-//   });
-
-//   const imageUrl = getImageUrl(user?.clientData?.image);
-
-//   const handleTextFieldChange = (
-//     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-//   ) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({ ...prev, [name]: value }));
-//   };
-
-//   const handleSelectChange = (e: SelectChangeEvent<string>) => {
-//     const { name, value } = e.target;
-//     setFormData((prev) => ({ ...prev, [name]: value }));
-//   };
-
-//   // const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-//   //   const file = event.target.files?.[0] || null;
-//   //   if (file) {
-//   //     const imageUrl = URL.createObjectURL(file);
-//   //     setFormData((prev) => ({ ...prev, image: imageUrl }));
-//   //   }
-//   // };
-
-//   const handleImageChange = async (
-//     event: React.ChangeEvent<HTMLInputElement>
-//   ) => {
-//     const file = event.target.files?.[0];
-
-//     if (!file) return;
-
-//     try {
-//       const imageUrl = URL.createObjectURL(file);
-//       setFormData((prev) => ({ ...prev, image: imageUrl }));
-
-//       const response = await uploadAvatar(file);
-
-//       if (response?.url) {
-//         setFormData((prev) => ({ ...prev, image: response.url }));
-//       }
-
-//       URL.revokeObjectURL(imageUrl);
-//     } catch (error) {
-//       console.error("Erro ao fazer upload do avatar:", error);
-//     }
-//   };
-
-//   const handleEditSave = (event: React.FormEvent) => {
-//     event.preventDefault();
-//     if (isEditing && updateUser && user) {
-//       updateUser({
-//         ...user,
-//         clientData: {
-//           ...user.clientData,
-//           image: formData.image,
-//           address: {
-//             ...user.clientData?.address,
-//             city: formData.city,
-//             state: formData.state,
-//             neighborhood: formData.neighborhood,
-//           },
-//         },
-//       });
-//       alert("Perfil atualizado com sucesso!");
-//       setIsEditing(false);
-//     } else {
-//       setIsEditing(true);
-//     }
-//   };
-
-//   const handleCancel = () => {
-//     setIsEditing(false);
-//   };
-
 const ProfileContentPage: React.FC = () => {
   const { user, updateUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
@@ -176,37 +92,6 @@ const ProfileContentPage: React.FC = () => {
       }));
     }
   };
-
-  // const handleEditSave = async (event: React.FormEvent) => {
-  //   event.preventDefault();
-
-  //   if (isEditing && updateUser && user) {
-  //     try {
-  //       await updateUser({
-  //         ...user,
-  //         clientData: {
-  //           ...user.clientData,
-  //           image: formData.image,
-  //           address: {
-  //             ...user.clientData?.address,
-  //             city: formData.city,
-  //             state: formData.state,
-  //             neighborhood: formData.neighborhood,
-  //           },
-  //         },
-  //       });
-
-  //       showNotification("Perfil atualizado com sucesso!", "success");
-  //       setIsEditing(false);
-  //     } catch (error) {
-  //       console.error("Erro ao salvar perfil:", error);
-  //       showNotification("Erro ao atualizar perfil. Tente novamente.", "error");
-  //     }
-  //   } else {
-  //     setIsEditing(true);
-  //   }
-  // };
-
   const handleEditSave = async (event: React.FormEvent) => {
     event.preventDefault();
 

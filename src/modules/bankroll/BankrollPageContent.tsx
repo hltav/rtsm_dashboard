@@ -219,18 +219,14 @@ const BankrollPageContent = () => {
 
       {/* Modal de informações */}
       {selectedBankroll && (
-        <BankrollInfoModal
-          open={infoOpen}
-          onClose={() => setInfoOpen(false)}
-          bankrollModal={selectedBankroll}
-        />
+        <BankrollInfoModal open={infoOpen} onClose={() => setInfoOpen(false)} />
       )}
 
       {/* Dialog de confirmação de deleção */}
       <AlertConfirmDialog
         open={alertOpen}
         title="Atenção"
-        message="Você tem certeza que deseja deletar esta banca?"
+        message="Ao deletar essa banca todos os eventos ligadas a ela também serão deletados. Deseja Continuar? "
         severity="error"
         onConfirm={handleDeleteConfirm}
         onCancel={() => {

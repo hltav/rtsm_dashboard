@@ -54,10 +54,10 @@ export const AlertConfirmDialog: React.FC<AlertConfirmDialogProps> = ({
       </DialogContent>
       <DialogActions>
         <Button onClick={onCancel} color="inherit" sx={{ color: "white" }}>
-          Cancelar
+          Não
         </Button>
         <Button onClick={onConfirm} color="error" variant="contained">
-          Confirmar
+          Sim
         </Button>
       </DialogActions>
     </Dialog>
