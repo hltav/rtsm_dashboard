@@ -39,6 +39,7 @@ const DashboardMainPage: React.FC = () => {
     totalEvents,
     winCount,
     lossCount,
+    pendingEvents,
   } = useMemo(() => {
     let profitLoss = 0;
     let wagered = 0;
@@ -46,8 +47,14 @@ const DashboardMainPage: React.FC = () => {
     let losses = 0;
     let voids = 0;
 
+    const pending: EventItem[] = [];
+
     events.forEach((event: EventItem) => {
       const amount = Number(event.amount) || 0;
+      if (!event.result || event.result === "pending") {
+        pending.push(event);
+        return;
+      }
       wagered += amount;
 
       if (event.result === "win") {
@@ -74,6 +81,7 @@ const DashboardMainPage: React.FC = () => {
       winCount: wins,
       lossCount: losses,
       voidCount: voids,
+      pendingEvents: pending,
     };
   }, [events]);
 
@@ -101,9 +109,9 @@ const DashboardMainPage: React.FC = () => {
           </Box>
         ) : (
           <Grid container spacing={4}>
-            <Grid item xs={12} sm={6} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={2.4}>
               <MetricCard
-                title="Lucro Líquido"
+                title="Unidades de Lucro"
                 value={totalProfitLoss + " unids"}
                 color={
                   totalProfitLoss >= 0 ? "#17ad1a" : theme.palette.error.main
@@ -112,25 +120,30 @@ const DashboardMainPage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={2.4}>
               <MetricCard
                 title="Saldo Total"
                 value={formatCurrency(totalBalance)}
-                color={
-                  theme.palette.mode === "dark"
-                    ? theme.palette.common.white
-                    : theme.palette.primary.main
-                }
+                color={theme.palette.mode === "dark" ? "#73889d" : "#73889d"}
                 valueColor={
-                  theme.palette.mode === "dark"
-                    ? theme.palette.common.white
-                    : undefined
+                  theme.palette.mode === "dark" ? "#73889d" : undefined
                 }
                 subText={`Bancas: ${bankrolls.length}`}
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={2.4}>
+              <MetricCard
+                title="Entradas Pendentes"
+                value={pendingEvents.length + " entradas"}
+                color={
+                  totalProfitLoss >= 0 ? "#E0A800" : theme.palette.error.main
+                }
+                subText={`Total de apostas: ${totalEvents}`}
+              />
+            </Grid>
+
+            <Grid item xs={12} sm={6} md={4} lg={2.4}>
               <MetricCard
                 title="Stake Total Apostada"
                 value={totalWagered + " unids"}
@@ -143,7 +156,7 @@ const DashboardMainPage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} lg={3}>
+            <Grid item xs={12} sm={6} md={4} lg={2.4}>
               <MetricCard
                 title="Taxa de vitórias"
                 value={winRate}

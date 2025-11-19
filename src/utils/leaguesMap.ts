@@ -6,6 +6,11 @@ export interface LeagueTranslation {
 
 export const leagueTranslations: Record<string, LeagueTranslation> = {
   //Competições Continentais
+  "FIFA World Cup": {
+    name: "Copa do Mundo FIFA",
+    logo: `/badges_leagues/fifa_logo_1.png`,
+  },
+
   "UEFA Champions League": {
     name: "UEFA Champions League",
     logo: `/badges_leagues/uefa_champions_league.png`,
@@ -214,10 +219,7 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
   "Polish Ekstraklasa": { name: "Ekstraklasa Polônia", flag: "PL" },
 
   // 🌍🏆 Competições Internacionais
-  "FIFA World Cup": {
-    name: "Copa do Mundo FIFA",
-    logo: `/badges_leagues/fifa_logo_1.png`,
-  },
+
   "American NASL": { name: "NASL - EUA", flag: "US" },
   "Norwegian 1. Divisjon": { name: "1. Divisjon Norueguesa", flag: "NO" },
   "Welsh Premier League": {

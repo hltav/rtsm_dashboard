@@ -65,7 +65,7 @@ const MainContent: React.FC = () => {
           scrollButtons="auto"
         >
           <Tab label="Evolução da Banca" />
-          <Tab label="Zoom Line Chart" />
+          <Tab label="Outros Dados" />
         </Tabs>
 
         {tab === 0 && (

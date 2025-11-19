@@ -219,7 +219,11 @@ const BankrollPageContent = () => {
 
       {/* Modal de informações */}
       {selectedBankroll && (
-        <BankrollInfoModal open={infoOpen} onClose={() => setInfoOpen(false)} />
+        <BankrollInfoModal
+          open={infoOpen}
+          onClose={() => setInfoOpen(false)}
+          bankrollModal={selectedBankroll}
+        />
       )}
 
       {/* Dialog de confirmação de deleção */}

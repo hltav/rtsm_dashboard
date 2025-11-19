@@ -6,10 +6,8 @@ import {
   Typography,
   Box,
   CircularProgress,
-  useTheme,
 } from "@mui/material";
 import { LineChart, axisClasses } from "@mui/x-charts";
-
 import { useBankrollContext } from "@/components/Providers/BankrollContext";
 import { formatCurrency } from "@/utils/formatCurrency";
 
@@ -21,7 +19,6 @@ interface ChartResult {
 }
 
 const MonthlyPLChart: React.FC = () => {
-  const theme = useTheme();
   const { selectedBankroll, isLoading, error } = useBankrollContext();
   const chartHeight = 300;
   const chartMetrics = useMemo<ChartResult>(() => {
@@ -89,14 +86,14 @@ const MonthlyPLChart: React.FC = () => {
     {
       data: lineData,
       label: "P/L Acumulado",
-      color: theme.palette.primary.main,
+      color: "#fff",
       yAxisKey: "profitAxis",
       valueFormatter: (value: number | null) =>
         value !== null ? formatCurrency(value) : "",
     },
   ];
 
-   if (isLoading) {
+  if (isLoading) {
     return (
       <Card sx={{ height: "100%" }}>
         <CardContent
@@ -141,10 +138,13 @@ const MonthlyPLChart: React.FC = () => {
   const yAxisMargin = (maxProfit - minProfit) * 0.1 || 10;
 
   return (
-    <Card sx={{ height: "100%" }} elevation={0}>
+    <Card
+      sx={{ height: "100%", bgcolor: "#1A2B41", color: "#fff" }}
+      elevation={0}
+    >
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          P/L Mensal Acumulado ({selectedBankroll.name})
+          P/L Mensal Acumulado - {selectedBankroll.name}
         </Typography>
         <Box sx={{ height: chartHeight, width: "100%" }}>
           <LineChart
@@ -163,25 +163,32 @@ const MonthlyPLChart: React.FC = () => {
                 label: "",
                 min: minProfit - yAxisMargin,
                 max: maxProfit + yAxisMargin,
-                valueFormatter: (value: number) => formatCurrency(value),
+                valueFormatter: (value: number | string) => `${value}`,
               },
             ]}
             margin={{ top: 20, right: 30, left: 70, bottom: 50 }}
             grid={{ horizontal: true }}
             sx={{
               [`& .${axisClasses.left} .${axisClasses.tickLabel}`]: {
-                fill: theme.palette.text.secondary,
+                fill: "#fff",
               },
               [`& .${axisClasses.bottom} .${axisClasses.tickLabel}`]: {
-                fill: theme.palette.text.secondary,
+                fill: "#fff",
                 transform: "rotate(-45deg)",
                 textAnchor: "end",
               },
               [`& .MuiChartsAxis-directionY .MuiChartsAxis-line`]: {
-                stroke: theme.palette.divider,
+                stroke: "#fff",
               },
               [`& .MuiChartsAxis-directionX .MuiChartsAxis-line`]: {
-                stroke: theme.palette.divider,
+                stroke: "#fff",
+              },
+              "& .MuiChartsGrid-line": {
+                stroke: "rgba(255,255,255,0.2)",
+              },
+              "& .MuiLineElement-root": {
+                stroke: "#fff",
+                strokeWidth: 2,
               },
             }}
           />

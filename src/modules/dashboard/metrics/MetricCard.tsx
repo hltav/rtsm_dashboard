@@ -5,7 +5,7 @@ import { Card, Typography, Box } from "@mui/material";
 export interface MetricCardProps {
   title: string;
   value: number | string;
-  color: string;
+  color: string; 
   isCurrency?: boolean;
   subText?: string;
   valueColor?: string;
@@ -28,19 +28,21 @@ const MetricCard: React.FC<MetricCardProps> = ({
         height: "100%",
         display: "flex",
         alignItems: "center",
-        p: 2,
-        bgcolor: "background.paper",
+        p: 1.5,
+        bgcolor: "#1A2B41",
         borderRadius: 2,
         borderLeft: `5px solid ${color}`,
       }}
     >
       <Box sx={{ flexGrow: 1 }}>
-        {/* Título */}
-        <Typography variant="body2" color="text.secondary" gutterBottom>
+        <Typography
+          variant="body2"
+          sx={{ color: "rgba(255,255,255,0.7)" }}
+          gutterBottom
+        >
           {title}
         </Typography>
 
-        {/* Valor principal usa a displayColor */}
         <Typography variant="h5" fontWeight="bold" sx={{ color: displayColor }}>
           {isCurrency
             ? value
@@ -50,9 +52,8 @@ const MetricCard: React.FC<MetricCardProps> = ({
               })}%`}
         </Typography>
 
-        {/* SubTexto */}
         {subText && (
-          <Typography variant="caption" color="text.disabled">
+          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.5)" }}>
             {subText}
           </Typography>
         )}

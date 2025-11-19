@@ -103,6 +103,7 @@ Austrália
 Australiana
 Australiano
 Austríaca
+automática
 Automobilismo
 autorizar
 autossuficiente
@@ -171,6 +172,7 @@ Campeones
 Campionato
 Canadense
 Capixaba
+carga
 Caribe
 carregue
 Cartão
@@ -349,6 +351,8 @@ Emirados
 Empate
 encerrando
 entenda
+entradas
+Entradas
 enviaremos
 envolver
 Equador
@@ -572,6 +576,7 @@ inseridos
 integração
 Inteligente
 Inteligentes
+intencionalmente
 interatividade
 Intermedia
 interna

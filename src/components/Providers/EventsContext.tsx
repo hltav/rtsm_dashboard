@@ -2,6 +2,7 @@
 import React, { createContext, useCallback, useEffect, useState } from "react";
 import { getEvents } from "@/lib/api/events/eventsApi";
 import { useResultUpdater } from "@/hooks/useResultUpdater";
+import { useAuth } from "@/components/Providers/AuthContext";
 import { EventItem } from "@/modules/events/schemas/EventItem";
 
 interface EventsContextType {
@@ -15,11 +16,12 @@ export const EventsContext = createContext<EventsContextType | undefined>(
   undefined
 );
 
-interface EventsProviderProps {
-  children: React.ReactNode;
-}
+export const EventsProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const { user } = useAuth();
+  const userId = user?.id;
 
-export const EventsProvider: React.FC<EventsProviderProps> = ({ children }) => {
   const [events, setEvents] = useState<EventItem[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
@@ -28,21 +30,29 @@ export const EventsProvider: React.FC<EventsProviderProps> = ({ children }) => {
   const { updateAllResults } = useResultUpdater();
 
   const fetchEvents = useCallback(async () => {
+    if (!userId) {
+      setEvents([]);
+      setLoading(false);
+      return;
+    }
+
     try {
       setLoading(true);
       setError(null);
+
       await updateAllResults();
+
       const data = await getEvents();
-      setEvents(data);
+      const filtered = data.filter((e) => e.userId === userId);
+
+      setEvents(filtered);
     } catch (err) {
       console.error("Erro ao buscar eventos:", err);
-      setError(
-        err instanceof Error ? err : new Error("Ocorreu um erro desconhecido.")
-      );
+      setError(err instanceof Error ? err : new Error("Ocorreu um erro."));
     } finally {
       setLoading(false);
     }
-  }, [updateAllResults]);
+  }, [updateAllResults, userId]);
 
   useEffect(() => {
     fetchEvents();
@@ -52,14 +62,9 @@ export const EventsProvider: React.FC<EventsProviderProps> = ({ children }) => {
     setShouldRefetch((prev) => prev + 1);
   }, []);
 
-  const value: EventsContextType = {
-    events,
-    loading,
-    error,
-    refetch,
-  };
-
   return (
-    <EventsContext.Provider value={value}>{children}</EventsContext.Provider>
+    <EventsContext.Provider value={{ events, loading, error, refetch }}>
+      {children}
+    </EventsContext.Provider>
   );
 };

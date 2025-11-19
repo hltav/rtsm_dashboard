@@ -1,4 +1,5 @@
 import { Card, CardContent } from "@mui/material";
+import { axisClasses } from "@mui/x-charts";
 import { LineChart } from "@mui/x-charts/LineChart";
 
 const data = [
@@ -42,7 +43,13 @@ const series = [
 
 export default function ZoomLineChart() {
   return (
-    <Card elevation={0}>
+    <Card
+      elevation={0}
+      sx={{
+        bgcolor: "#1A2B42",
+        color: "#fff",
+      }}
+    >
       <CardContent>
         <LineChart
           height={300}
@@ -51,16 +58,34 @@ export default function ZoomLineChart() {
               scaleType: "point",
               data: data.map((_, i) => i + 1),
               label: "Período",
+              tickLabelStyle: { fill: "#fff" },
+              labelStyle: { fill: "#fff" },
             },
           ]}
           yAxis={[
             {
               label: "Valores",
               valueFormatter: (v: number) => v.toFixed(2),
+              tickLabelStyle: { fill: "#fff" },
+              labelStyle: { fill: "#fff" },
             },
           ]}
           series={series}
           grid={{ vertical: true, horizontal: true }}
+          sx={{
+            [`& .${axisClasses.left} .${axisClasses.tickLabel}`]: {
+              fill: "#fff",
+            },
+            [`& .${axisClasses.bottom} .${axisClasses.tickLabel}`]: {
+              fill: "#fff",
+            },
+            [`& .${axisClasses.root} .${axisClasses.line}`]: {
+              stroke: "#ffffff55",
+            },
+            "& .MuiChartsGrid-line": {
+              stroke: "#ffffff22",
+            },
+          }}
         />
       </CardContent>
     </Card>

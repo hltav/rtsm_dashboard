@@ -2,22 +2,23 @@ import React from "react";
 import { Box, Typography, Button, Modal, Divider } from "@mui/material";
 import { modalStyle } from "@/modules/events/interfaces/modalStyle";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { useBankrollContext } from "@/components/Providers/BankrollContext";
+import { BankrollDto } from "../schema/bankroll.schema";
 
 interface BankrollInfoModalProps {
   open: boolean;
   onClose: () => void;
+  bankrollModal: BankrollDto;
 }
 
 const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
   open,
   onClose,
+  bankrollModal
 }) => {
-  const { selectedBankroll } = useBankrollContext();
+  
+  if (!bankrollModal) return null;
 
-  if (!selectedBankroll) return null;
-
-  const history = selectedBankroll.histories ?? [];
+  const history = bankrollModal.histories ?? [];
 
   const deposits = history
     .filter((h) => h.type === "DEPOSIT" && h.amount)
@@ -39,13 +40,13 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
     .filter((h) => h.type === "BET_LOST")
     .reduce((acc, h) => {
       const amount = Math.abs(h.amount ?? 0);
-      const unid = h.unidValue ?? selectedBankroll.unidValue ?? 1;
+      const unid = h.unidValue ?? bankrollModal.unidValue ?? 1;
       return acc + amount * unid;
     }, 0);
 
   const profitAndLoss = gains - losses;
 
-  const result = selectedBankroll.balance - selectedBankroll.initialBalance;
+  const result = bankrollModal.balance - bankrollModal.initialBalance;
 
   const lastHistory = history[history.length - 1];
 
@@ -62,7 +63,7 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
             Nome
           </Typography>
           <Typography variant="body1" fontWeight="medium">
-            {selectedBankroll.name}
+            {bankrollModal.name}
           </Typography>
         </Box>
 
@@ -72,7 +73,7 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
             Casa de Apostas
           </Typography>
           <Typography variant="body1" fontWeight="medium">
-            {selectedBankroll.bookmaker}
+            {bankrollModal.bookmaker}
           </Typography>
         </Box>
 
@@ -84,7 +85,7 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
             Saldo Atual
           </Typography>
           <Typography variant="h6" fontWeight="bold" color="white">
-            {formatCurrency(selectedBankroll.balance)}
+            {formatCurrency(bankrollModal.balance)}
           </Typography>
         </Box>
 
@@ -93,7 +94,7 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
             Saldo Inicial
           </Typography>
           <Typography variant="body1" fontWeight="medium">
-            {formatCurrency(selectedBankroll.initialBalance)}
+            {formatCurrency(bankrollModal.initialBalance)}
           </Typography>
         </Box>
 
@@ -102,7 +103,7 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
             Valor da Unidade
           </Typography>
           <Typography variant="body1" fontWeight="medium">
-            {formatCurrency(selectedBankroll.unidValue)}
+            {formatCurrency(bankrollModal.unidValue)}
           </Typography>
         </Box>
 
@@ -145,7 +146,7 @@ const BankrollInfoModal: React.FC<BankrollInfoModalProps> = ({
             Apostas
           </Typography>
           <Typography variant="body2" color="error.warning" fontWeight="bold">
-            {formatCurrency(selectedBankroll.totalStaked ?? 0)}
+            {formatCurrency(bankrollModal.totalStaked ?? 0)}
           </Typography>
         </Box>
 
