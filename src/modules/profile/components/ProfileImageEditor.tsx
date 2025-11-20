@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Typography, useTheme } from "@mui/material";
 import { ProfileImageEditorProps } from "@/modules/profile/props/profileImageEditor.props";
 
 export const ProfileImageEditor: React.FC<ProfileImageEditorProps> = ({
@@ -7,11 +7,14 @@ export const ProfileImageEditor: React.FC<ProfileImageEditorProps> = ({
   isEditing,
   onImageChange,
 }) => {
+  const theme = useTheme();
+
   return (
     <Box sx={{ mb: 2, textAlign: "center" }}>
-      <Typography variant="body1" color="text.tertiary" sx={{ mb: 1 }}>
+      <Typography variant="body1" color="text.primary" sx={{ mb: 1 }}>
         Foto de Perfil
       </Typography>
+
       <input
         accept="image/*"
         style={{ display: "none" }}
@@ -20,6 +23,7 @@ export const ProfileImageEditor: React.FC<ProfileImageEditorProps> = ({
         onChange={onImageChange}
         disabled={!isEditing}
       />
+
       <Box
         sx={{
           width: 150,
@@ -28,13 +32,13 @@ export const ProfileImageEditor: React.FC<ProfileImageEditorProps> = ({
           margin: "0 auto 16px",
           cursor: isEditing ? "pointer" : "default",
           border: "2px solid",
-          borderColor: "primary.main",
-          boxShadow: "0px 4px 10px rgba(0,0,0,0.1)",
+          borderColor: theme.palette.primary.main,
+          boxShadow: theme.shadows[4],
           backgroundImage: profileImage ? `url(${profileImage})` : "none",
           backgroundSize: "cover",
           backgroundPosition: "center",
           backgroundRepeat: "no-repeat",
-          bgcolor: "grey.200",
+          bgcolor: theme.palette.grey[200],
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
@@ -45,14 +49,22 @@ export const ProfileImageEditor: React.FC<ProfileImageEditorProps> = ({
         }}
       >
         {!profileImage && (
-          <Typography variant="caption" color="text.tertiary">
+          <Typography variant="caption" color="secondary.contrastText">
             Carregar Imagem
           </Typography>
         )}
       </Box>
+
       {isEditing && (
         <label htmlFor="profile-image-upload">
-          <Button variant="outlined" component="span" color="secondary">
+          <Button
+            variant="outlined"
+            component="span"
+            sx={{
+              borderColor: (theme) => theme.palette.secondary.contrastText,
+              color: (theme) => theme.palette.secondary.contrastText,
+            }}
+          >
             {profileImage ? "Alterar Imagem" : "Carregar Imagem"}
           </Button>
         </label>
@@ -60,4 +72,3 @@ export const ProfileImageEditor: React.FC<ProfileImageEditorProps> = ({
     </Box>
   );
 };
-

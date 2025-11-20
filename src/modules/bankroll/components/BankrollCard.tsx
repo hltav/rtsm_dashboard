@@ -11,9 +11,9 @@ import {
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import InfoIcon from "@mui/icons-material/Info";
+import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { BankrollCardProps } from "../props/bankrollCard.props";
 import { formatCurrency } from "@/utils/formatCurrency";
-import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 
 export const BankrollCard = ({
   bankroll,
@@ -36,8 +36,8 @@ export const BankrollCard = ({
         border:
           theme.palette.mode === "dark"
             ? "1px solid transparent"
-            : "1px solid rgba(26, 43, 66, 0.08)",
-        bgcolor: "#1A2B42",
+            : `1px solid ${theme.palette.divider}`,
+        bgcolor: theme.palette.background.paper,
         p: 2,
       }}
     >
@@ -55,7 +55,7 @@ export const BankrollCard = ({
             component="div"
             sx={{
               fontWeight: 600,
-              color: "#FFFFFF",
+              color: theme.palette.text.primary,
               whiteSpace: "nowrap",
               overflow: "hidden",
               textOverflow: "ellipsis",
@@ -65,23 +65,41 @@ export const BankrollCard = ({
             {bankroll.name}
           </Typography>
         </Box>
+
         <Stack spacing={0.5}>
-          <Typography variant="caption" sx={{ color: "#D0D0D0" }}>
+          <Typography
+            variant="caption"
+            sx={{ color: theme.palette.text.secondary }}
+          >
             <strong>Casa de Apostas:</strong> {bankroll.bookmaker}
           </Typography>
-          <Typography variant="caption" sx={{ color: "#D0D0D0" }}>
+
+          <Typography
+            variant="caption"
+            sx={{ color: theme.palette.text.secondary }}
+          >
             <strong>Saldo:</strong> {formatCurrency(bankroll.balance)}
           </Typography>
-          <Typography variant="caption" sx={{ color: "#D0D0D0" }}>
+
+          <Typography
+            variant="caption"
+            sx={{ color: theme.palette.text.secondary }}
+          >
             <strong>Valor por Unid:</strong>{" "}
             {formatCurrency(bankroll.unidValue)}
           </Typography>
-          <Typography variant="caption" sx={{ color: "#D0D0D0" }}>
+
+          <Typography
+            variant="caption"
+            sx={{ color: theme.palette.text.secondary }}
+          >
             <strong>Número de Unids:</strong>{" "}
             {(bankroll.balance / Number(bankroll.unidValue)).toFixed(2)}
           </Typography>
         </Stack>
       </CardContent>
+
+      {/* Botões laterais */}
       <Box
         sx={{
           display: "flex",
@@ -99,6 +117,7 @@ export const BankrollCard = ({
         >
           <InfoIcon />
         </IconButton>
+
         <IconButton
           size="small"
           sx={{ color: theme.palette.warning.main }}
@@ -106,10 +125,11 @@ export const BankrollCard = ({
         >
           <EditIcon />
         </IconButton>
+
         <IconButton
           size="small"
           sx={{ color: theme.palette.error.main }}
-          onClick={() => onDelete(bankroll.id)} // ← aqui chamamos a função
+          onClick={() => onDelete(bankroll.id)}
         >
           <DeleteForeverOutlinedIcon />
         </IconButton>

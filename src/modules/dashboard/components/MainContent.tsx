@@ -60,7 +60,18 @@ const MainContent: React.FC = () => {
         <Tabs
           value={tab}
           onChange={handleChange}
-          sx={{ mb: 4 }}
+          sx={(theme) => ({
+            mb: 4,
+            "& .MuiTab-root": {
+              color: theme.palette.text.primary,
+            },
+            "& .Mui-selected": {
+              color: theme.palette.secondary.contrastText + " !important",
+            },
+            "& .MuiTabs-indicator": {
+              backgroundColor: theme.palette.secondary.contrastText,
+            },
+          })}
           variant="scrollable"
           scrollButtons="auto"
         >

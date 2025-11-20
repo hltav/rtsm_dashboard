@@ -12,10 +12,6 @@ const BankrollChips: React.FC<BankrollChipsProps> = ({ bankrolls }) => {
   return (
     <Card elevation={0}>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
-          Saldo por Banca
-        </Typography>
-
         <Box sx={{ mt: 2, display: "flex", flexWrap: "wrap", gap: 2 }}>
           {bankrolls && bankrolls.length > 0 ? (
             bankrolls.map((bank: BankrollDto) => {

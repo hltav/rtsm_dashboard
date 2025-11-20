@@ -11,15 +11,26 @@ import { useTheme } from "@mui/material";
 import { axisClasses } from "@mui/x-charts/ChartsAxis";
 import { useEvents } from "@/modules/events/hooks/useEvents";
 
-const ModalityBarChart: React.FC = () => {
+interface ModalityBarChartProps {
+  selectedBankrollId: number | null;
+}
+
+const ModalityBarChart: React.FC<ModalityBarChartProps> = ({
+  selectedBankrollId,
+}) => {
   const theme = useTheme();
   const { events, loading } = useEvents();
   const chartHeight = 300;
 
+  const filteredEvents = useMemo(() => {
+    if (selectedBankrollId === null) return events;
+    return events.filter((e) => e.bankId === selectedBankrollId);
+  }, [events, selectedBankrollId]);
+
   const modalityChartData = useMemo(() => {
     const map: { [key: string]: number } = {};
 
-    events.forEach((event) => {
+    filteredEvents.forEach((event) => {
       const modality = event.modality || "Sem Modalidade";
       if (!map[modality]) {
         map[modality] = 0;
@@ -27,15 +38,13 @@ const ModalityBarChart: React.FC = () => {
       map[modality]++;
     });
 
-    const aggregatedData = Object.keys(map)
+    return Object.keys(map)
       .map((mod) => ({
         name: mod,
         wagers: map[mod],
       }))
       .sort((a, b) => b.wagers - a.wagers);
-
-    return aggregatedData;
-  }, [events]);
+  }, [filteredEvents]);
 
   const xAxisData = modalityChartData.map((d) => d.name);
 
@@ -59,7 +68,7 @@ const ModalityBarChart: React.FC = () => {
             alignItems: "center",
           }}
         >
-                  <CircularProgress />       
+          <CircularProgress />
         </CardContent>
       </Card>
     );
@@ -68,9 +77,6 @@ const ModalityBarChart: React.FC = () => {
   return (
     <Card sx={{ height: "100%" }} elevation={0}>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
-                    Apostas por Modalidade        
-        </Typography>
         <Box sx={{ height: chartHeight, width: "100%" }}>
           {modalityChartData.length > 0 ? (
             <BarChart
@@ -81,7 +87,6 @@ const ModalityBarChart: React.FC = () => {
                   data: xAxisData,
                   scaleType: "band",
                   categoryGapRatio: 0.95,
-                  
                 },
               ]}
               yAxis={[
@@ -99,9 +104,7 @@ const ModalityBarChart: React.FC = () => {
                   fill: theme.palette.text.secondary,
                   transform: "rotate(-45deg)",
                   textAnchor: "end",
-                  
                 },
-              
               }}
             />
           ) : (

@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, IconButton, Box } from "@mui/material";
+import { Button, IconButton, Box, useTheme } from "@mui/material";
 import {
   Add as AddIcon,
   FilterList as FilterListIcon,
@@ -11,12 +11,17 @@ const EventActions: React.FC<EventActionsProps> = ({
   onAddClick,
   onFilterClick,
 }) => {
+  const theme = useTheme();
+
   return (
     <Box sx={{ display: "flex", gap: 1 }}>
       {isMobile ? (
         <IconButton
           onClick={onFilterClick}
-          sx={{ bgcolor: "#1A2B42", color: "#4CAF50" }}
+          sx={{
+            bgcolor: theme.palette.background.default,
+            color: theme.palette.success.main,
+          }}
         >
           <FilterListIcon />
         </IconButton>
@@ -25,9 +30,10 @@ const EventActions: React.FC<EventActionsProps> = ({
           variant="contained"
           onClick={onFilterClick}
           sx={{
-            bgcolor: "#1A2B42",
+            bgcolor: theme.palette.background.default,
+            color: theme.palette.success.main,
             "&:hover": {
-              bgcolor: "#2A4060",
+              bgcolor: theme.palette.action.hover,
             },
           }}
           startIcon={<FilterListIcon />}
@@ -39,9 +45,10 @@ const EventActions: React.FC<EventActionsProps> = ({
         <IconButton
           onClick={onAddClick}
           sx={{
-            bgcolor: "#E0A800",
+            bgcolor: theme.palette.warning.main,
+            color: theme.palette.background.paper,
             "&:hover": {
-              bgcolor: "#E0A800",
+              bgcolor: theme.palette.warning.dark,
             },
           }}
         >
@@ -52,12 +59,11 @@ const EventActions: React.FC<EventActionsProps> = ({
           variant="contained"
           onClick={onAddClick}
           sx={{
-            bgcolor: "#E0A800",
-            color: "#1A2B42",
+            bgcolor: theme.palette.primary.main,
+            color: theme.palette.text.tertiary,
             transition: "all 0.2s ease-in-out",
             "&:hover": {
-              color: "#E0E0E0", // muda a cor do texto no hover
-              // mantém o fundo igual
+              color: theme.palette.text.secondary,
             },
           }}
           startIcon={<AddIcon />}

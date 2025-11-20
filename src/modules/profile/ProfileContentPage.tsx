@@ -10,6 +10,7 @@ import {
   CssBaseline,
   SelectChangeEvent,
   Stack,
+  useTheme,
 } from "@mui/material";
 import { ProfileImageEditor } from "./components/ProfileImageEditor";
 import { UserFormFields } from "./components/UserFormFields";
@@ -20,6 +21,8 @@ import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import { clientDataService } from "@/lib/api/clientData/clientDataApi";
 
 const ProfileContentPage: React.FC = () => {
+  const theme = useTheme();
+
   const { user, updateUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
   const { uploadAvatar } = useUserAvatar(user?.id);
@@ -92,6 +95,7 @@ const ProfileContentPage: React.FC = () => {
       }));
     }
   };
+
   const handleEditSave = async (event: React.FormEvent) => {
     event.preventDefault();
 
@@ -184,7 +188,7 @@ const ProfileContentPage: React.FC = () => {
               maxWidth: { xs: "95%", sm: "700px", md: "800px", lg: "700px" },
               margin: "20px auto",
               border: "none",
-              bgcolor: "#1A2B42",
+              bgcolor: theme.palette.background.paper, // usado tema
             }}
           >
             <Box
@@ -196,13 +200,8 @@ const ProfileContentPage: React.FC = () => {
                 flexDirection: "column",
                 justifyContent: "center",
                 p: { xs: 1, sm: 4, md: 6 },
-                bgcolor: "#1A2B42",
+                bgcolor: theme.palette.background.paper, // usado tema
                 border: "none",
-                maxHeight: {
-                  xs: "unset",
-                  sm: "unset",
-                  md: "unset",
-                },
               }}
             >
               <Typography
@@ -210,14 +209,18 @@ const ProfileContentPage: React.FC = () => {
                 component="h2"
                 gutterBottom
                 textAlign="center"
-                sx={{ fontWeight: 700, color: "#fff", mb: 1 }}
+                sx={{ fontWeight: 700, color: theme.palette.text.primary }}
               >
                 Meu Perfil
               </Typography>
               <Typography
                 variant="body1"
                 textAlign="center"
-                sx={{ opacity: 0.9, mb: 2, color: "text.tertiary" }}
+                sx={{
+                  opacity: 0.9,
+                  mb: 2,
+                  color: theme.palette.text.secondary,
+                }}
               >
                 Visualize e edite suas informações pessoais.
               </Typography>
@@ -244,11 +247,11 @@ const ProfileContentPage: React.FC = () => {
                     onClick={handleCancel}
                     sx={{
                       flex: 1,
-                      borderColor: "secondary.main",
-                      color: "secondary.main",
+                      borderColor: theme.palette.text.primary,
+                      color: theme.palette.text.primary,
                       "&:hover": {
-                        borderColor: "gold",
-                        backgroundColor: "rgba(255, 255, 0, 0.02)",
+                        borderColor: theme.palette.text.primary,
+                        backgroundColor: theme.palette.action.hover,
                       },
                     }}
                   >
@@ -258,9 +261,13 @@ const ProfileContentPage: React.FC = () => {
                   <Button
                     type="submit"
                     variant="contained"
-                    color="secondary"
+                    color="primary"
                     size="large"
-                    sx={{ py: 1.5, flex: 1, color: "#1A2B42" }}
+                    sx={{
+                      py: 1.5,
+                      flex: 1,
+                      color: theme.palette.text.tertiary,
+                    }}
                   >
                     Salvar
                   </Button>
@@ -268,10 +275,18 @@ const ProfileContentPage: React.FC = () => {
               ) : (
                 <Button
                   variant="contained"
-                  color="secondary"
+                  color="primary"
                   fullWidth
                   size="large"
-                  sx={{ py: 1.5, color: "#1A2B42" }}
+                  sx={{
+                    py: 1.5,
+                    bgcolor: theme.palette.primary.main,
+                    color: theme.palette.text.tertiary,
+                    transition: "all 0.2s ease-in-out",
+                    "&:hover": {
+                      color: theme.palette.text.secondary,
+                    },
+                  }}
                   onClick={() => setIsEditing(true)}
                 >
                   Editar Perfil

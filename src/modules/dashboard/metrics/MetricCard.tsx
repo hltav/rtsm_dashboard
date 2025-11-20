@@ -1,11 +1,11 @@
 "use client";
 import React from "react";
-import { Card, Typography, Box } from "@mui/material";
+import { Card, Typography, Box, useTheme } from "@mui/material";
 
 export interface MetricCardProps {
   title: string;
   value: number | string;
-  color: string; 
+  color: string;
   isCurrency?: boolean;
   subText?: string;
   valueColor?: string;
@@ -19,6 +19,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
   subText = "",
   valueColor,
 }) => {
+  const theme = useTheme();
   const displayColor = valueColor || color;
 
   return (
@@ -29,15 +30,15 @@ const MetricCard: React.FC<MetricCardProps> = ({
         display: "flex",
         alignItems: "center",
         p: 1.5,
-        bgcolor: "#1A2B41",
         borderRadius: 2,
         borderLeft: `5px solid ${color}`,
+        backgroundColor: theme.palette.background.paper,
       }}
     >
       <Box sx={{ flexGrow: 1 }}>
         <Typography
           variant="body2"
-          sx={{ color: "rgba(255,255,255,0.7)" }}
+          sx={{ color: theme.palette.text.primary }}
           gutterBottom
         >
           {title}
@@ -53,7 +54,10 @@ const MetricCard: React.FC<MetricCardProps> = ({
         </Typography>
 
         {subText && (
-          <Typography variant="caption" sx={{ color: "rgba(255,255,255,0.5)" }}>
+          <Typography
+            variant="caption"
+            sx={{ color: theme.palette.text.disabled }}
+          >
             {subText}
           </Typography>
         )}

@@ -11,6 +11,7 @@ import {
   Typography,
   Box,
   styled,
+  useTheme,
 } from "@mui/material";
 import { Info as InfoIcon, RemoveCircle } from "@mui/icons-material";
 import { FullEvent } from "../schemas/EventItem";
@@ -32,8 +33,8 @@ interface EventTableProps {
   onEventDeleted?: (id: number) => void;
 }
 
-const StyledTableCell = styled(TableCell)(() => ({
-  color: "#fff",
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+  color: theme.palette.text.primary,
 }));
 
 const EventTable: React.FC<EventTableProps> = ({
@@ -41,6 +42,7 @@ const EventTable: React.FC<EventTableProps> = ({
   onInfoClick,
   onEventDeleted,
 }) => {
+  const theme = useTheme();
   const [openConfirm, setOpenConfirm] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const { showNotification } = useNotification();
@@ -96,7 +98,7 @@ const EventTable: React.FC<EventTableProps> = ({
       component={Paper}
       elevation={0}
       sx={{
-        bgcolor: "#1A2B42",
+        bgcolor: theme.palette.background.paper,
       }}
     >
       <Table aria-label="events table">
@@ -164,7 +166,7 @@ const EventTable: React.FC<EventTableProps> = ({
                   scope="row"
                   sx={{
                     display: { xs: "table-cell", sm: "none" },
-                    bgcolor: "#1A2B42",
+                    bgcolor: theme.palette.background.paper,
                   }}
                 >
                   <Box
@@ -188,7 +190,7 @@ const EventTable: React.FC<EventTableProps> = ({
                           variant="body2"
                           sx={{
                             display: { xs: "block", sm: "none" },
-                            color: "text.secondary",
+                            color: theme.palette.text.secondary,
                           }}
                         >
                           {event.league}
@@ -200,7 +202,7 @@ const EventTable: React.FC<EventTableProps> = ({
                           variant="body2"
                           sx={{
                             display: { xs: "block", sm: "none" },
-                            color: "text.secondary",
+                            color: theme.palette.text.secondary,
                           }}
                         >
                           {event.market} - {event.optionMarket}
@@ -257,7 +259,7 @@ const EventTable: React.FC<EventTableProps> = ({
                             </Typography>
                           </Box>
                           <IconButton
-                            sx={{ color: "#4CAF50" }}
+                            sx={{ color: theme.palette.success.main }}
                             onClick={() => onInfoClick(event)}
                           >
                             <InfoIcon />
@@ -322,7 +324,12 @@ const EventTable: React.FC<EventTableProps> = ({
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                   align="center"
                 >
-                  <Box sx={{ fontSize: "12px", color: "#9e9da2" }}>
+                  <Box
+                    sx={{
+                      fontSize: "12px",
+                      color: theme.palette.text.disabled,
+                    }}
+                  >
                     {formatEventDate(event.eventDate, "long")}
                   </Box>
                   <Box
@@ -425,7 +432,7 @@ const EventTable: React.FC<EventTableProps> = ({
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
                   <IconButton
-                    sx={{ color: "#4CAF50" }}
+                    sx={{ color: theme.palette.success.main }}
                     onClick={() => onInfoClick(event)}
                   >
                     <InfoIcon />

@@ -9,6 +9,7 @@ import {
   MenuItem,
   Button,
   Modal,
+  useTheme,
 } from "@mui/material";
 import {
   CancelOutlined as CancelIcon,
@@ -32,9 +33,17 @@ const FilterModal: React.FC<FilterModalProps> = ({
   uniqueBanks,
   amountRanges,
 }) => {
+  const theme = useTheme();
+
   return (
     <Modal open={open} onClose={onClose}>
-      <Box sx={modalStyle}>
+      <Box
+        sx={{
+          ...modalStyle,
+          bgcolor: theme.palette.background.paper,
+          color: theme.palette.text.primary,
+        }}
+      >
         <Box
           sx={{
             display: "flex",
@@ -43,14 +52,24 @@ const FilterModal: React.FC<FilterModalProps> = ({
             mb: 2,
           }}
         >
-          <Typography variant="h5" component="h2">
+          <Typography
+            variant="h5"
+            component="h2"
+            sx={{ color: theme.palette.text.primary }}
+          >
             Filtros
           </Typography>
           <Box>
-            <IconButton onClick={onClose} sx={{ color: "red" }}>
+            <IconButton
+              onClick={onClose}
+              sx={{ color: theme.palette.error.main }}
+            >
               <CancelIcon />
             </IconButton>
-            <IconButton onClick={onClose} color="primary">
+            <IconButton
+              onClick={onClose}
+              sx={{ color: theme.palette.success.main }}
+            >
               <SaveIcon />
             </IconButton>
           </Box>
@@ -66,13 +85,30 @@ const FilterModal: React.FC<FilterModalProps> = ({
           }}
         >
           <FormControl fullWidth>
-            <InputLabel id="event-label">Evento</InputLabel>
+            <InputLabel
+              id="event-label"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              Evento
+            </InputLabel>
             <Select
               labelId="event-label"
               name="event"
               value={filters.event}
               onChange={onFilterChange}
               label="Evento"
+              sx={{
+                color: theme.palette.text.primary,
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueEvents.map((evt) => (
@@ -84,13 +120,30 @@ const FilterModal: React.FC<FilterModalProps> = ({
           </FormControl>
 
           <FormControl fullWidth>
-            <InputLabel id="modality-label">Modalidade</InputLabel>
+            <InputLabel
+              id="modality-label"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              Modalidade
+            </InputLabel>
             <Select
               labelId="modality-label"
               name="modality"
               value={filters.modality}
               onChange={onFilterChange}
               label="Modalidade"
+              sx={{
+                color: theme.palette.text.primary,
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueModalities.map((mod) => (
@@ -102,13 +155,30 @@ const FilterModal: React.FC<FilterModalProps> = ({
           </FormControl>
 
           <FormControl fullWidth>
-            <InputLabel id="league-label">Liga</InputLabel>
+            <InputLabel
+              id="league-label"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              Liga
+            </InputLabel>
             <Select
               labelId="league-label"
               name="league"
               value={filters.league}
               onChange={onFilterChange}
               label="Liga"
+              sx={{
+                color: theme.palette.text.primary,
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueLeagues.map((league) => (
@@ -120,13 +190,30 @@ const FilterModal: React.FC<FilterModalProps> = ({
           </FormControl>
 
           <FormControl fullWidth>
-            <InputLabel id="market-label">Mercado</InputLabel>
+            <InputLabel
+              id="market-label"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              Mercado
+            </InputLabel>
             <Select
               labelId="market-label"
               name="market"
               value={filters.market}
               onChange={onFilterChange}
               label="Mercado"
+              sx={{
+                color: theme.palette.text.primary,
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueMarkets.map((mkt) => (
@@ -138,13 +225,30 @@ const FilterModal: React.FC<FilterModalProps> = ({
           </FormControl>
 
           <FormControl fullWidth>
-            <InputLabel id="amountRange-label">Unids (Valor)</InputLabel>
+            <InputLabel
+              id="amountRange-label"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              Unids (Valor)
+            </InputLabel>
             <Select
               labelId="amountRange-label"
               name="amountRange"
               value={filters.amountRange}
               onChange={onFilterChange}
               label="Unids (Valor)"
+              sx={{
+                color: theme.palette.text.primary,
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {amountRanges.slice(1).map((range) => (
@@ -156,13 +260,30 @@ const FilterModal: React.FC<FilterModalProps> = ({
           </FormControl>
 
           <FormControl fullWidth>
-            <InputLabel id="odd-label">Odd</InputLabel>
+            <InputLabel
+              id="odd-label"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              Odd
+            </InputLabel>
             <Select
               labelId="odd-label"
               name="odd"
               value={filters.odd}
               onChange={onFilterChange}
               label="Odd"
+              sx={{
+                color: theme.palette.text.primary,
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueOdds.map((odd) => (
@@ -174,13 +295,30 @@ const FilterModal: React.FC<FilterModalProps> = ({
           </FormControl>
 
           <FormControl fullWidth>
-            <InputLabel id="bank-label">Banca</InputLabel>
+            <InputLabel
+              id="bank-label"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              Banca
+            </InputLabel>
             <Select
               labelId="bank-label"
               name="bank"
               value={filters.bank}
               onChange={onFilterChange}
               label="Banca"
+              sx={{
+                color: theme.palette.text.primary,
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueBanks.map((bank) => (
@@ -192,13 +330,30 @@ const FilterModal: React.FC<FilterModalProps> = ({
           </FormControl>
 
           <FormControl fullWidth>
-            <InputLabel id="result-label">Resultado</InputLabel>
+            <InputLabel
+              id="result-label"
+              sx={{ color: theme.palette.text.secondary }}
+            >
+              Resultado
+            </InputLabel>
             <Select
               labelId="result-label"
               name="result"
               value={filters.result}
               onChange={onFilterChange}
               label="Resultado"
+              sx={{
+                color: theme.palette.text.primary,
+                "& .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&:hover .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.divider,
+                },
+                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
+                  borderColor: theme.palette.primary.main,
+                },
+              }}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="win">Ganha</MenuItem>
@@ -218,7 +373,14 @@ const FilterModal: React.FC<FilterModalProps> = ({
           <Button
             onClick={onClearFilters}
             variant="outlined"
-            sx={{ color: "white", borderColor: "white" }}
+            sx={{
+              color: theme.palette.text.primary,
+              borderColor: theme.palette.divider,
+              "&:hover": {
+                borderColor: theme.palette.text.primary,
+                backgroundColor: "transparent",
+              },
+            }}
           >
             Limpar
           </Button>

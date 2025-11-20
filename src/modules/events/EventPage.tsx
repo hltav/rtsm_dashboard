@@ -7,6 +7,7 @@ import {
   CircularProgress,
   useMediaQuery,
   SelectChangeEvent,
+  useTheme,
 } from "@mui/material";
 import { CssBaseline } from "@mui/material";
 import { darkTheme } from "@/components/theme/dark-theme";
@@ -22,6 +23,7 @@ import { useBankrolls } from "../bankroll/hook/useBankrolls";
 import { useAuth } from "@/components/Providers/AuthContext";
 
 const EventContentPage = () => {
+  const theme = useTheme();
   const { user } = useAuth();
   const { events, loading, refetch } = useEvents();
   const isMobile = useMediaQuery(darkTheme.breakpoints.down("sm"));
@@ -121,7 +123,7 @@ const EventContentPage = () => {
       <Box
         sx={{
           minHeight: "100%",
-          bgcolor: "background.default",
+          bgcolor: theme.palette.background.default,
           p: { xs: 2, sm: 4 },
         }}
       >
@@ -136,7 +138,12 @@ const EventContentPage = () => {
               gap: { xs: 2, sm: 0 },
             }}
           >
-            <Typography variant="h4" component="h1" fontWeight="bold">
+            <Typography
+              variant="h4"
+              component="h1"
+              fontWeight="bold"
+              sx={{ color: theme.palette.text.primary }}
+            >
               Eventos
             </Typography>
 

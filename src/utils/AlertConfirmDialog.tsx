@@ -6,6 +6,7 @@ import {
   Button,
   Alert,
   AlertTitle,
+  useTheme,
 } from "@mui/material";
 
 interface AlertConfirmDialogProps {
@@ -25,6 +26,8 @@ export const AlertConfirmDialog: React.FC<AlertConfirmDialogProps> = ({
   onConfirm,
   onCancel,
 }) => {
+  const theme = useTheme();
+
   return (
     <Dialog
       open={open}
@@ -32,8 +35,8 @@ export const AlertConfirmDialog: React.FC<AlertConfirmDialogProps> = ({
       PaperProps={{
         elevation: 0,
         sx: {
-          backgroundColor: "#1A2B42",
-          color: "white",
+          backgroundColor: theme.palette.background.paper,
+          color: theme.palette.text.primary,
         },
       }}
     >
@@ -41,11 +44,11 @@ export const AlertConfirmDialog: React.FC<AlertConfirmDialogProps> = ({
         <Alert
           severity={severity}
           sx={{
-            color: "white",
+            color: theme.palette.text.primary,
             "& .MuiAlertTitle-root": {
-              color: "white",
+              color: theme.palette.text.primary,
             },
-            backgroundColor: "#1A2B42",
+            backgroundColor: theme.palette.background.paper,
           }}
         >
           {title && <AlertTitle>{title}</AlertTitle>}
@@ -53,7 +56,11 @@ export const AlertConfirmDialog: React.FC<AlertConfirmDialogProps> = ({
         </Alert>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onCancel} color="inherit" sx={{ color: "white" }}>
+        <Button
+          onClick={onCancel}
+          color="inherit"
+          sx={{ color: theme.palette.text.primary }}
+        >
           Não
         </Button>
         <Button onClick={onConfirm} color="error" variant="contained">

@@ -16,17 +16,29 @@ interface ResultDataItem {
   color: string;
 }
 
-const ResultPieChart: React.FC = () => {
+interface ResultPieChartProps {
+  selectedBankrollId: number | null;
+}
+
+const ResultPieChart: React.FC<ResultPieChartProps> = ({
+  selectedBankrollId,
+}) => {
   const theme = useTheme();
   const { events, loading } = useEvents();
   const chartHeight = 300;
+
+  const filteredEvents = useMemo(() => {
+    if (selectedBankrollId === null) return events;
+
+    return events.filter((e) => e.bankId === selectedBankrollId);
+  }, [events, selectedBankrollId]);
 
   const { resultData, totalEventsDecided } = useMemo(() => {
     let winCount = 0;
     let lossCount = 0;
     let voidCount = 0;
 
-    events.forEach((event) => {
+    filteredEvents.forEach((event) => {
       if (event.result === "win") {
         winCount++;
       } else if (event.result === "lose") {
@@ -37,28 +49,16 @@ const ResultPieChart: React.FC = () => {
     });
 
     const data: ResultDataItem[] = [
-      {
-        name: "Vitória",
-        value: winCount,
-        color: "#17ad1a",
-      },
-      {
-        name: "Derrota",
-        value: lossCount,
-        color: theme.palette.error.main,
-      },
-      {
-        name: "Anulada",
-        value: voidCount,
-        color: theme.palette.warning.main,
-      },
+      { name: "Vitória", value: winCount, color: "#17ad1a" },
+      { name: "Derrota", value: lossCount, color: theme.palette.error.main },
+      { name: "Anulada", value: voidCount, color: theme.palette.warning.main },
     ].filter((item) => item.value > 0);
 
     return {
       resultData: data,
       totalEventsDecided: winCount + lossCount + voidCount,
     };
-  }, [events, theme]);
+  }, [filteredEvents, theme]);
 
   const pieSeries = [
     {
@@ -104,9 +104,6 @@ const ResultPieChart: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <Typography variant="h6" gutterBottom>
-            Distribuição de Resultados
-          </Typography>
           <Typography color="text.secondary">
             Nenhum evento decidido para exibir o gráfico.
           </Typography>
@@ -118,22 +115,14 @@ const ResultPieChart: React.FC = () => {
   return (
     <Card sx={{ height: "100%" }} elevation={0}>
       <CardContent>
-        <Typography variant="h6" gutterBottom>
-          Distribuição de Resultados
-        </Typography>
         <Box sx={{ height: chartHeight, width: "100%" }}>
           <PieChart
             series={pieSeries}
             height={chartHeight}
-            // Corrigido: Usando "center" em vez de "middle" para horizontal
             slotProps={{
               legend: {
                 position: { vertical: "bottom", horizontal: "center" },
               },
-              // tooltip: {
-              //   // Formata o valor exibido no tooltip
-              //   valueFormatter: (value) => `${value} apostas`,
-              // },
             }}
           />
         </Box>

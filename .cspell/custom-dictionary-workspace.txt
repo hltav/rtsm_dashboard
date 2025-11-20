@@ -13,6 +13,7 @@ Acumulado
 adaptações
 Adesanya
 adição
+adicionada
 Adicionando
 ADICIONEI
 afeta
@@ -20,6 +21,7 @@ afetam
 ÁFRICA
 Africanas
 AGREGAÇÃO
+agregados
 Agrupa
 Agrupamento
 aguardando
@@ -65,6 +67,7 @@ apagado
 aparecer
 Apelido
 aplicados
+Aplicamos
 aplicar
 Aposta
 apostada
@@ -119,6 +122,7 @@ bancas
 Bancas
 Barras
 baseado
+baseados
 Baseie
 básica
 Basquete
@@ -161,6 +165,7 @@ Calcula
 Calculamos
 calcular
 cálculo
+Cálculos
 Cambojana
 Campeão
 Campeãs
@@ -285,11 +290,13 @@ decisões
 definitiva
 deild
 Deild
+dela
 deleção
 deletado
 deletados
 demais
 demonstração
+dependendo
 Depósitos
 Derde
 Derrota
@@ -316,6 +323,7 @@ Dinamarca
 Dinamarquesa
 dinamicamente
 dinheiro
+direita
 direitos
 disciplina
 disparar
@@ -397,6 +405,7 @@ ESTÁTICAS
 estático
 estáticos
 estava
+estável
 Estilização
 estilizar
 estilo
@@ -435,6 +444,7 @@ fácil
 falhará
 Faroé
 Faso
+fazemos
 Federação
 Federacion
 Federación
@@ -448,7 +458,9 @@ Femininos
 ferramenta
 ficam
 Filipina
+Filt
 Filtra
+filtradas
 filtrados
 filtragem
 filtro
@@ -536,6 +548,7 @@ HSTS
 Húngara
 Ícone
 Ícones
+idêntico
 identificando
 ignora
 Ignorando
@@ -554,7 +567,9 @@ importação
 importado
 Inclui
 incluídos
+incondicional
 Incrementa
+individualmente
 Indonésia
 informação
 Informe
@@ -589,6 +604,7 @@ invadir
 invalida
 inválida
 Inverno
+Investimento
 Iraniana
 Iraque
 Irlanda
@@ -786,6 +802,7 @@ partidas
 partir
 passada
 passado
+Passamos
 passar
 PASSOU
 Patinação
@@ -864,10 +881,12 @@ protegida
 provavelmente
 próximo
 Prva
+pura
 puro
 Qualificatória
 quantidade
 quebra
+quebrar
 Queniana
 Quirguistão
 Radicais
@@ -885,10 +904,12 @@ Recopa
 Recursos
 reenviar
 Reexecuta
+referência
 Regionais
 Regionalliga
 registrada
 Registre
+regras
 Rejeita
 rejeitar
 relançamos
@@ -898,11 +919,14 @@ Removido
 renderizada
 Renomeado
 reservados
+respeitando
+Responsável
 restantes
 resto
 resultado
 Resultado
 resultados
+Resumo
 retirada
 retirado
 Retirar
@@ -965,6 +989,7 @@ Singapura
 Sinuca
 Síria
 sobreposição
+SOBREPOSTO
 Sobrescreve
 sobrescrever
 sobrescrita
@@ -983,6 +1008,7 @@ substitui
 substituição
 Substituindo
 substituir
+subtítulo
 Sudamericana
 Sudani
 Sudão
@@ -1030,6 +1056,7 @@ Totais
 tradução
 traduz
 traduzir
+transformação
 transformar
 transformará
 trata
@@ -1073,6 +1100,7 @@ vazias
 Veikkausliiga
 vence
 vencedor
+vendo
 Venezuelana
 Verão
 Vermelho
@@ -1083,6 +1111,7 @@ visibilidade
 Visitante
 visuais
 visualização
+visualmente
 vitória
 Vitória
 Vitórias

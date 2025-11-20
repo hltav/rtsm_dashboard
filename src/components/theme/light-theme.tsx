@@ -13,11 +13,11 @@ export const lightTheme = createTheme({
       main: "#E0A800",
       light: "#FFC83D",
       dark: "#B38600",
-      contrastText: "#000",
+      contrastText: "#1A2B42",
     },
     background: {
       default: "#f4f6f8",
-      paper: "#fff",
+      paper: "#e9e5e5",
     },
     text: {
       primary: "#1A2B42",

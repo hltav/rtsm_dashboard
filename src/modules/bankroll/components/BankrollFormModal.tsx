@@ -8,6 +8,7 @@ import {
   Button,
   Snackbar,
   Alert,
+  useTheme,
 } from "@mui/material";
 import { BankrollFormModalProps } from "../interface/bankrollFormModalProps";
 import { AlertColor } from "@mui/material/Alert";
@@ -21,6 +22,7 @@ export const BankrollFormModal = ({
   bankroll,
   onSave,
 }: BankrollFormModalProps) => {
+  const theme = useTheme();
   const [loading, setLoading] = useState(false);
   const { showNotification } = useNotification();
   const { user } = useAuth();
@@ -133,7 +135,7 @@ export const BankrollFormModal = ({
             left: "50%",
             transform: "translate(-50%, -50%)",
             width: { xs: "90%", sm: 400 },
-            bgcolor: "#1A2B42",
+            bgcolor: theme.palette.background.paper,
             borderRadius: 2,
             boxShadow: 24,
             p: 4,
@@ -142,7 +144,11 @@ export const BankrollFormModal = ({
             gap: 2,
           }}
         >
-          <Typography variant="h6" component="h2" sx={{ color: "#FFFFFF" }}>
+          <Typography
+            variant="h6"
+            component="h2"
+            sx={{ color: theme.palette.text.primary }}
+          >
             Adicionar Nova Banca
           </Typography>
 
@@ -162,21 +168,21 @@ export const BankrollFormModal = ({
             }
             InputLabelProps={{
               sx: {
-                color: "#FFFFFF",
-                "&.Mui-focused": { color: "#FFFFFF" },
+                color: theme.palette.text.primary,
+                "&.Mui-focused": { color: theme.palette.text.primary },
               },
             }}
             InputProps={{
               sx: {
-                color: "#FFFFFF",
+                color: theme.palette.text.primary,
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.divider,
                 },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.divider,
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.primary.main,
                 },
               },
             }}
@@ -191,21 +197,21 @@ export const BankrollFormModal = ({
             inputProps={{ step: "0.01" }}
             InputLabelProps={{
               sx: {
-                color: "#FFFFFF",
-                "&.Mui-focused": { color: "#FFFFFF" },
+                color: theme.palette.text.primary,
+                "&.Mui-focused": { color: theme.palette.text.primary },
               },
             }}
             InputProps={{
               sx: {
-                color: "#FFFFFF",
+                color: theme.palette.text.primary,
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.divider,
                 },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.divider,
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.primary.main,
                 },
               },
             }}
@@ -220,21 +226,21 @@ export const BankrollFormModal = ({
             inputProps={{ step: "0.01" }}
             InputLabelProps={{
               sx: {
-                color: "#FFFFFF",
-                "&.Mui-focused": { color: "#FFFFFF" },
+                color: theme.palette.text.primary,
+                "&.Mui-focused": { color: theme.palette.text.primary },
               },
             }}
             InputProps={{
               sx: {
-                color: "#FFFFFF",
+                color: theme.palette.text.primary,
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.divider,
                 },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.divider,
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.primary.main,
                 },
               },
             }}
@@ -248,21 +254,21 @@ export const BankrollFormModal = ({
             variant="outlined"
             InputLabelProps={{
               sx: {
-                color: "#FFFFFF",
-                "&.Mui-focused": { color: "#FFFFFF" },
+                color: theme.palette.text.primary,
+                "&.Mui-focused": { color: theme.palette.text.primary },
               },
             }}
             InputProps={{
               sx: {
-                color: "#FFFFFF",
+                color: theme.palette.text.primary,
                 "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.divider,
                 },
                 "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.divider,
                 },
                 "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: "#FFFFFF",
+                  borderColor: theme.palette.primary.main,
                 },
               },
             }}
@@ -275,9 +281,12 @@ export const BankrollFormModal = ({
               onClick={onClose}
               disabled={loading}
               sx={{
-                color: "#FFFFFF",
-                borderColor: "#FFFFFF",
-                "&:hover": { borderColor: "#FFFFFF", opacity: 0.8 },
+                color: theme.palette.text.primary,
+                borderColor: theme.palette.divider,
+                "&:hover": {
+                  borderColor: theme.palette.text.primary,
+                  opacity: 0.8,
+                },
               }}
             >
               Cancelar
@@ -289,9 +298,12 @@ export const BankrollFormModal = ({
               onClick={handleSave}
               disabled={loading}
               sx={{
-                color: "#1A2B42",
-                backgroundColor: "#FFFFFF",
-                "&:hover": { backgroundColor: "#FFFFFF", opacity: 0.8 },
+                color: theme.palette.primary.contrastText,
+                backgroundColor: theme.palette.primary.main,
+                "&:hover": {
+                  backgroundColor: theme.palette.primary.dark,
+                  opacity: 0.8,
+                },
               }}
             >
               {loading ? "Salvando..." : "Salvar"}

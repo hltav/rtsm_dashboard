@@ -1,4 +1,4 @@
-import { Card, CardContent } from "@mui/material";
+import { Card, CardContent, useTheme } from "@mui/material";
 import { axisClasses } from "@mui/x-charts";
 import { LineChart } from "@mui/x-charts/LineChart";
 
@@ -28,26 +28,28 @@ const data = [
   { y1: 330.72, y2: 488.06 },
 ];
 
-const series = [
-  {
-    label: "Series A",
-    data: data.map((v) => v.y1),
-    color: "#1976d2",
-  },
-  {
-    label: "Series B",
-    data: data.map((v) => v.y2),
-    color: "#d32f2f",
-  },
-];
-
 export default function ZoomLineChart() {
+  const theme = useTheme();
+
+  const series = [
+    {
+      label: "Series A",
+      data: data.map((v) => v.y1),
+      color: theme.palette.primary.main,
+    },
+    {
+      label: "Series B",
+      data: data.map((v) => v.y2),
+      color: theme.palette.error.main,
+    },
+  ];
+
   return (
     <Card
       elevation={0}
       sx={{
-        bgcolor: "#1A2B42",
-        color: "#fff",
+        bgcolor: "background.paper",
+        color: "text.primary",
       }}
     >
       <CardContent>
@@ -58,32 +60,34 @@ export default function ZoomLineChart() {
               scaleType: "point",
               data: data.map((_, i) => i + 1),
               label: "Período",
-              tickLabelStyle: { fill: "#fff" },
-              labelStyle: { fill: "#fff" },
+              tickLabelStyle: { fill: theme.palette.text.primary },
+              labelStyle: { fill: theme.palette.text.primary },
             },
           ]}
           yAxis={[
             {
               label: "Valores",
               valueFormatter: (v: number) => v.toFixed(2),
-              tickLabelStyle: { fill: "#fff" },
-              labelStyle: { fill: "#fff" },
+              tickLabelStyle: { fill: theme.palette.text.primary },
+              labelStyle: { fill: theme.palette.text.primary },
             },
           ]}
           series={series}
           grid={{ vertical: true, horizontal: true }}
           sx={{
             [`& .${axisClasses.left} .${axisClasses.tickLabel}`]: {
-              fill: "#fff",
+              fill: theme.palette.text.primary,
             },
             [`& .${axisClasses.bottom} .${axisClasses.tickLabel}`]: {
-              fill: "#fff",
+              fill: theme.palette.text.primary,
             },
             [`& .${axisClasses.root} .${axisClasses.line}`]: {
-              stroke: "#ffffff55",
+              stroke: theme.palette.text.primary,
+              opacity: 0.4,
             },
             "& .MuiChartsGrid-line": {
-              stroke: "#ffffff22",
+              stroke: theme.palette.text.disabled,
+              opacity: 0.2,
             },
           }}
         />
