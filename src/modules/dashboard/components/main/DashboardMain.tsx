@@ -172,7 +172,13 @@ const DashboardMainPage: React.FC = () => {
   const hasData = totalEvents > 0 || totalBalance > 0;
 
   return (
-    <Box sx={{ minHeight: "100vh", bgcolor: "background.default", p: 4 }}>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        bgcolor: "background.default",
+        p: { xs: 1.5, sm: 2, md: 4 },
+      }}
+    >
       <Container maxWidth={false}>
         {/* Cabeçalho com título e seletor de banca */}
         <Box
@@ -229,7 +235,7 @@ const DashboardMainPage: React.FC = () => {
         ) : (
           <Grid container spacing={3}>
             {/* Cards de Métricas Principais */}
-            <Grid item xs={12} sm={6} md={4} lg={2}>
+            <Grid item xs={6} sm={6} md={4} lg={2}>
               <MetricCard
                 title="Unidades de Lucro"
                 value={`${
@@ -242,7 +248,7 @@ const DashboardMainPage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4} lg={2}>
+            <Grid item xs={6} sm={6} md={4} lg={2}>
               <MetricCard
                 title="Saldo Total"
                 value={formatCurrency(totalBalance)}
@@ -254,7 +260,7 @@ const DashboardMainPage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4} lg={2}>
+            <Grid item xs={6} sm={6} md={4} lg={2}>
               <MetricCard
                 title="Entradas Pendentes"
                 value={pendingEvents.length + " entradas"}
@@ -267,7 +273,7 @@ const DashboardMainPage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4} lg={2}>
+            <Grid item xs={6} sm={6} md={4} lg={2}>
               <MetricCard
                 title="Stake Total Apostada"
                 value={totalWagered + " unids"}
@@ -280,7 +286,7 @@ const DashboardMainPage: React.FC = () => {
               />
             </Grid>
 
-            <Grid item xs={12} sm={6} md={4} lg={2}>
+            <Grid item xs={6} sm={6} md={4} lg={2}>
               <MetricCard
                 title="Taxa de Vitórias"
                 value={winRate.toFixed(1)}
@@ -291,7 +297,7 @@ const DashboardMainPage: React.FC = () => {
             </Grid>
 
             {/* ROI Card - Nova métrica adicionada */}
-            <Grid item xs={12} sm={6} md={4} lg={2}>
+            <Grid item xs={6} sm={6} md={4} lg={2}>
               <MetricCard
                 title="ROI"
                 value={`${roi >= 0 ? "+" : ""}${roi.toFixed(2)}`}
@@ -302,7 +308,12 @@ const DashboardMainPage: React.FC = () => {
             </Grid>
 
             {/* Gráficos */}
-            <Grid item xs={12} lg={12}>
+            <Grid
+              item
+              xs={12}
+              lg={12}
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
               <Card elevation={0} sx={{ p: 2 }}>
                 <Typography variant="h6" gutterBottom>
                   Evolução da Banca
@@ -317,7 +328,12 @@ const DashboardMainPage: React.FC = () => {
               </Card>
             </Grid>
 
-            <Grid item xs={12} lg={6}>
+            <Grid
+              item
+              xs={12}
+              lg={6}
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
               <Card elevation={0} sx={{ p: 2, height: "100%" }}>
                 <Typography variant="h6" gutterBottom>
                   Distribuição por Modalidade
@@ -332,7 +348,12 @@ const DashboardMainPage: React.FC = () => {
               </Card>
             </Grid>
 
-            <Grid item xs={12} lg={6}>
+            <Grid
+              item
+              xs={12}
+              lg={6}
+              sx={{ display: { xs: "none", sm: "block" } }}
+            >
               <Card elevation={0} sx={{ p: 2, height: "100%" }}>
                 <Typography variant="h6" gutterBottom>
                   Distribuição por Resultados
