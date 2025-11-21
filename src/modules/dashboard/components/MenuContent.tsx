@@ -1,15 +1,15 @@
 import MainContent from "@/modules/dashboard/components/MainContent";
-import ProfileContentPage from "@/modules/profile/ProfileContentPage";
 import { useDashboard } from "@/components/Providers/DashboardContext";
 import BankrollsPage from "@/modules/bankroll/BankrollPageContent";
 import EventPage from "@/modules/events/EventPage";
+import ProfileContainerPage from "@/modules/profile/ProfileContainerPage";
 
 const MenuContent = () => {
   const { selectedPage } = useDashboard();
 
   switch (selectedPage) {
     case "profile":
-      return <ProfileContentPage />;
+      return <ProfileContainerPage />;
     case "bankrolls":
       return <BankrollsPage />;
     case "events":

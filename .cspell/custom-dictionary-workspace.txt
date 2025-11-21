@@ -902,6 +902,7 @@ recomputação
 Reconheça
 Recopa
 Recursos
+Redefination
 reenviar
 Reexecuta
 referência
