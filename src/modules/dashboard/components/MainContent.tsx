@@ -13,16 +13,16 @@ const MainContent: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const initialTab = Number(searchParams.get("tab") || 0);
+ const initialTab = searchParams.get("tab") || "evolution";
   const [tab, setTab] = useState(initialTab);
 
   useEffect(() => {
-    setTab(Number(searchParams.get("tab") || 0));
+    setTab(searchParams.get("tab") || "evolution");
   }, [searchParams]);
 
-  const handleChange = (_: unknown, newValue: number) => {
+  const handleChange = (_: unknown, newValue: string) => {
     setTab(newValue);
-    router.push(`/dashboard?tab=${newValue}`);
+    router.push(`/dashboard?page=main&tab=${newValue}`);
   };
 
   if (isLoading) {
@@ -75,11 +75,11 @@ const MainContent: React.FC = () => {
           variant="scrollable"
           scrollButtons="auto"
         >
-          <Tab label="Evolução da Banca" />
-          <Tab label="Outros Dados" />
+          <Tab label="Evolução da Banca" value="evolution"/>
+          <Tab label="Outros Dados" value="other_data"/>
         </Tabs>
 
-        {tab === 0 && (
+        {tab === "evolution" && (
           <Box
             sx={{
               display: "flex",
@@ -93,7 +93,7 @@ const MainContent: React.FC = () => {
           </Box>
         )}
 
-        {tab === 1 && (
+        {tab === "other_data" && (
           <Box sx={{ mt: 4 }}>
             <Box
               sx={{

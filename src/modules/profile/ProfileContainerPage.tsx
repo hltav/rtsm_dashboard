@@ -11,18 +11,18 @@ import { useNotification } from "@/components/Providers/NotificationSnackbar";
 const ProfileContainerPage: React.FC = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const {showNotification} = useNotification()
+  const { showNotification } = useNotification();
 
-  const initialTab = Number(searchParams.get("tab") || 0);
+  const initialTab = searchParams.get("tab") || "profile_data";
   const [tab, setTab] = useState(initialTab);
 
   useEffect(() => {
-    setTab(Number(searchParams.get("tab") || 0));
+    setTab(searchParams.get("tab") || "profile_data");
   }, [searchParams]);
 
-  const handleChange = (_: unknown, newValue: number) => {
+  const handleChange = (_: unknown, newValue: string) => {
     setTab(newValue);
-    router.push(`/dashboard?tab=${newValue}`);
+    router.push(`/dashboard?page=profile&tab=${newValue}`);
   };
 
   const handleResetPassword = async (email: string) => {
@@ -78,12 +78,12 @@ const ProfileContainerPage: React.FC = () => {
           variant="scrollable"
           scrollButtons="auto"
         >
-          <Tab label="Dados do Perfil" />
-          <Tab label="Segurança" />
-          {/* <Tab label="Pagamento" /> */}
+          <Tab label="Dados do Perfil" value="profile_data" />
+          <Tab label="Segurança" value="security" />
+          {/* <Tab label="Pagamento" value="payment"/> */}
         </Tabs>
 
-        {tab === 0 && (
+        {tab === "profile_data" && (
           <Box
             sx={{
               display: "flex",
@@ -97,7 +97,7 @@ const ProfileContainerPage: React.FC = () => {
           </Box>
         )}
 
-        {tab === 1 && (
+        {tab === "security" && (
           <Box sx={{ mt: 4 }}>
             <Box
               sx={{
@@ -119,7 +119,7 @@ const ProfileContainerPage: React.FC = () => {
           </Box>
         )}
 
-        {/* {tab === 2 && (
+        {/* {tab === "payment" && (
           <Box sx={{ mt: 4 }}>
             <Box
               sx={{

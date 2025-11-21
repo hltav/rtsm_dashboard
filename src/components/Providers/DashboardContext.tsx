@@ -1,5 +1,12 @@
 "use client";
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 
 interface DashboardContextType {
   selectedPage: string;
@@ -11,15 +18,25 @@ const DashboardContext = createContext<DashboardContextType | undefined>(
 );
 
 export const DashboardProvider = ({ children }: { children: ReactNode }) => {
-  const [selectedPage, setSelectedPage] = useState("main");
+  const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const setSelectedPageWithClose = (key: string) => {
+  const initialPage = searchParams.get("page") || "main";
+  const [selectedPage, setSelectedPage] = useState(initialPage);
+
+  const setSelectedPageWithUrl = (key: string) => {
     setSelectedPage(key);
+    router.push(`/dashboard?page=${key}`, { scroll: false });
   };
+
+  useEffect(() => {
+    const page = searchParams.get("page") || "main";
+    setSelectedPage(page);
+  }, [searchParams]);
 
   return (
     <DashboardContext.Provider
-      value={{ selectedPage, setSelectedPage: setSelectedPageWithClose }}
+      value={{ selectedPage, setSelectedPage: setSelectedPageWithUrl }}
     >
       {children}
     </DashboardContext.Provider>

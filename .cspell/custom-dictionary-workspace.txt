@@ -577,6 +577,7 @@ Inglaterra
 Inglês
 Inglesa
 iniciados
+Inicializa
 Iniciando
 Início
 INJEÇÃO
@@ -845,6 +846,7 @@ Populares
 porcentagem
 porque
 Portuguesa
+posição
 possivelmente
 possui
 Prata
