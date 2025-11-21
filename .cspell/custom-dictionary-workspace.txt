@@ -64,6 +64,7 @@ Anulada
 anuladas
 apagada
 apagado
+apagar
 aparecer
 Apelido
 aplicados
