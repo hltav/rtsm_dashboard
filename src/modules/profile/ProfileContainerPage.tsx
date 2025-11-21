@@ -3,7 +3,7 @@ import { Box, Container, Typography, Tabs, Tab } from "@mui/material";
 import { useSearchParams, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import ProfileContentPage from "./ProfileContentPage";
-import ZoomLineChart from "../dashboard/charts/ZoomLineChart";
+// import ZoomLineChart from "../dashboard/charts/ZoomLineChart";
 import PasswordRedefination from "./components/PasswordRedefination";
 import { forgotPasswordApi } from "@/lib/api/auth/forgot-password/forgotPasswordApi";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
@@ -80,7 +80,7 @@ const ProfileContainerPage: React.FC = () => {
         >
           <Tab label="Dados do Perfil" />
           <Tab label="Segurança" />
-          <Tab label="Pagamento" />
+          {/* <Tab label="Pagamento" /> */}
         </Tabs>
 
         {tab === 0 && (
@@ -119,7 +119,7 @@ const ProfileContainerPage: React.FC = () => {
           </Box>
         )}
 
-        {tab === 2 && (
+        {/* {tab === 2 && (
           <Box sx={{ mt: 4 }}>
             <Box
               sx={{
@@ -139,7 +139,7 @@ const ProfileContainerPage: React.FC = () => {
               </Box>
             </Box>
           </Box>
-        )}
+        )} */}
       </Container>
     </Box>
   );

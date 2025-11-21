@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { Box, Typography, TextField, Button, Container } from "@mui/material";
+import MailOutlineIcon from "@mui/icons-material/MailOutline";
 
 interface PasswordRedefinationFormProps {
   onSubmit: (email: string) => void;
@@ -33,12 +34,23 @@ const PasswordRedefination: React.FC<PasswordRedefinationFormProps> = ({
           width: "100%",
         }}
       >
+        <Box
+          sx={{
+            width: "100%",
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
+        >
+          <MailOutlineIcon sx={{ fontSize: 50 }} />
+        </Box>
+
         <Typography
           variant="h5"
           component="h1"
           gutterBottom
           textAlign="center"
-          sx={{ mb: 2, fontWeight: 600 }}
+          sx={{ mb: 1, fontWeight: 600 }}
         >
           Redefina sua Senha
         </Typography>
