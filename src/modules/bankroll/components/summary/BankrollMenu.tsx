@@ -31,8 +31,8 @@ const BankrollMenu: React.FC = () => {
   }, [user]);
 
   const totalBalance = bankrolls.reduce((sum, b) => sum + Number(b.balance), 0);
-  // Defina a lógica para calcular a porcentagem de lucro/prejuízo
-  const profitPercentage = 15; // Exemplo de valor
+
+  const profitPercentage = 15;
 
   const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
