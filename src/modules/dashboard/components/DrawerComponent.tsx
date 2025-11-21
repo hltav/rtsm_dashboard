@@ -28,7 +28,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
       sx={{
         width: "100%",
         bgcolor: "primary.main",
-        height: "100%",
+        height: "100vh",
         display: "flex",
         flexDirection: "column",
         borderRadius: 0,

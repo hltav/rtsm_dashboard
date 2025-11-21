@@ -41,6 +41,7 @@ ALTERADA
 alternar
 alternativo
 altura
+amador
 amanhã
 Amanhã
 Amapaense
@@ -108,6 +109,7 @@ Australiana
 Australiano
 Austríaca
 automática
+automáticos
 Automobilismo
 autorizar
 autossuficiente
@@ -250,6 +252,7 @@ Constrói
 consumir
 contagem
 Contagem
+Contínua
 Continuação
 continuar
 contínuo
@@ -288,6 +291,7 @@ Damallsvenskan
 Dardos
 Datas
 decisões
+dedicadas
 definitiva
 deild
 Deild
@@ -424,6 +428,7 @@ Europeu
 evento
 Evento
 evolua
+exatamente
 Exato
 excluir
 exclusão
@@ -443,6 +448,7 @@ Extrai
 extrair
 fácil
 falhará
+faltava
 Faroé
 Faso
 fazemos
@@ -457,6 +463,7 @@ Feminil
 Feminina
 Femininos
 ferramenta
+Ferramentas
 ficam
 Filipina
 Filt
@@ -496,6 +503,7 @@ fundos
 Futbol
 Futebol
 futuras
+futuro
 Gaélicos
 Galesa
 Gâmbia
@@ -520,6 +528,7 @@ Golfo
 gols
 Gráfico
 gráficos
+Gratuitamente
 Grega
 Grêmio
 Grupo
@@ -727,6 +736,7 @@ monetários
 Mongólia
 Monitore
 Montenegrina
+mostram
 mostrando
 mostrará
 mostre
@@ -774,6 +784,7 @@ oculta
 ocultadas
 ocultados
 Oeste
+oferece
 Olímpica
 Olímpico
 Ontem
@@ -804,6 +815,7 @@ partidas
 partir
 passada
 passado
+passados
 Passamos
 passar
 PASSOU
@@ -880,6 +892,7 @@ propaga
 próprios
 prorrogação
 prosseguir
+proteger
 protegida
 provavelmente
 próximo
@@ -941,6 +954,7 @@ retorno
 retornou
 Retrátil
 Reverte
+revisar
 revisitar
 RFEF
 Rica
@@ -980,6 +994,7 @@ separador
 separadores
 separados
 Série
+Sério
 Sérvia
 signup
 símbolos
@@ -1099,6 +1114,7 @@ Validações
 Validar
 válidos
 variável
+vazamentos
 vazia
 vazias
 Veikkausliiga

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client';
 import React from 'react';
 import { Container, Typography, Grid, Card, CardContent, Box } from '@mui/material';
@@ -13,7 +12,7 @@ const features = [
   {
     icon: <SportsScoreIcon sx={{ fontSize: 70, color: 'primary.main', mb: 2 }} />,
     title: 'Acompanhamento Detalhado',
-    description: 'Monitore cada aposta que você faz. Registre seus palpites, odds, resultados e o desempenho de suas estratégias.'
+    description: 'Monitore cada aposta que você faz. Registre seus palpites, odds e veja os resultados e desempenho de suas estratégias.'
   },
   {
     icon: <AnalyticsIcon sx={{ fontSize: 70, color: 'primary.main', mb: 2 }} />,
@@ -25,11 +24,11 @@ const features = [
     title: 'Histórico Completo',
     description: 'Tenha acesso fácil ao seu histórico de apostas, permitindo revisitar decisões e aprender com o passado.'
   },
-  // {
-  //   icon: <SecurityIcon sx={{ fontSize: 70, color: 'primary.main', mb: 2 }} />,
-  //   title: 'Sem Risco Real',
-  //   description: 'Aprimore suas habilidades de apostador em um ambiente seguro, sem envolver dinheiro real.'
-  // }
+   {
+     icon: <SecurityIcon sx={{ fontSize: 70, color: 'primary.main', mb: 2 }} />,
+     title: 'Minimize os Riscos',
+     description: 'Aprimore suas habilidades de apostador em um ambiente seguro.'
+   }
 ];
 
 const FeaturesSection: React.FC = () => {
@@ -37,7 +36,7 @@ const FeaturesSection: React.FC = () => {
     <Box sx={{ py: { xs: 4, md: 8 }, bgcolor: 'background.default' }}>
       <Container>
         <Typography variant="h2" component="h2" textAlign="center" gutterBottom sx={{ mb: { xs: 4, md: 6 } }}>
-          Por que o <span translate="no">RT Sports Manager</span>
+          Por que a <span translate="no">RT Sports Manager</span>
 ?
         </Typography>
         <Grid container spacing={{ xs: 2, md: 4 }} justifyContent="center">

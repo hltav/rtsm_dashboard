@@ -10,6 +10,7 @@ import {
 } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import { ThemeToggle } from "@/components/theme/theme-toggle";
+import Link from "next/link";
 
 interface HeaderProps {
   onMenuToggle: () => void;
@@ -51,13 +52,28 @@ const Header: React.FC<HeaderProps> = ({ onMenuToggle }) => {
         </Typography>
 
         <Box sx={{ display: { xs: "none", md: "flex" } }}>
-          <Button color="inherit" sx={{ mx: 1 }}>
+          <Button
+            component={Link}
+            href="#top"
+            color="inherit"
+            sx={{ mx: 1 }}
+          >
             Início
           </Button>
-          <Button color="inherit" sx={{ mx: 1 }}>
+          <Button
+            component={Link}
+            href="#features-section"
+            color="inherit"
+            sx={{ mx: 1 }}
+          >
             Recursos
           </Button>
-          <Button color="inherit" sx={{ mx: 1 }}>
+          <Button
+            component={Link}
+            href="#how-it-works"
+            color="inherit"
+            sx={{ mx: 1 }}
+          >
             Como Funciona
           </Button>
           <Button

@@ -2,6 +2,7 @@
 import React from "react";
 import { Box, Typography, Button, Container } from "@mui/material";
 import Image from "next/image";
+import Link from "next/link";
 
 const HeroSection: React.FC = () => {
   return (
@@ -72,6 +73,8 @@ const HeroSection: React.FC = () => {
                 borderColor: "#E0A800",
                 color: "#E0A800",
               }}
+              component={Link}
+              href="#learn-more"
             >
               Saiba Mais
             </Button>

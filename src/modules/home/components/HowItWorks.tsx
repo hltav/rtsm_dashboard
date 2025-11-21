@@ -1,4 +1,4 @@
-'use client';
+"use client";
 import React from "react";
 import { Container, Typography, Grid, Box } from "@mui/material";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
@@ -23,10 +23,15 @@ const HowItWorks: React.FC = () => {
           gutterBottom
           sx={{ mb: { xs: 4, md: 6 } }}
         >
-          Como o <span translate="no">RT Sports Manager</span>
- Pode te Ajudar?
+          Como a <span translate="no">RT Sports Manager </span>
+          pode te Ajudar?
         </Typography>
-        <Grid container spacing={{ xs: 2, md: 4 }} alignItems="center">
+        <Grid
+          container
+          spacing={{ xs: 2, md: 4 }}
+          alignItems="center"
+          sx={{ display: "flex", flexDirection: "row" }}
+        >
           <Grid item xs={12} md={6}>
             <Box sx={{ pr: { md: 4 } }}>
               <Typography
@@ -63,23 +68,30 @@ const HowItWorks: React.FC = () => {
               alignItems: "center",
             }}
           >
-            <Image
-              src="/improve.png"
-              alt="Melhore suas Apostas"
-              width={600}
-              height={400}
-              style={{
-                maxWidth: "100%",
-                height: "auto",
+            <Box
+              sx={{
+                width: "100%",
                 borderRadius: "8px",
+                overflow: "hidden",
                 boxShadow: "0px 8px 25px rgba(0, 0, 0, 0.1)",
               }}
-              onError={(e) => {
-                const target = e.target as HTMLImageElement;
-                target.src =
-                  "https://placehold.co/600x400/E0A800/1A2B42?text=Imagem+Indisponível";
-              }}
-            />
+            >
+              <Image
+                src="/imageHomeAnalisty1.png"
+                alt="Melhore suas Apostas"
+                width={700}
+                height={700}
+                style={{
+                  width: "100%",
+                  height: "auto",
+                }}
+                onError={(e) => {
+                  const target = e.target as HTMLImageElement;
+                  target.src =
+                    "https://placehold.co/600x400/E0A800/1A2B42?text=Imagem+Indisponível";
+                }}
+              />
+            </Box>
           </Grid>
         </Grid>
       </Container>
