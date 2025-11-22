@@ -6,7 +6,6 @@ import {
   FormControl,
   InputLabel,
   SelectChangeEvent,
-  useTheme,
 } from "@mui/material";
 import { EventDetailsProps } from "../../props/modalAddEvent.props";
 import { getSoccerMarketOptions, soccerMarket } from "../../libs/soccerMarket";
@@ -16,7 +15,6 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
   newEvent,
   onNewEventChange,
 }) => {
-  const theme = useTheme();
   const categories = Object.keys(soccerMarket);
 
   const marketOptions =
@@ -39,26 +37,12 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
     <Box>
       {/* 🏷️ Categoria de Mercado */}
       <FormControl fullWidth margin="normal">
-        <InputLabel sx={{ color: theme.palette.text.secondary }}>
-          Tipo de Mercado
-        </InputLabel>
+        <InputLabel>Tipo de Mercado</InputLabel>
         <Select
           name="marketCategory"
           value={newEvent.marketCategory || ""}
           onChange={handleSelectChange}
           label="Tipo de Mercado"
-          sx={{
-            color: theme.palette.text.primary,
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.main,
-            },
-          }}
         >
           {categories.map((cat) => (
             <MenuItem key={cat} value={cat}>
@@ -71,26 +55,12 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
       {/* 🏆 Submercado */}
       {newEvent.marketCategory && (
         <FormControl fullWidth margin="normal">
-          <InputLabel sx={{ color: theme.palette.text.secondary }}>
-            Mercado
-          </InputLabel>
+          <InputLabel>Mercado</InputLabel>
           <Select
             name="market"
             value={newEvent.market || ""}
             onChange={handleSelectChange}
             label="Mercado"
-            sx={{
-              color: theme.palette.text.primary,
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.divider,
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.divider,
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.primary.main,
-              },
-            }}
           >
             {Object.keys(soccerMarket[newEvent.marketCategory]).map((sub) => (
               <MenuItem key={sub} value={sub}>
@@ -104,26 +74,12 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
       {/* ⚙️ Opções do Mercado */}
       {newEvent.market && (
         <FormControl fullWidth margin="normal">
-          <InputLabel sx={{ color: theme.palette.text.secondary }}>
-            Opções do Mercado
-          </InputLabel>
+          <InputLabel>Opções do Mercado</InputLabel>
           <Select
             name="optionMarket"
             value={newEvent.optionMarket || ""}
             onChange={handleSelectChange}
             label="Opções do Mercado"
-            sx={{
-              color: theme.palette.text.primary,
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.divider,
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.divider,
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.primary.main,
-              },
-            }}
           >
             {marketOptions.map((opt: string) => (
               <MenuItem key={opt} value={opt}>
@@ -136,26 +92,12 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
 
       {/* 💰 Valor da Aposta (unidades) */}
       <FormControl fullWidth margin="normal">
-        <InputLabel sx={{ color: theme.palette.text.secondary }}>
-          Valor(Unids)
-        </InputLabel>
+        <InputLabel>Valor(Unids)</InputLabel>
         <Select
           name="amount"
           value={newEvent.amount ? newEvent.amount.toFixed(2) : ""}
           onChange={handleSelectChange}
           label="Valor(Unids)"
-          sx={{
-            color: theme.palette.text.primary,
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.main,
-            },
-          }}
         >
           {Object.keys(unidValues).map((value) => (
             <MenuItem key={value} value={value}>

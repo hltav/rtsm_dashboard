@@ -9,7 +9,6 @@ import {
   TextField,
   FormHelperText,
   SelectChangeEvent,
-  useTheme,
 } from "@mui/material";
 import { EventResultSelectProps } from "../../props/modalAddEvent.props";
 import { bankrollApi } from "@/lib/api/bankroll/bankrollApi";
@@ -23,7 +22,6 @@ export const EventResultSelect: React.FC<EventResultSelectProps> = ({
   onOddChange,
   validationErrors,
 }) => {
-  const theme = useTheme();
   const { user } = useAuth();
   const [banks, setBanks] = useState<BankrollDto[]>([]);
   const [loading, setLoading] = useState(false);
@@ -84,59 +82,17 @@ export const EventResultSelect: React.FC<EventResultSelectProps> = ({
           error={!!validationErrors.odd}
           helperText={validationErrors.odd}
           fullWidth
-          InputLabelProps={{
-            sx: {
-              color: theme.palette.text.secondary,
-              "&.Mui-focused": { color: theme.palette.text.secondary },
-            },
-          }}
-          InputProps={{
-            sx: {
-              color: theme.palette.text.primary,
-              "& .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.divider,
-              },
-              "&:hover .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.divider,
-              },
-              "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                borderColor: theme.palette.primary.main,
-              },
-            },
-          }}
-          sx={{
-            "& .MuiOutlinedInput-root": {
-              borderRadius: 1,
-            },
-            "& .MuiInputBase-input": {
-              borderRadius: 1,
-            },
-          }}
         />
       </FormControl>
 
       <FormControl fullWidth margin="normal" error={!!validationErrors.bankId}>
-        <InputLabel sx={{ color: theme.palette.text.secondary }}>
-          Banca
-        </InputLabel>
+        <InputLabel>Banca</InputLabel>
         <Select
           name="bankId"
           value={newEvent.bankId === 0 ? "" : String(newEvent.bankId)}
           onChange={handleBankChange}
           label="Banca"
           disabled={loading || !user}
-          sx={{
-            color: theme.palette.text.primary,
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.main,
-            },
-          }}
         >
           {loading ? (
             <MenuItem disabled>
@@ -153,9 +109,7 @@ export const EventResultSelect: React.FC<EventResultSelectProps> = ({
           )}
         </Select>
         {validationErrors.bankId && (
-          <FormHelperText sx={{ color: theme.palette.error.main }}>
-            {validationErrors.bankId}
-          </FormHelperText>
+          <FormHelperText>{validationErrors.bankId}</FormHelperText>
         )}
       </FormControl>
     </>

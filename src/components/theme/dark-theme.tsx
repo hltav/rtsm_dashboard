@@ -80,50 +80,27 @@ export const darkTheme = createTheme({
   },
   components: {
     MuiButton: {
-      styleOverrides: { root: { borderRadius: 8, textTransform: "none" } },
-    },
-    MuiTextField: {
       styleOverrides: {
         root: {
-          "& .MuiOutlinedInput-root": {
-            borderRadius: 8,
-            "& fieldset": {
-              borderColor: "rgba(255, 255, 255, 0.3)",
-            },
-            "&:hover fieldset": {
-              borderColor: "#fff",
-            },
-            "&.Mui-focused fieldset": {
-              borderColor: "#fff",
-            },
-            "& input": {
-              color: "#fff",
-            },
-          },
-          "& .MuiInputLabel-root": {
-            color: "#ccc",
-            "&.Mui-focused": {
-              color: "#fff",
-            },
-          },
+          borderRadius: 8,
+          textTransform: "none",
         },
       },
     },
-    MuiSelect: {
+    MuiOutlinedInput: {
       styleOverrides: {
         root: {
-          "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "rgba(255, 255, 255, 0.3)",
-          },
+          borderRadius: 8,
           "&:hover .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#fff",
+            borderColor: "rgba(255, 255, 255, 0.6)",
           },
           "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
             borderColor: "#fff",
+            borderWidth: 1,
           },
         },
-        icon: {
-          color: "rgba(255, 255, 255, 0.7)",
+        notchedOutline: {
+          borderColor: "rgba(255, 255, 255, 0.3)",
         },
       },
     },

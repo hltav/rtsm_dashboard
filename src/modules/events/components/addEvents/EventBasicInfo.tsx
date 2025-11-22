@@ -8,7 +8,8 @@ import {
   InputLabel,
   CircularProgress,
   SelectChangeEvent,
-  useTheme,
+  Autocomplete,
+  TextField,
 } from "@mui/material";
 import { useTheSportsDb } from "@/hooks/useTheSportsDb";
 import {
@@ -25,7 +26,6 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
   newEvent,
   onSelectChange,
 }) => {
-  const theme = useTheme();
   const [selectedSport, setSelectedSport] = useState<string>("");
   const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
 
@@ -116,52 +116,14 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
 
   return (
     <>
-      {/* SELECT de Modalidade */}
-      {/* <FormControl fullWidth margin="normal">
+      {/* Filtra para deixar só Futebol */}
+      <FormControl fullWidth margin="normal">
         <InputLabel>Modalidade</InputLabel>
         <Select
           name="modality"
           value={selectedSport}
           onChange={handleSportChange}
           label="Modalidade"
-        >
-          {loadingSports ? (
-            <MenuItem value="" disabled>
-              <CircularProgress size={20} sx={{ mr: 1 }} />
-              Carregando modalidades...
-            </MenuItem>
-          ) : (
-            translatedSports.map((sport) => (
-              <MenuItem key={sport.value} value={sport.value}>
-                {sport.label}
-              </MenuItem>
-            ))
-          )}
-        </Select>
-      </FormControl> */}
-
-      {/* Filtra para deixar só Futebol */}
-      <FormControl fullWidth margin="normal">
-        <InputLabel sx={{ color: theme.palette.text.secondary }}>
-          Modalidade
-        </InputLabel>
-        <Select
-          name="modality"
-          value={selectedSport}
-          onChange={handleSportChange}
-          label="Modalidade"
-          sx={{
-            color: theme.palette.text.primary,
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.main,
-            },
-          }}
         >
           {loadingSports ? (
             <MenuItem value="" disabled>
@@ -180,49 +142,48 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
         </Select>
       </FormControl>
 
-      {/* SELECT de Ligas */}
-      <FormControl fullWidth margin="normal" disabled={!selectedSport}>
-        <InputLabel sx={{ color: theme.palette.text.secondary }}>
-          Liga
-        </InputLabel>
-        <Select
-          name="league"
-          value={newEvent.league}
-          onChange={handleLeagueChange}
-          label="Liga"
-          sx={{
-            color: theme.palette.text.primary,
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.main,
-            },
+      {/* SELECT de Ligas com Busca */}
+      <FormControl fullWidth margin="normal" sx={{ position: "relative" }}>
+        <Autocomplete
+          disabled={!selectedSport}
+          options={filteredLeagues}
+          getOptionLabel={(option) => {
+            const translation = leagueTranslations[option.strLeague];
+            return translation?.name ?? option.strLeague;
           }}
-        >
-          <MenuItem
-            value=""
-            disabled
-            sx={{ color: theme.palette.text.secondary }}
-          >
-            {loadingLeagues
-              ? "Carregando ligas..."
-              : selectedSport
-              ? "Selecione uma liga"
-              : "Selecione uma modalidade primeiro"}
-          </MenuItem>
-
-          {filteredLeagues.map((l) => {
-            const translation = leagueTranslations[l.strLeague];
-
+          value={
+            filteredLeagues.find((l) => l.strLeague === newEvent.league) || null
+          }
+          onChange={(_, value) => {
+            const syntheticEvent = {
+              target: {
+                name: "league",
+                value: value?.strLeague ?? "",
+              },
+            } as SelectChangeEvent<string>;
+            handleLeagueChange(syntheticEvent);
+          }}
+          noOptionsText="Nenhuma liga encontrada"
+          loadingText="Carregando ligas..."
+          loading={loadingLeagues}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Liga"
+              placeholder={
+                selectedSport
+                  ? "Selecione uma liga"
+                  : "Selecione uma modalidade primeiro"
+              }
+            />
+          )}
+          renderOption={(props, option) => {
+            const translation = leagueTranslations[option.strLeague];
             const isCountryCode = (flag?: string) =>
               flag && /^[A-Z]{2}$/.test(flag);
 
             return (
-              <MenuItem key={l.idLeague} value={l.strLeague}>
+              <Box component="li" {...props}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                   {translation?.logo ? (
                     <Box
@@ -254,15 +215,24 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
                   ) : (
                     <Typography>{translation?.flag}</Typography>
                   )}
-
-                  <Typography sx={{ color: theme.palette.text.primary }}>
-                    {translation?.name ?? l.strLeague}
+                  <Typography>
+                    {translation?.name ?? option.strLeague}
                   </Typography>
                 </Box>
-              </MenuItem>
+              </Box>
             );
-          })}
-        </Select>
+          }}
+          slotProps={{
+            popper: {
+              modifiers: [
+                {
+                  name: "flip",
+                  enabled: false,
+                },
+              ],
+            },
+          }}
+        />
       </FormControl>
 
       {/* SELECT de Eventos */}
@@ -271,32 +241,14 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
         margin="normal"
         disabled={!selectedLeagueId || loadingEvents}
       >
-        <InputLabel sx={{ color: theme.palette.text.secondary }}>
-          Evento
-        </InputLabel>
+        <InputLabel>Evento</InputLabel>
         <Select
           name="event"
           value={newEvent.apiEventId || ""}
           onChange={onSelectChange}
           label="Evento"
-          sx={{
-            color: theme.palette.text.primary,
-            "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.divider,
-            },
-            "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.main,
-            },
-          }}
         >
-          <MenuItem
-            value=""
-            disabled
-            sx={{ color: theme.palette.text.secondary }}
-          >
+          <MenuItem value="" disabled>
             {loadingEvents
               ? "Carregando eventos..."
               : selectedLeagueId
