@@ -88,22 +88,31 @@ const HeroSection: React.FC = () => {
             alignItems: "center",
           }}
         >
-          <Image
-            src="/analisys.png"
-            alt="Análise Esportiva"
-            width={600}
-            height={400}
-            style={{
-              maxWidth: "100%",
-              height: "auto",
+          <Box
+            sx={{
+              width: "100%",
               borderRadius: "8px",
-              boxShadow: "0px 8px 25px rgba(0, 0, 0, 0.2)",
+              overflow: "hidden",
+              boxShadow: "0px 8px 25px rgba(0, 0, 0, 0.1)",
             }}
-            onError={(e) => {
-              e.currentTarget.src =
-                "https://placehold.co/600x400/1A2B42/E0A800?text=Imagem+Indisponível";
-            }}
-          />
+          >
+            <Image
+              src="/analysis02.png"
+              alt="Análise Esportiva"
+              width={600}
+              height={400}
+              style={{
+                maxWidth: "100%",
+                height: "auto",
+                borderRadius: "8px",
+                boxShadow: "0px 8px 25px rgba(0, 0, 0, 0.2)",
+              }}
+              onError={(e) => {
+                e.currentTarget.src =
+                  "https://placehold.co/600x400/1A2B42/E0A800?text=Imagem+Indisponível";
+              }}
+            />
+          </Box>
         </Box>
       </Container>
     </Box>
