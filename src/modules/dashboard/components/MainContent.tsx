@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import { Box, Container, Typography, Tabs, Tab } from "@mui/material";
 import ZoomLineChart from "../charts/ZoomLineChart";
@@ -93,7 +94,7 @@ const MainContent: React.FC = () => {
           </Box>
         )}
 
-        {tab === "other_data" && (
+        {/* {tab === "other_data" && (
           <Box sx={{ mt: 4 }}>
             <Box
               sx={{
@@ -121,7 +122,7 @@ const MainContent: React.FC = () => {
               </Box>
             </Box>
           </Box>
-        )}
+        )} */}
       </Container>
     </Box>
   );
