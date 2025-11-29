@@ -87,15 +87,15 @@ export const soccerMarket: Record<
     "Equipe Marca": {
       options: ["Casa: Sim", "Casa: Não", "Fora: Sim", "Fora: Não"],
     },
-    "Marcador de Gols": {
-      options: [
-        "Primeiro a marcar",
-        "Último a marcar",
-        "A qualquer momento",
-        "Dois ou mais gols",
-        "Hat-trick",
-      ],
-    },
+    // "Marcador de Gols": {
+    //   options: [
+    //     "Primeiro a marcar",
+    //     "Último a marcar",
+    //     "A qualquer momento",
+    //     "Dois ou mais gols",
+    //     "Hat-trick",
+    //   ],
+    // },
   },
   Handicap: {
     "Handicap Europeu": { options: ["-2", "-1", "+1", "+2"] },

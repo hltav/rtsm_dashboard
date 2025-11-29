@@ -97,18 +97,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
               value={filters.event}
               onChange={onFilterChange}
               label="Evento"
-              sx={{
-                color: theme.palette.text.primary,
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.primary.main,
-                },
-              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueEvents.map((evt) => (
@@ -132,18 +120,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
               value={filters.modality}
               onChange={onFilterChange}
               label="Modalidade"
-              sx={{
-                color: theme.palette.text.primary,
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.primary.main,
-                },
-              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueModalities.map((mod) => (
@@ -167,18 +143,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
               value={filters.league}
               onChange={onFilterChange}
               label="Liga"
-              sx={{
-                color: theme.palette.text.primary,
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.primary.main,
-                },
-              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueLeagues.map((league) => (
@@ -202,18 +166,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
               value={filters.market}
               onChange={onFilterChange}
               label="Mercado"
-              sx={{
-                color: theme.palette.text.primary,
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.primary.main,
-                },
-              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueMarkets.map((mkt) => (
@@ -237,18 +189,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
               value={filters.amountRange}
               onChange={onFilterChange}
               label="Unids (Valor)"
-              sx={{
-                color: theme.palette.text.primary,
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.primary.main,
-                },
-              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {amountRanges.slice(1).map((range) => (
@@ -272,18 +212,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
               value={filters.odd}
               onChange={onFilterChange}
               label="Odd"
-              sx={{
-                color: theme.palette.text.primary,
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.primary.main,
-                },
-              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueOdds.map((odd) => (
@@ -307,18 +235,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
               value={filters.bank}
               onChange={onFilterChange}
               label="Banca"
-              sx={{
-                color: theme.palette.text.primary,
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.primary.main,
-                },
-              }}
             >
               <MenuItem value="">Todos</MenuItem>
               {uniqueBanks.map((bank) => (
@@ -342,18 +258,6 @@ const FilterModal: React.FC<FilterModalProps> = ({
               value={filters.result}
               onChange={onFilterChange}
               label="Resultado"
-              sx={{
-                color: theme.palette.text.primary,
-                "& .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&:hover .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.divider,
-                },
-                "&.Mui-focused .MuiOutlinedInput-notchedOutline": {
-                  borderColor: theme.palette.primary.main,
-                },
-              }}
             >
               <MenuItem value="">Todos</MenuItem>
               <MenuItem value="win">Ganha</MenuItem>
