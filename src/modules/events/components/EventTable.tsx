@@ -90,6 +90,8 @@ const EventTable: React.FC<EventTableProps> = ({
     });
   }, [events]);
 
+  console.log("Sorted Events:", sortedEvents);
+
   return (
     <TableContainer
       component={Paper}

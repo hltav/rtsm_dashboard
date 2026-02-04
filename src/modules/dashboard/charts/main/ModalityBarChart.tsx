@@ -22,6 +22,19 @@ const ModalityBarChart: React.FC<ModalityBarChartProps> = ({
   const { events, loading } = useEvents();
   const chartHeight = 300;
 
+  const colors = [
+    "#1f77b4", // Azul
+    "#ff7f0e", // Laranja
+    "#2ca02c", // Verde
+    "#d62728", // Vermelho
+    "#9467bd", // Roxo
+    "#8c564b", // Marrom
+    "#e377c2", // Rosa
+    "#7f7f7f", // Cinza
+    "#bcbd22", // Verde-amarelado
+    "#17becf", // Ciano
+  ];
+
   const filteredEvents = useMemo(() => {
     if (selectedBankrollId === null) return events;
     return events.filter((e) => e.bankrollId === selectedBankrollId);
@@ -31,7 +44,7 @@ const ModalityBarChart: React.FC<ModalityBarChartProps> = ({
     const map: { [key: string]: number } = {};
 
     filteredEvents.forEach((event) => {
-      const modality = event.selection || "Sem Modalidade";
+      const modality = event.selection || "Sem aposta";
       if (!map[modality]) {
         map[modality] = 0;
       }
@@ -46,16 +59,15 @@ const ModalityBarChart: React.FC<ModalityBarChartProps> = ({
       .sort((a, b) => b.wagers - a.wagers);
   }, [filteredEvents]);
 
-  const xAxisData = modalityChartData.map((d) => d.name);
+  // const xAxisData = modalityChartData.map((d) => d.name);
+  const xAxisData = ["Mercados"];
 
-  const barSeries = [
-    {
-      data: modalityChartData.map((d) => d.wagers),
-      label: "Apostas",
-      color: theme.palette.secondary.main,
-      barWidth: 25,
-    },
-  ];
+  const barSeries = modalityChartData.map((d, index) => ({
+    data: [d.wagers], // cada série só tem um valor
+    label: d.name, // nome da modalidade
+    color: colors[index % colors.length], // pega cor ciclando
+    barWidth: 8,
+  }));
 
   if (loading) {
     return (
@@ -83,17 +95,9 @@ const ModalityBarChart: React.FC<ModalityBarChartProps> = ({
               height={chartHeight}
               series={barSeries}
               xAxis={[
-                {
-                  data: xAxisData,
-                  scaleType: "band",
-                  categoryGapRatio: 0.95,
-                },
+                { data: xAxisData, scaleType: "band", categoryGapRatio: 0.93 },
               ]}
-              yAxis={[
-                {
-                  label: "Qtd. Apostas",
-                },
-              ]}
+              yAxis={[{ label: "Qtd. Apostas" }]}
               margin={{ top: 20, right: 30, left: 30, bottom: 20 }}
               grid={{ horizontal: true }}
               sx={{
@@ -102,8 +106,6 @@ const ModalityBarChart: React.FC<ModalityBarChartProps> = ({
                 },
                 [`& .${axisClasses.bottom} .${axisClasses.tickLabel}`]: {
                   fill: theme.palette.text.secondary,
-                  transform: "rotate(-45deg)",
-                  textAnchor: "end",
                 },
               }}
             />

@@ -51,6 +51,7 @@ amador
 amanhã
 Amanhã
 Amapaense
+amarelado
 amarelo
 Amazonense
 Ambas
@@ -235,6 +236,7 @@ Championnat
 chave
 Chilena
 Chinesa
+Ciano
 Ciclismo
 cima
 cinza
@@ -804,6 +806,7 @@ marcar
 Marciais
 Marfim
 Marino
+Marrom
 Marroquina
 Marroquino
 Mauritânia
@@ -1127,6 +1130,7 @@ robusta
 robusto
 roda
 Romena
+Roxo
 rtsportsmanager
 Ruanda
 Rúgbi
