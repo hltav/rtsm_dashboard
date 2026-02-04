@@ -36,7 +36,7 @@ export const EventResultSelect: React.FC<EventResultSelectProps> = ({
       }
       try {
         setLoading(true);
-        const data = await bankrollApi.getAll(user.id);
+        const data = await bankrollApi.getAll();
         setBanks(data);
       } catch (err) {
         console.error("Erro ao carregar bancas:", err);
