@@ -48,6 +48,8 @@ export const HistoryTypeEnum = z.enum([
   "BALANCE_ADJUSTMENT",
 ]);
 
+export type HistoryType = z.infer<typeof HistoryTypeEnum>;
+
 export const BankrollHistorySchema = z.object({
   id: z.number().int(),
   bankrollId: z.number().int(),
