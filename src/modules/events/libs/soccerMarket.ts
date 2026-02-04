@@ -6,6 +6,9 @@ export const soccerMarket: Record<
     "Resultado Final": {
       options: ["Casa", "Empate", "Fora"],
     },
+     "Resultado Antecipado": {
+      options: ["Casa", "Fora"],
+    },
     "Empate Anula Aposta": { options: ["Casa", "Fora"] },
     "Dupla Chance": {
       options: ["Casa ou Empate", "Fora ou Empate", "Casa ou Fora"],
@@ -82,6 +85,19 @@ export const soccerMarket: Record<
         "Ambos marcam ou + 2.5 gols - Sim",
         "Ambos marcam ou + 2.5 gols - Não",
       ],
+    },
+    "Ambas Marcam 1º Tempo": {
+      options: [
+        "Ambos marcam - Sim",
+        "Ambos marcam - Não",
+        "Ambos marcam e + 2.5 gols - Sim",
+        "Ambos marcam e + 2.5 gols - Não",
+        "Ambos marcam ou + 2.5 gols - Sim",
+        "Ambos marcam ou + 2.5 gols - Não",
+      ],
+    },
+    "Ambas Marcam Ambos Tempo": {
+      options: ["Ambos marcam - Sim", "Ambos marcam - Não"],
     },
     "Total Exato de Gols": { options: ["0", "1", "2", "3", "4", "5", "6+"] },
     "Equipe Marca": {

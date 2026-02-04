@@ -7,7 +7,6 @@ import {
   CircularProgress,
   useMediaQuery,
   SelectChangeEvent,
-  useTheme,
 } from "@mui/material";
 import { CssBaseline } from "@mui/material";
 import { darkTheme } from "@/components/theme/dark-theme";
@@ -18,13 +17,10 @@ import EditEventModal from "./components/EditEventModal";
 import EventInfoModal from "./components/EventInfoModal";
 import FilterModal from "./components/FilterModal";
 import { useEvents } from "./hooks/useEvents";
-import { EventItem } from "./schemas/EventItem";
+import { FullBet } from "./schemas/EventItem";
 import { useBankrolls } from "../bankroll/hook/useBankrolls";
-import { useAuth } from "@/components/Providers/AuthContext";
 
 const EventContentPage = () => {
-  const theme = useTheme();
-  const { user } = useAuth();
   const { events, loading, refetch } = useEvents();
   const isMobile = useMediaQuery(darkTheme.breakpoints.down("sm"));
   const [openAddModal, setOpenAddModal] = useState(false);
@@ -32,22 +28,22 @@ const EventContentPage = () => {
   const [openEditModal, setOpenEditModal] = useState(false);
   const [openFilterModal, setOpenFilterModal] = useState(false);
   const [selectedEventForInfo, setSelectedEventForInfo] =
-    useState<EventItem | null>(null);
+    useState<FullBet | null>(null);
   const [selectedEventForEdit, setSelectedEventForEdit] =
-    useState<EventItem | null>(null);
+    useState<FullBet | null>(null);
   const [filters, setFilters] = useState({
-    event: "",
-    modality: "",
+    eventDescription: "",
+    sports: "",
     league: "",
     market: "",
     amountRange: "",
     odd: "",
     bank: "",
     result: "",
-    bankId: "",
+    bankrollId: "",
   });
-  const userId = user?.id;
-  const { data: bankrolls } = useBankrolls(userId ?? 0);
+
+  const { data: bankrolls } = useBankrolls();
 
   useEffect(() => {
     refetch();
@@ -56,7 +52,7 @@ const EventContentPage = () => {
   const handleFilterChange = (
     e:
       | React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-      | SelectChangeEvent<string>
+      | SelectChangeEvent<string>,
   ) => {
     const { name, value } = e.target;
     setFilters((prev) => ({ ...prev, [name]: value }));
@@ -64,15 +60,15 @@ const EventContentPage = () => {
 
   const handleClearFilters = () =>
     setFilters({
-      event: "",
-      modality: "",
+      eventDescription: "",
+      sports: "",
       league: "",
       market: "",
       amountRange: "",
       odd: "",
       bank: "",
       result: "",
-      bankId: "",
+      bankrollId: "",
     });
 
   const banksMap = useMemo(() => {
@@ -80,40 +76,54 @@ const EventContentPage = () => {
     return new Map(bankrolls.map((bank) => [bank.id, bank.name]));
   }, [bankrolls]);
 
-  const filteredEvents = events.filter((event) => {
-    let amountValid = true;
-    if (filters.amountRange) {
-      const [minStr, maxStr] = filters.amountRange.split("-");
-      const min = parseInt(minStr, 10);
-      const max = maxStr && maxStr !== "+" ? parseInt(maxStr, 10) : Infinity;
-      amountValid = event.amount >= min && event.amount <= max;
-    }
+  const filteredEvents = useMemo(() => {
+    return events.filter((event) => {
+      // CORREÇÃO: Converter string para número para permitir comparação >= e <=
+      const numericStake = Number(event.stake);
 
-    const bankName = banksMap.get(event.bankId);
+      let amountValid = true;
+      if (filters.amountRange) {
+        const [minStr, maxStr] = filters.amountRange.split("-");
+        const min = Number(minStr);
+        const max = maxStr && maxStr !== "+" ? Number(maxStr) : Infinity;
 
-    return (
-      (!filters.event || event.event === filters.event) &&
-      (!filters.modality || event.modality === filters.modality) &&
-      (!filters.league || event.league === filters.league) &&
-      (!filters.market || event.market === filters.market) &&
-      amountValid &&
-      (!filters.odd || event.odd === filters.odd) &&
-      (!filters.bank || bankName === filters.bank) &&
-      (!filters.result || event.result === filters.result)
-    );
-  });
+        // Agora ambos são números, o erro desaparece
+        amountValid = numericStake >= min && numericStake <= max;
+      }
 
-  const uniqueEvents = Array.from(new Set(events.map((e) => e.event)));
-  const uniqueModalities = Array.from(new Set(events.map((e) => e.modality)));
+      const numericOdd = Number(event.odd);
+      const filterOdd = filters.odd ? Number(filters.odd) : null;
+
+      return (
+        (!filters.eventDescription ||
+          event.eventDescription
+            .toLowerCase()
+            .includes(filters.eventDescription.toLowerCase())) &&
+        (!filters.sports || event.sport === filters.sports) &&
+        (!filters.league || event.league === filters.league) &&
+        (!filters.market || event.market === filters.market) &&
+        amountValid &&
+        (!filterOdd || numericOdd === filterOdd) &&
+        (!filters.bankrollId ||
+          event.bankrollId.toString() === filters.bankrollId) &&
+        (!filters.result || event.result === filters.result)
+      );
+    });
+  }, [events, filters]);
+
+  const uniqueEvents = Array.from(
+    new Set(events.map((e) => e.eventDescription)),
+  );
+  const uniqueSports = Array.from(new Set(events.map((e) => e.sport)));
   const uniqueLeagues = Array.from(new Set(events.map((e) => e.league)));
   const uniqueMarkets = Array.from(new Set(events.map((e) => e.market)));
   const uniqueOdds = Array.from(new Set(events.map((e) => e.odd)));
   const uniqueBanks = Array.from(
     new Set(
       events
-        .map((e) => banksMap.get(e.bankId))
-        .filter((name): name is string => !!name)
-    )
+        .map((e) => banksMap.get(e.bankrollId))
+        .filter((name): name is string => !!name),
+    ),
   );
   const amountRanges = ["", "0-2", "3-4", "5+"];
 
@@ -123,7 +133,6 @@ const EventContentPage = () => {
       <Box
         sx={{
           minHeight: "100%",
-          bgcolor: theme.palette.background.default,
           p: { xs: 2, sm: 4 },
         }}
       >
@@ -138,12 +147,7 @@ const EventContentPage = () => {
               gap: { xs: 2, sm: 0 },
             }}
           >
-            <Typography
-              variant="h4"
-              component="h1"
-              fontWeight="bold"
-              sx={{ color: theme.palette.text.primary }}
-            >
+            <Typography variant="h4" component="h1" fontWeight="bold">
               Eventos
             </Typography>
 
@@ -214,7 +218,7 @@ const EventContentPage = () => {
             onFilterChange={handleFilterChange}
             onClearFilters={handleClearFilters}
             uniqueEvents={uniqueEvents}
-            uniqueModalities={uniqueModalities.filter((e): e is string => !!e)}
+            uniqueSports={uniqueSports.filter((e): e is string => !!e)}
             uniqueLeagues={uniqueLeagues.filter((e): e is string => !!e)}
             uniqueMarkets={uniqueMarkets}
             amountRanges={amountRanges}

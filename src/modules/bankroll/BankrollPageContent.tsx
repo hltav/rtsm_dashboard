@@ -11,7 +11,6 @@ import {
 import { BankrollDto } from "./schema/bankroll.schema";
 import { BankrollCard } from "./components/BankrollCard";
 import { useThemeMode } from "@/components/Providers/ThemeRegistry";
-import { useAuth } from "@/components/Providers/AuthContext";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import {
   useBankrolls,
@@ -22,10 +21,11 @@ import { AlertConfirmDialog } from "@/utils/AlertConfirmDialog";
 import BankrollEditModal from "./components/BankrollEditModal";
 import BankrollInfoModal from "./components/BankrollInfoModal";
 import { BankrollFormModal } from "./components/BankrollFormModal";
-import { CreateBankrollDto } from "./schema/createBankroll.schema";
+
+// Definimos um tipo local para o formulário de criação (sem IDs)
+type CreateFormData = Omit<BankrollDto, "id" | "userId">;
 
 const BankrollPageContent = () => {
-  const { user } = useAuth();
   const { showNotification } = useNotification();
   const { mode } = useThemeMode();
 
@@ -34,36 +34,38 @@ const BankrollPageContent = () => {
   const [editOpen, setEditOpen] = useState(false);
   const [infoOpen, setInfoOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [newBankroll, setNewBankroll] = useState<CreateBankrollDto>({
-    userId: user?.id ?? 0,
+
+  // Limpeza: removido userId do estado inicial
+  const [newBankroll, setNewBankroll] = useState<CreateFormData>({
     name: "",
     balance: 0,
+    initialBalance: 0,
     unidValue: 0,
     bookmaker: "",
   });
 
   // Banca selecionada
   const [selectedBankroll, setSelectedBankroll] = useState<BankrollDto | null>(
-    null
+    null,
   );
-  const [bankrollIdToDelete, setBankrollIdToDelete] = useState<string | null>(
-    null
+  const [bankrollIdToDelete, setBankrollIdToDelete] = useState<number | null>(
+    null,
   );
 
-  // Queries e mutations
-  const { data: bankrolls = [], isLoading: loading } = useBankrolls(
-    user?.id ?? 0
-  );
-  const createBankroll = useCreateBankroll(user?.id ?? 0);
-  const deleteBankroll = useDeleteBankroll(user?.id ?? 0);
+  /** * Limpeza nos Hooks:
+   * Agora os hooks não recebem mais o userId.
+   * Eles usarão internamente o bankrollApi que já pega tudo via Cookie.
+   */
+  const { data: bankrolls = [], isLoading: loading } = useBankrolls();
+  const createBankroll = useCreateBankroll();
+  const deleteBankroll = useDeleteBankroll();
 
-  // Handlers para edição
+  // Handlers para edição e detalhes
   const handleEditClick = (bankroll: BankrollDto) => {
     setSelectedBankroll(bankroll);
     setEditOpen(true);
   };
 
-  // Handlers para visualização de detalhes
   const handleViewDetailsClick = (bankroll: BankrollDto) => {
     setSelectedBankroll(bankroll);
     setInfoOpen(true);
@@ -71,26 +73,22 @@ const BankrollPageContent = () => {
 
   // Handlers para criação
   const handleOpenCreateModal = () => setOpenCreateModal(true);
+  const handleCloseCreateModal = () => setOpenCreateModal(false);
 
-  const handleCloseCreateModal = () => {
-    setOpenCreateModal(false);
-  };
-
-  const handleBankrollSaved = async (
-    savedBankroll: Omit<BankrollDto, "id" | "userId">
-  ) => {
+  const handleBankrollSaved = async (savedData: CreateFormData) => {
     try {
-      await createBankroll.mutateAsync(savedBankroll);
-
+      await createBankroll.mutateAsync(savedData);
       showNotification("Banca criada com sucesso!", "success", 2000);
       setOpenCreateModal(false);
+      // Opcional: Resetar o formulário
+      setNewBankroll({ name: "", balance: 0,initialBalance: 0,  unidValue: 0, bookmaker: "" });
     } catch {
       showNotification("Erro ao criar banca. Tente novamente!", "error", 3000);
     }
   };
 
   const handleNewBankrollChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setNewBankroll((prev) => ({
@@ -100,25 +98,21 @@ const BankrollPageContent = () => {
   };
 
   // Handlers para deleção
-  const handleDeleteClick = (id: string) => {
+  const handleDeleteClick = (id: number) => {
     setBankrollIdToDelete(id);
     setAlertOpen(true);
   };
 
   const handleDeleteConfirm = async () => {
     setAlertOpen(false);
-
     if (!bankrollIdToDelete) return;
 
     try {
+      // Convertendo para number caso seu hook espere number
       await deleteBankroll.mutateAsync(bankrollIdToDelete);
       showNotification("Banca deletada com sucesso!", "success", 2000);
     } catch {
-      showNotification(
-        "Erro ao deletar a banca. Tente novamente.",
-        "error",
-        3000
-      );
+      showNotification("Erro ao deletar a banca.", "error", 3000);
     } finally {
       setBankrollIdToDelete(null);
     }
@@ -133,9 +127,8 @@ const BankrollPageContent = () => {
           display: "flex",
           flexDirection: "column",
           alignItems: "center",
-          justifyContent: "flex-start",
           bgcolor: "background.default",
-          p: { xs: 2, sm: 3, md: 2 },
+          p: 2,
           width: "100%",
         }}
       >
@@ -143,15 +136,13 @@ const BankrollPageContent = () => {
           <Box
             sx={{
               display: "flex",
-              flexDirection: "row",
               justifyContent: "space-between",
-              alignItems: { xs: "flex-start", sm: "center" },
+              alignItems: "center",
               width: "100%",
               mb: 4,
-              gap: { xs: 2, sm: 0 },
             }}
           >
-            <Typography variant="h5" component="h1" gutterBottom>
+            <Typography variant="h5" component="h1">
               Minhas Bancas
             </Typography>
             <Button
@@ -163,17 +154,14 @@ const BankrollPageContent = () => {
             </Button>
           </Box>
 
-          <Grid container spacing={2} justifyContent="flex-start">
+          <Grid container spacing={2}>
             {loading ? (
               <Box sx={{ p: 2, textAlign: "center", width: "100%" }}>
-                <p>Carregando bancas...</p>
+                Carregando bancas...
               </Box>
             ) : bankrolls.length === 0 ? (
               <Box sx={{ p: 2, textAlign: "center", width: "100%" }}>
-                <p>
-                  Você ainda não possui bancas. Crie sua primeira banca para
-                  começar.
-                </p>
+                Você ainda não possui bancas.
               </Box>
             ) : (
               bankrolls.map((bankroll) => (
@@ -190,7 +178,7 @@ const BankrollPageContent = () => {
                     bankroll={bankroll}
                     onEdit={() => handleEditClick(bankroll)}
                     onViewDetails={() => handleViewDetailsClick(bankroll)}
-                    onDelete={() => handleDeleteClick(bankroll.id.toString())}
+                    onDelete={() => handleDeleteClick(bankroll.id)}
                   />
                 </Grid>
               ))
@@ -199,44 +187,36 @@ const BankrollPageContent = () => {
         </Container>
       </Box>
 
-      {/* Modal de criação */}
       <BankrollFormModal
         open={openCreateModal}
         onClose={handleCloseCreateModal}
-        bankroll={newBankroll} // <--- necessário
+        bankroll={newBankroll} // Cast temporário se o componente pedir DTO completo
         onChange={handleNewBankrollChange}
         onSave={handleBankrollSaved}
       />
 
-      {/* Modal de edição - agora autossuficiente */}
       {selectedBankroll && (
-        <BankrollEditModal
-          open={editOpen}
-          onClose={() => setEditOpen(false)}
-          bankroll={selectedBankroll}
-        />
+        <>
+          <BankrollEditModal
+            open={editOpen}
+            onClose={() => setEditOpen(false)}
+            bankroll={selectedBankroll}
+          />
+          <BankrollInfoModal
+            open={infoOpen}
+            onClose={() => setInfoOpen(false)}
+            bankrollModal={selectedBankroll}
+          />
+        </>
       )}
 
-      {/* Modal de informações */}
-      {selectedBankroll && (
-        <BankrollInfoModal
-          open={infoOpen}
-          onClose={() => setInfoOpen(false)}
-          bankrollModal={selectedBankroll}
-        />
-      )}
-
-      {/* Dialog de confirmação de deleção */}
       <AlertConfirmDialog
         open={alertOpen}
         title="Atenção"
-        message="Ao deletar essa banca todos os eventos ligadas a ela também serão deletados. Deseja Continuar? "
+        message="Ao deletar essa banca todos os eventos ligados a ela também serão deletados. Deseja Continuar?"
         severity="error"
         onConfirm={handleDeleteConfirm}
-        onCancel={() => {
-          setAlertOpen(false);
-          setBankrollIdToDelete(null);
-        }}
+        onCancel={() => setAlertOpen(false)}
       />
     </div>
   );

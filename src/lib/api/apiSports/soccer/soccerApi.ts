@@ -1,31 +1,62 @@
 import apiClient from "../../apiBaseUrl";
+import { DiscoverFixture } from "./schemas/discoveryFixture.schema";
+import { DiscoverLeague } from "./schemas/discoveryLeague.schema";
+import { OrganizedLeaguesResponse } from "./schemas/discoveryOrganized.schema";
 
 export const soccerApi = {
-  // 🟢 Buscar partidas ao vivo
-  async getLiveMatches() {
-    const response = await apiClient.get("/soccer/live");
-    return response.data;
-  },
-
-  // 🏆 Buscar ligas
-  async getLeagues() {
-    const response = await apiClient.get("/soccer/leagues");
-    return response.data;
-  },
-
-  // ⚽ Buscar times de uma liga em uma temporada específica
-  async getTeams(leagueId: number, season: number) {
-    const response = await apiClient.get("/soccer/teams", {
-      params: { leagueId, season },
+  // 🏆 Buscar ligas (current | season específica)
+  async getLeagues(season?: string): Promise<DiscoverLeague[]> {
+    const response = await apiClient.get("/soccer/discovery/leagues", {
+      params: season ? { season } : undefined,
     });
+
+    console.log("Ligas recebidas da API:", response.data);
     return response.data;
   },
 
-  // 📊 Buscar classificação (standings)
-  async getStandings(leagueId: number, season: number) {
-    const response = await apiClient.get("/soccer/standings", {
-      params: { leagueId, season },
+  // ⚽ Buscar próximas partidas de uma liga
+  async getNextFixtures(
+    leagueId: number,
+    next = 10,
+    season?: number | "current"
+  ): Promise<DiscoverFixture[]> {
+    const response = await apiClient.get("/soccer/discovery/next-fixtures", {
+      params: {
+        league: leagueId,
+        next,
+        ...(season ? { season } : {}),
+      },
     });
+
+    return response.data;
+  },
+
+  // 🟢 Buscar temporada atual de uma liga
+  async getCurrentSeason(
+    leagueId: number
+  ): Promise<{ league: number; currentSeason: number | null }> {
+    const response = await apiClient.get("/soccer/discovery/current-season", {
+      params: { league: leagueId },
+    });
+
+    return response.data;
+  },
+
+  async getOrganizedLeagues(
+    season?: string,
+    refresh = false
+  ): Promise<OrganizedLeaguesResponse> {
+    const response = await apiClient.get(
+      "/soccer/discovery/leagues/organized",
+      {
+        params: {
+          ...(season ? { season } : {}),
+          refresh,
+        },
+      }
+    );
+
+    console.log("Ligas organizadas recebidas da API:", response.data);
     return response.data;
   },
 };

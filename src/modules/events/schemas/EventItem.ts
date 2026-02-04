@@ -1,65 +1,60 @@
 import { z } from "zod";
+import { Result } from "./Result.schema";
 
-export const ResultEnum = z.enum([
-  "pending",
-  "win",
-  "lose",
-  "draw",
-  "returned",
-  "void",
-]);
-
-export const EventItemSchema = z.object({
+export const BetCoreSchema = z.object({
   id: z.number(),
-  bankId: z.number().int().positive(),
-  modality: z.string().trim().min(1),
-  eventType: z.string().optional().nullable(),
-  league: z.string().trim().min(1),
-  event: z.string().trim().min(1),
-  market: z.string().trim().min(1),
-  marketCategory: z.string().trim().optional().default(""),
-  marketSub: z.string().trim().optional().default(""),
-  optionMarket: z.string().trim().optional().default(""),
-  amount: z.number().positive("Valor deve ser positivo"),
-  odd: z.string(),
+  bankrollId: z.number().int().positive(),
   userId: z.number(),
-  result: ResultEnum.optional().default("pending"),
-  createdAt: z
-    .date()
-    .optional()
-    .default(() => new Date()),
-  updatedAt: z
-    .date()
-    .optional()
-    .default(() => new Date()),
-});
-
-export const EventIntegrationSchema = z.object({
-  apiEventId: z.string().optional().nullable(),
+  // === CONTEXTO DO EVENTO ===
+  sport: z.string().trim().min(1),
+  league: z.string().trim().min(1),
+  eventDescription: z.string().trim().min(1),
+  eventDate: z.string().optional().nullable(),
   homeTeam: z.string().optional().nullable(),
   awayTeam: z.string().optional().nullable(),
-  eventDate: z.string().optional().nullable(),
-  strCountry: z.string().optional().nullable(),
-  strTimestamp: z.string().optional().nullable(),
-  strTime: z.string().optional().nullable(),
-  strTimeLocal: z.string().optional().nullable(),
-  dateEvent: z.string().optional().nullable(),
-  dateEventLocal: z.string().optional().nullable(),
-  timezone: z.string().optional().nullable(),
+  homeTeamBadge: z.string().trim().optional().nullable(),
+  awayTeamBadge: z.string().trim().optional().nullable(),
+  leagueBadge: z.string().trim().optional().nullable(),
+  // === MERCADO ===
+  market: z.string().trim().min(1),
+  marketCategory: z.string().trim().min(1),
+  marketSub: z.string().optional().nullable(),
+  selection: z.string().trim().min(1),
+  // === VALORES (Decimal no backend) ===
+  odd: z.string(), // Decimal
+  stake: z.string(), // Decimal
+  potentialReturn: z.string(),
+  actualReturn: z.string().optional().nullable(),
+  bankrollBalance: z.string(),
+  unitValue: z.string(),
+  stakeInUnits: z.string(),
+  // === RESULTADO ===
+  result: Result,
+  profit: z.string().optional().nullable(),
+  roi: z.string().optional().nullable(),
+  isWin: z.boolean().optional().nullable(),
+  // === DATAS ===
+  placedAt: z.string(),
+  settledAt: z.string().optional().nullable(),
+  createdAt: z.string(),
+  updatedAt: z.string(),
 });
 
-export const EventVisualsSchema = z.object({
+export const BetIntegrationSchema = z.object({
+  externalMatchId: z.number().optional().nullable(),
+  apiEventId: z.string().optional().nullable(),
+  secondaryApiEventId: z.string().optional().nullable(),
+});
+
+export const BetVisualsSchema = z.object({
   strHomeTeamBadge: z.string().optional().nullable(),
   strAwayTeamBadge: z.string().optional().nullable(),
   strBadge: z.string().optional().nullable(),
   strThumb: z.string().optional().nullable(),
 });
 
-export type EventItem = z.infer<typeof EventItemSchema>;
-export type EventIntegration = z.infer<typeof EventIntegrationSchema>;
-export type EventVisuals = z.infer<typeof EventVisualsSchema>;
+export const FullBetSchema =
+  BetCoreSchema.merge(BetIntegrationSchema).merge(BetVisualsSchema);
 
-export const FullEventSchema = EventItemSchema.merge(
-  EventIntegrationSchema
-).merge(EventVisualsSchema);
-export type FullEvent = z.infer<typeof FullEventSchema>;
+export type BetCore = z.infer<typeof BetCoreSchema>;
+export type FullBet = z.infer<typeof FullBetSchema>;

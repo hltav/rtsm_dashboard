@@ -8,7 +8,6 @@ import {
   InputLabel,
   Select,
   MenuItem,
-  Button,
   Modal,
   SelectChangeEvent,
   useTheme,
@@ -17,8 +16,9 @@ import { modalStyle } from "@/modules/events/interfaces/modalStyle";
 import { formatCurrency } from "@/utils/formatCurrency";
 import { useUpdateBankroll } from "../hook/useBankrolls";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
-import { useAuth } from "@/components/Providers/AuthContext";
 import { BankrollDto } from "../schema/bankroll.schema";
+import { CancelButton } from "@/lib/ui/buttons/CancelButton";
+import { SaveButton } from "@/lib/ui/buttons/SaveButton";
 
 interface BankrollEditModalProps {
   open: boolean;
@@ -38,16 +38,17 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
   onClose,
   bankroll,
 }) => {
-  const theme = useTheme(); // <--- aqui
-  const { user } = useAuth();
+  const theme = useTheme();
   const { showNotification } = useNotification();
-  const updateBankroll = useUpdateBankroll(user?.id ?? 0);
+
+  // Limpeza: useUpdateBankroll agora não precisa de userId
+  const updateBankroll = useUpdateBankroll();
 
   const [formState, setFormState] = useState<EditFormState>({
     editBalance: "",
     addedBalance: 0,
     withdrawals: 0,
-    unidValue: parseFloat(bankroll.unidValue.toString()) || 0,
+    unidValue: Number(bankroll.unidValue) || 0,
   });
 
   useEffect(() => {
@@ -56,7 +57,7 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
         editBalance: "",
         addedBalance: 0,
         withdrawals: 0,
-        unidValue: parseFloat(bankroll.unidValue.toString()) || 0,
+        unidValue: Number(bankroll.unidValue) || 0,
       });
     }
   }, [open, bankroll]);
@@ -72,32 +73,26 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
   };
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     const digitsOnly = value.replace(/\D/g, "");
 
     if (!digitsOnly) {
-      setFormState((prev) => ({
-        ...prev,
-        [name]: 0,
-      }));
+      setFormState((prev) => ({ ...prev, [name]: 0 }));
       return;
     }
 
     const numericValue = Number(digitsOnly) / 100;
-
-    setFormState((prev) => ({
-      ...prev,
-      [name]: numericValue,
-    }));
+    setFormState((prev) => ({ ...prev, [name]: numericValue }));
   };
 
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
 
-    const currentBalance = parseFloat(bankroll.balance.toString()) || 0;
+    const currentBalance = Number(bankroll.balance) || 0;
 
+    // Validações de negócio
     if (
       formState.editBalance === "withdrawals" &&
       formState.withdrawals > currentBalance
@@ -106,51 +101,32 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
       return;
     }
 
-    if (
-      formState.editBalance &&
-      ((formState.editBalance === "addedBalance" &&
-        formState.addedBalance <= 0) ||
-        (formState.editBalance === "withdrawals" && formState.withdrawals <= 0))
-    ) {
-      showNotification(
-        "Informe um valor válido para a operação.",
-        "warning",
-        3000
-      );
-      return;
-    }
-
     let newBalance = currentBalance;
-
     if (formState.editBalance === "addedBalance") {
       newBalance += formState.addedBalance;
     } else if (formState.editBalance === "withdrawals") {
       newBalance -= formState.withdrawals;
     }
 
+    // Payload limpo sem userId
     const updatePayload: Omit<BankrollDto, "id" | "userId"> = {
       name: bankroll.name,
       bookmaker: bankroll.bookmaker,
       balance: newBalance,
       unidValue: formState.unidValue,
-      initialBalance: parseFloat(bankroll.initialBalance.toString()) || 0,
+      initialBalance: Number(bankroll.initialBalance) || 0,
     };
 
     try {
       await updateBankroll.mutateAsync({
-        id: bankroll.id.toString(),
+        id: bankroll.id, // Enviando como number (conforme o hook atualizado)
         data: updatePayload,
       });
 
       showNotification("Banca atualizada com sucesso!", "success", 2000);
       onClose();
-    } catch (error) {
-      console.error("Erro ao atualizar banca:", error);
-      showNotification(
-        "Erro ao atualizar a banca. Tente novamente.",
-        "error",
-        3000
-      );
+    } catch {
+      showNotification("Erro ao atualizar a banca.", "error", 3000);
     }
   };
 
@@ -159,37 +135,23 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
   };
 
   return (
-    <Modal open={open} onClose={() => {}} disableEscapeKeyDown>
+    <Modal open={open} onClose={onClose} disableEscapeKeyDown>
       <Box
         sx={{
           ...modalStyle,
           bgcolor: theme.palette.background.paper,
           color: theme.palette.text.primary,
-          border:
-            theme.palette.mode === "light"
-              ? `1px solid ${theme.palette.divider}`
-              : "none",
+          maxHeight: "90vh",
+          overflowY: "auto",
         }}
         component="form"
         onSubmit={handleSubmit}
       >
-        <Typography
-          variant="h5"
-          component="h2"
-          mb={4}
-          sx={{ color: theme.palette.text.primary }}
-        >
+        <Typography variant="h5" mb={4}>
           Editar Banca
         </Typography>
 
-        <FormControl
-          fullWidth
-          margin="normal"
-          sx={{
-            "& .MuiInputLabel-root": { color: theme.palette.text.secondary },
-            "& .MuiSelect-select": { color: theme.palette.text.primary },
-          }}
-        >
+        <FormControl fullWidth margin="normal">
           <InputLabel>Editar fundos</InputLabel>
           <Select
             name="editBalance"
@@ -197,7 +159,7 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
             onChange={handleSelectChange}
             label="Editar Fundos"
           >
-            <MenuItem value="">O que deseja?</MenuItem>
+            <MenuItem value="">Manter saldo atual</MenuItem>
             <MenuItem value="addedBalance">Adicionar fundos</MenuItem>
             <MenuItem value="withdrawals">Retirar fundos</MenuItem>
           </Select>
@@ -212,13 +174,6 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
             onChange={handleInputChange}
             margin="normal"
             helperText={`Saldo atual: ${formatCurrency(bankroll.balance)}`}
-            sx={{
-              "& .MuiInputBase-input": { color: theme.palette.text.primary },
-              "& .MuiInputLabel-root": { color: theme.palette.text.secondary },
-              "& .MuiFormHelperText-root": {
-                color: theme.palette.text.secondary,
-              },
-            }}
           />
         )}
 
@@ -230,19 +185,8 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
             value={formatDisplayValue(formState.withdrawals)}
             onChange={handleInputChange}
             margin="normal"
-            helperText={`Saldo disponível: ${formatCurrency(
-              parseFloat(bankroll.balance.toString())
-            )}`}
-            error={
-              formState.withdrawals > parseFloat(bankroll.balance.toString())
-            }
-            sx={{
-              "& .MuiInputBase-input": { color: theme.palette.text.primary },
-              "& .MuiInputLabel-root": { color: theme.palette.text.secondary },
-              "& .MuiFormHelperText-root": {
-                color: theme.palette.text.secondary,
-              },
-            }}
+            helperText={`Saldo disponível: ${formatCurrency(bankroll.balance)}`}
+            error={formState.withdrawals > Number(bankroll.balance)}
           />
         )}
 
@@ -253,54 +197,18 @@ const BankrollEditModal: React.FC<BankrollEditModalProps> = ({
           value={formatDisplayValue(formState.unidValue)}
           onChange={handleInputChange}
           margin="normal"
-          helperText={`Valor atual da unidade: ${formatCurrency(
-            parseFloat(bankroll.unidValue.toString())
-          )}`}
-          error={
-            formState.withdrawals > parseFloat(bankroll.unidValue.toString())
-          }
-          sx={{
-            "& .MuiInputBase-input": { color: theme.palette.text.primary },
-            "& .MuiInputLabel-root": { color: theme.palette.text.secondary },
-            "& .MuiFormHelperText-root": {
-              color: theme.palette.text.secondary,
-            },
-          }}
+          helperText={`Valor atual: ${formatCurrency(bankroll.unidValue)}`}
         />
 
-        <Box sx={{ display: "flex", justifyContent: "flex-end", mt: 4 }}>
-          <Button
-            onClick={onClose}
-            variant="outlined"
-            disabled={updateBankroll.isPending}
-            sx={{
-              mr: 2,
-              color: theme.palette.text.primary,
-              borderColor: theme.palette.text.primary,
-              "&:hover": {
-                borderColor: theme.palette.text.primary,
-                backgroundColor: theme.palette.action.hover,
-              },
-            }}
-          >
-            Cancelar
-          </Button>
+        <Box
+          sx={{ display: "flex", justifyContent: "flex-end", gap: 2, mt: 4 }}
+        >
+          <CancelButton onClick={onClose} disabled={updateBankroll.isPending} />
 
-          <Button
-            type="submit"
-            variant="contained"
-            sx={{
-              ml: 2,
-              bgcolor: theme.palette.primary.main,
-              color: theme.palette.primary.contrastText,
-              "&:hover": {
-                bgcolor: theme.palette.primary.dark,
-              },
-            }}
-            disabled={updateBankroll.isPending}
-          >
-            {updateBankroll.isPending ? "Salvando..." : "Salvar"}
-          </Button>
+          <SaveButton
+            isLoading={updateBankroll.isPending}
+            onClick={handleSubmit} // Se não for um formulário nativo
+          />
         </Box>
       </Box>
     </Modal>

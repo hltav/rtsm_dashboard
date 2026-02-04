@@ -8,8 +8,8 @@ import React, {
 } from "react";
 import { BankrollDto } from "@/modules/bankroll/schema/bankroll.schema";
 import { bankrollApi } from "@/lib/api/bankroll/bankrollApi";
-import { useAuth } from "./AuthContext";
 import { BankrollWithHistory } from "@/types/bankrollWithHistory";
+import { useAuth } from "./AuthContext";
 
 interface BankrollContextType {
   selectedBankroll: BankrollWithHistory | null;
@@ -24,7 +24,7 @@ interface BankrollContextType {
 }
 
 const BankrollContext = createContext<BankrollContextType | undefined>(
-  undefined
+  undefined,
 );
 
 interface BankrollProviderProps {
@@ -34,55 +34,45 @@ interface BankrollProviderProps {
 export const BankrollProvider: React.FC<BankrollProviderProps> = ({
   children,
 }) => {
-  const { user } = useAuth();
-  const userId = user?.id;
-
   const [bankrolls, setBankrolls] = useState<BankrollDto[]>([]);
   const [selectedBankroll, setSelectedBankroll] =
     useState<BankrollWithHistory | null>(null);
-
+  const { isAuthenticated } = useAuth();
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<Error | null>(null);
   const [shouldRefetch, setShouldRefetch] = useState<number>(0);
 
   const fetchBankrolls = useCallback(async () => {
-    if (!userId) {
-      setBankrolls([]);
-      setLoading(false);
-      return;
-    }
-
     try {
       setLoading(true);
       setError(null);
-      const data = await bankrollApi.getAll(userId);
+
+      const data = await bankrollApi.getAll();
       setBankrolls(data);
 
-      if (data.length > 0 && !selectedBankroll) {
+      if (data.length > 0) {
         const first = data[0];
-
         const history = await bankrollApi.getHistoryByBankrollId(first.id);
 
-        const bankrollWithHistory: BankrollWithHistory = {
+        setSelectedBankroll({
           ...first,
           history,
-        };
-
-        setSelectedBankroll(bankrollWithHistory);
+        });
       }
-    } catch (err) {
-      console.error("Erro ao buscar bancas:", err);
+    } catch (err: unknown) {
+      setBankrolls([]);
       setError(
-        err instanceof Error ? err : new Error("Erro ao carregar bancas")
+        err instanceof Error ? err : new Error("Erro ao carregar bancas"),
       );
     } finally {
       setLoading(false);
     }
-  }, [userId, selectedBankroll]);
+  }, []);
 
   useEffect(() => {
+    if (!isAuthenticated) return;
     fetchBankrolls();
-  }, [fetchBankrolls, shouldRefetch]);
+  }, [isAuthenticated, fetchBankrolls, shouldRefetch]);
 
   const refetch = useCallback(() => {
     setShouldRefetch((prev) => prev + 1);
@@ -104,7 +94,7 @@ export const BankrollProvider: React.FC<BankrollProviderProps> = ({
     } catch (err) {
       console.error("Erro ao selecionar banca:", err);
       setError(
-        err instanceof Error ? err : new Error("Erro ao selecionar banca")
+        err instanceof Error ? err : new Error("Erro ao selecionar banca"),
       );
     } finally {
       setLoading(false);
@@ -138,7 +128,7 @@ export const useBankrollContext = (): BankrollContextType => {
   const context = useContext(BankrollContext);
   if (context === undefined) {
     throw new Error(
-      "useBankrollContext must be used within a BankrollProvider"
+      "useBankrollContext must be used within a BankrollProvider",
     );
   }
   return context;

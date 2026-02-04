@@ -1,23 +1,27 @@
-import { FullEvent } from "../schemas/EventItem";
+import z from "zod";
+import { CreateBetSchema } from "../schemas/CreateBetPlay.schema";
 
-export const initialEventState: Omit<FullEvent, "id"> = {
-  bankId: 0,
-  modality: "",
-  eventType: "",
+export type CreateBetFormState = z.input<typeof CreateBetSchema>;
+
+export const initialCreateBetState: CreateBetFormState = {
+  bankrollId: 0,
+  sport: "",
   league: "",
-  event: "",
-  market: "",
-  marketCategory: "",
-  marketSub: "",
-  optionMarket: "",
-  amount: 0,
-  odd: "",
-  result: "pending",
-  userId: 0,
-  apiEventId: null,
+  eventDescription: "",
+  eventDate: null,
   homeTeam: null,
   awayTeam: null,
-  eventDate: null,
-  createdAt: new Date(),
-  updatedAt: new Date(),
+  market: "",
+  marketCategory: "",
+  marketSub: null,
+  selection: "",
+  odd: "",
+  stake: "",
+  unitValue: "1",
+  externalMatchId: null,
+  apiSportsEventId: null,
+  tsdbEventId: null,
+  confidence: null,
+  notes: null,
+  tags: [],
 };

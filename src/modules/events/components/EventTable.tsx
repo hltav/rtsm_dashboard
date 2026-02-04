@@ -12,24 +12,24 @@ import {
   Box,
   styled,
   useTheme,
+  Chip,
 } from "@mui/material";
 import { Info as InfoIcon, RemoveCircle } from "@mui/icons-material";
-import { FullEvent } from "../schemas/EventItem";
+import { FullBet } from "../schemas/EventItem";
 import { useBankrolls } from "@/modules/bankroll/hook/useBankrolls";
-import { useAuth } from "@/components/Providers/AuthContext";
-import { SafeImage } from "@/components/SafeImage";
-import { deleteEvent } from "@/lib/api/events/eventsApi";
+import { SafeImage } from "@/components/images/SafeImage";
+import { deleteBet } from "@/lib/api/events/eventsApi";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
 import { AlertConfirmDialog } from "@/utils/AlertConfirmDialog";
 import { translateLeague } from "@/utils/leaguesMap";
 import { translateSport } from "@/utils/sportsMap";
-import { renderLeagueWithBadge } from "@/components/LeagueBadge";
+import { renderLeagueWithBadge } from "@/components/images/LeagueBadge";
 import { formatEventDate } from "@/utils/date.utils";
 
 interface EventTableProps {
-  events: FullEvent[];
-  onInfoClick: (event: FullEvent) => void;
-  onEditClick: (event: FullEvent) => void;
+  events: FullBet[];
+  onInfoClick: (event: FullBet) => void;
+  onEditClick: (event: FullBet) => void;
   onEventDeleted?: (id: number) => void;
 }
 
@@ -46,11 +46,8 @@ const EventTable: React.FC<EventTableProps> = ({
   const [openConfirm, setOpenConfirm] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const { showNotification } = useNotification();
-  const { user } = useAuth();
 
-  const userId = user?.id;
-
-  const { data: bankrolls } = useBankrolls(userId ?? 0);
+  const { data: bankrolls } = useBankrolls();
 
   const banksMap = useMemo(() => {
     if (!bankrolls) return new Map();
@@ -61,7 +58,7 @@ const EventTable: React.FC<EventTableProps> = ({
     if (isDeleting) return;
     setIsDeleting(true);
     try {
-      await deleteEvent(String(id));
+      await deleteBet(Number(id));
       showNotification("Evento deletado com sucesso!", "success");
       onEventDeleted?.(id);
     } catch (error) {
@@ -205,7 +202,7 @@ const EventTable: React.FC<EventTableProps> = ({
                             color: theme.palette.text.secondary,
                           }}
                         >
-                          {event.market} - {event.optionMarket}
+                          {event.market} - {event.selection}
                         </Typography>
                       </Box>
                     </Box>
@@ -248,7 +245,7 @@ const EventTable: React.FC<EventTableProps> = ({
                               }}
                             ></Box>
                             <SafeImage
-                              src={event.strHomeTeamBadge}
+                              src={event.homeTeamBadge}
                               alt={event.homeTeam || ""}
                               width={30}
                               height={30}
@@ -288,7 +285,7 @@ const EventTable: React.FC<EventTableProps> = ({
                               }}
                             ></Box>
                             <SafeImage
-                              src={event.strAwayTeamBadge}
+                              src={event.awayTeamBadge}
                               alt={event.awayTeam || ""}
                               width={30}
                               height={30}
@@ -310,7 +307,7 @@ const EventTable: React.FC<EventTableProps> = ({
                         <AlertConfirmDialog
                           open={openConfirm === event.id}
                           title="Confirmar exclusão"
-                          message={`Deseja realmente excluir o evento "${event.event}"? Essa ação não pode ser desfeita.`}
+                          message={`Deseja realmente excluir o evento "${event.eventDescription}"? Essa ação não pode ser desfeita.`}
                           severity="warning"
                           onConfirm={() => event.id && handleDelete(event.id)}
                           onCancel={() => setOpenConfirm(null)}
@@ -324,14 +321,11 @@ const EventTable: React.FC<EventTableProps> = ({
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                   align="center"
                 >
-                  <Box
-                    sx={{
-                      fontSize: "12px",
-                      color: theme.palette.text.disabled,
-                    }}
-                  >
-                    {formatEventDate(event.eventDate, "long")}
-                  </Box>
+                  <Chip
+                    label={formatEventDate(event.eventDate, "long")}
+                    size="small"
+                    variant="outlined"
+                  />
                   <Box
                     sx={{
                       display: "flex",
@@ -350,7 +344,7 @@ const EventTable: React.FC<EventTableProps> = ({
                       }}
                     >
                       <SafeImage
-                        src={event.strHomeTeamBadge}
+                        src={event.homeTeamBadge}
                         alt={""}
                         width={30}
                         height={30}
@@ -370,7 +364,7 @@ const EventTable: React.FC<EventTableProps> = ({
                     >
                       <Typography align="left">{event.awayTeam}</Typography>
                       <SafeImage
-                        src={event.strAwayTeamBadge}
+                        src={event.awayTeamBadge}
                         alt={""}
                         width={30}
                         height={30}
@@ -384,7 +378,7 @@ const EventTable: React.FC<EventTableProps> = ({
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  {translateSport(event.modality)}
+                  {translateSport(event.sport)}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
@@ -392,22 +386,22 @@ const EventTable: React.FC<EventTableProps> = ({
                 >
                   {renderLeagueWithBadge(
                     translateLeague(event.league).name,
-                    event.strBadge
+                    event.leagueBadge,
                   )}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  {event.market && event.optionMarket
-                    ? `${event.market} - ${event.optionMarket}`
-                    : event.market || event.optionMarket || "-"}
+                  {event.market && event.selection
+                    ? `${event.market} - ${event.selection}`
+                    : event.market || event.selection || "-"}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  {event.amount} unids
+                  {event.stake} unids
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
@@ -419,7 +413,7 @@ const EventTable: React.FC<EventTableProps> = ({
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  {banksMap.get(event.bankId) || event.bankId}
+                  {banksMap.get(event.bankrollId) || event.bankrollId}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
@@ -447,7 +441,7 @@ const EventTable: React.FC<EventTableProps> = ({
                   <AlertConfirmDialog
                     open={openConfirm === event.id}
                     title="Confirmar exclusão"
-                    message={`Deseja realmente excluir o evento "${event.event}"? Essa ação não pode ser desfeita.`}
+                    message={`Deseja realmente excluir o evento "${event.eventDescription}"? Essa ação não pode ser desfeita.`}
                     severity="warning"
                     onConfirm={() => event.id && handleDelete(event.id)}
                     onCancel={() => setOpenConfirm(null)}

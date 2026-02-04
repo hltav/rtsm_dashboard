@@ -25,9 +25,12 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<GetUser | null>(null);
   const [loading, setLoading] = useState(true);
   const [hasIncompleteProfile, setHasIncompleteProfile] = useState(false);
+
+  // Derivamos o estado de autenticação da presença do objeto user
   const isAuthenticated = !!user;
   const router = useRouter();
 
+  // Mantemos a lógica de perfil incompleto, pois é útil para a UI
   const checkProfileCompletion = useCallback((userData: GetUser | null) => {
     const isIncomplete =
       userData &&
@@ -35,17 +38,19 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         !userData.clientData.cpf ||
         !userData.clientData.phone);
     setHasIncompleteProfile(!!isIncomplete);
-    return !!isIncomplete;
   }, []);
 
+  // ESSENCIAL: Verifica se o cookie é válido chamando o backend
   const checkAuthStatus = useCallback(async () => {
     try {
+      setLoading(true);
+      // O backend lerá o cookie e retornará o usuário se estiver logado
       const res = await checkAuthStatusService();
       setUser(res);
       checkProfileCompletion(res);
       return res;
-    } catch (err) {
-      console.error("Erro ao verificar status de autenticação:", err);
+    } catch {
+      // Se der 401 ou erro, limpamos o estado
       setUser(null);
       setHasIncompleteProfile(false);
       return null;
@@ -57,22 +62,26 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const login = async (data: LoginData) => {
     try {
       const res = await loginService(data);
+      // No sucesso, o backend já setou o cookie no navegador
       setUser(res.data.user);
+      checkProfileCompletion(res.data.user);
       return res;
     } catch (err) {
-      console.error("Login failed:", err);
+      setUser(null);
+      setHasIncompleteProfile(false);
       throw err;
     }
   };
 
   const logout = async () => {
     try {
+      await logoutService(); // Backend limpa o cookie (expira ele)
       setUser(null);
-      await logoutService();
-      await router.push("/login");
-    } catch (err) {
-      console.warn("Logout com aviso:", err);
-      await router.push("/login");
+      setHasIncompleteProfile(false);
+      router.push("/login");
+    } catch {
+      setUser(null);
+      router.push("/login");
     }
   };
 
@@ -81,7 +90,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(userData);
       checkProfileCompletion(userData);
     },
-    [checkProfileCompletion]
+    [checkProfileCompletion],
   );
 
   const profileImageUrl = user?.clientData?.image ?? null;

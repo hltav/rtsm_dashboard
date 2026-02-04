@@ -8,6 +8,7 @@ import LoginFormError from "./LoginFormError";
 import LoginPasswordInput from "./LoginPasswordInput";
 import { useAuth } from "@/components/Providers/AuthContext";
 import { useNotification } from "@/components/Providers/NotificationSnackbar";
+import axios from "axios";
 
 export const LoginForm: React.FC = () => {
   const [username, setUsername] = useState("");
@@ -25,24 +26,38 @@ export const LoginForm: React.FC = () => {
     setError(null);
 
     try {
+      // 1. Tenta o login
       await login({ email: username, password, rememberMe });
 
+      // 2. Busca perfil
       const userProfile = await checkAuthStatus();
-
-      updateUser(userProfile!);
-
-      showNotification("Login realizado com sucesso!", "success");
-
-      router.push("/dashboard");
-    } catch (error) {
-      console.error("Erro no login:", error);
-      showNotification(
-        "Não foi possível efetuar o login. Por favor, verifique suas credenciais.",
-        "warning"
-      );
-      setTimeout(() => {
-        setError(null);
-      }, 1500);
+      if (userProfile) {
+        updateUser(userProfile);
+        showNotification("Login realizado com sucesso!", "success", 4000);
+        router.push("/dashboard");
+      } else {
+        throw new Error("Não foi possível obter os dados do usuário.");
+      }
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        if (err.response?.status === 401) {
+          setError("Credenciais inválidas.");
+          showNotification(
+            "Não autorizado: verifique suas credenciais.",
+            "warning",
+            4000,
+          );
+        } else {
+          setError("Erro no servidor: tente novamente mais tarde.");
+          showNotification("Erro interno na aplicação.", "error", 4000);
+        }
+      } else if (err instanceof Error) {
+        setError(err.message);
+        showNotification(err.message, "error");
+      } else {
+        setError("Erro inesperado. Tente novamente.");
+        showNotification("Erro inesperado.", "error");
+      }
     } finally {
       setLoading(false);
     }

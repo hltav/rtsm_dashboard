@@ -1,10 +1,11 @@
 import { SelectChangeEvent } from "@mui/material";
-import { FullEvent } from "../schemas/EventItem";
+import { FullBet } from "../schemas/EventItem";
+import { CreateBetPayload } from "../schemas/CreateBetPlay.schema";
 
 export interface AddEventModalProps {
   open: boolean;
   onClose: () => void;
-  newEvent: Omit<FullEvent, "id">;
+  newEvent: CreateBetPayload;
   onNewEventChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
@@ -16,7 +17,7 @@ export interface AddEventModalProps {
 export interface EditEventModalProps {
   open: boolean;
   onClose: () => void;
-  event: FullEvent | null;
+  event: FullBet | null;
   onChange: (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => void;
@@ -27,15 +28,15 @@ export interface EditEventModalProps {
 export interface EventInfoModalProps {
   open: boolean;
   onClose: () => void;
-  event: FullEvent | null;
+  event: FullBet | null;
 }
 
 export interface FilterModalProps {
   open: boolean;
   onClose: () => void;
   filters: {
-    event: string;
-    modality: string;
+    eventDescription: string;
+    sports: string;
     league: string;
     market: string;
     amountRange: string;
@@ -46,7 +47,7 @@ export interface FilterModalProps {
   onFilterChange: (e: SelectChangeEvent<string>) => void;
   onClearFilters: () => void;
   uniqueEvents: string[];
-  uniqueModalities: string[];
+  uniqueSports: string[];
   uniqueLeagues: string[];
   uniqueMarkets: string[];
   amountRanges: string[];

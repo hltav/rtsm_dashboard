@@ -12,7 +12,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "RT Sports Manager",
-  description: "Seu App de Gestão Esportiva",
+  description: "Sua Plataforma de Gestão Esportiva",
 };
 
 export const dynamic = "force-dynamic";

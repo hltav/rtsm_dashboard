@@ -1,269 +1,467 @@
+// import React, { useEffect, useState } from "react";
+// import {
+//   MenuItem,
+//   Select,
+//   FormControl,
+//   InputLabel,
+//   SelectChangeEvent,
+//   Autocomplete,
+//   TextField,
+// } from "@mui/material";
+// import { EventBasicInfoProps } from "../../props/modalAddEvent.props";
+// import { soccerApi } from "@/lib/api/apiSports/soccer/soccerApi";
+// import { DiscoverFixture } from "@/lib/cache/schemas/discoveryFixture.schema";
+// import { CountriesListBox } from "../../utils/countriesListBox";
+// import { OrganizedLeaguesResponse } from "@/lib/api/apiSports/soccer/schemas/discoveryOrganized.schema";
+
+// export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
+//   newEvent,
+//   onSelectChange,
+//   onFixtureSelect, // ✅ Recebe a prop
+// }) => {
+//   const [organizedLeagues, setOrganizedLeagues] =
+//     useState<OrganizedLeaguesResponse | null>(null);
+//   const [fixtures, setFixtures] = useState<DiscoverFixture[]>([]);
+//   const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
+//   const [loadingLeagues, setLoadingLeagues] = useState(false);
+//   const [loadingFixtures, setLoadingFixtures] = useState(false);
+//   const [errorLeagues, setErrorLeagues] = useState<string | null>(null);
+//   const [errorFixtures, setErrorFixtures] = useState<string | null>(null);
+
+//   // Buscar ligas ao montar
+//   useEffect(() => {
+//     const fetchOrganizedLeagues = async () => {
+//       setLoadingLeagues(true);
+//       setErrorLeagues(null);
+//       try {
+//         const data = await soccerApi.getOrganizedLeagues("current", false);
+//         setOrganizedLeagues(data); // agora você guarda o objeto completo
+//       } catch (error) {
+//         console.error("Erro ao buscar ligas organizadas:", error);
+//         setErrorLeagues("Erro ao carregar ligas organizadas");
+//       } finally {
+//         setLoadingLeagues(false);
+//       }
+//     };
+//     fetchOrganizedLeagues();
+//   }, []);
+
+//   // Buscar fixtures quando liga selecionada
+//   useEffect(() => {
+//     if (!selectedLeagueId) {
+//       setFixtures([]);
+//       return;
+//     }
+//     const fetchFixtures = async () => {
+//       setLoadingFixtures(true);
+//       setErrorFixtures(null);
+//       try {
+//         const data = await soccerApi.getNextFixtures(
+//           selectedLeagueId,
+//           20,
+//           "current"
+//         );
+//         const normalizedData = data.map((fixture) => ({
+//           ...fixture,
+//           league: {
+//             ...fixture.league,
+//             flag: fixture.league.flag ?? undefined,
+//             logo: fixture.league.logo ?? undefined,
+//           },
+//           teams: {
+//             home: {
+//               ...fixture.teams.home,
+//               logo: fixture.teams.home.logo ?? undefined,
+//             },
+//             away: {
+//               ...fixture.teams.away,
+//               logo: fixture.teams.away.logo ?? undefined,
+//             },
+//           },
+//         }));
+//         setFixtures(normalizedData);
+//       } catch (error) {
+//         console.error("Erro ao buscar fixtures:", error);
+//         setErrorFixtures("Erro ao carregar partidas");
+//       } finally {
+//         setLoadingFixtures(false);
+//       }
+//     };
+//     fetchFixtures();
+//   }, [selectedLeagueId]);
+
+//   const handleLeagueSelect = (leagueData: {
+//     leagueId: number;
+//     season: number | null;
+//   }) => {
+//     if (!organizedLeagues) return;
+
+//     const allLeagues = [
+//       ...organizedLeagues.mainCountries.flatMap((c) => c.leagues),
+//       ...organizedLeagues.otherCountries.flatMap((c) => c.leagues),
+//     ];
+
+//     const selectedLeague = allLeagues.find(
+//       (l) => l.apiSportsLeagueId === leagueData.leagueId
+//     );
+
+//     if (selectedLeague) {
+//       onSelectChange({
+//         target: { name: "league", value: selectedLeague.name },
+//       } as SelectChangeEvent<string>);
+//       setSelectedLeagueId(leagueData.leagueId);
+//     }
+//   };
+
+//   const handleFixtureChange = (event: SelectChangeEvent<string>) => {
+//     console.log("🎯 [EventBasicInfo] handleFixtureChange CHAMADO!");
+//     console.log(
+//       "📝 [EventBasicInfo] fixtureId selecionado:",
+//       event.target.value
+//     );
+
+//     const fixtureId = event.target.value;
+//     const selectedFixture = fixtures.find(
+//       (f) => f.apiSportsEventId?.toString() === fixtureId
+//     );
+
+//     console.log("🔍 [EventBasicInfo] Fixture encontrado?", !!selectedFixture);
+//     console.log("📦 [EventBasicInfo] Fixture completo:", selectedFixture);
+
+//     if (selectedFixture) {
+//       console.log("✅ [EventBasicInfo] Chamando onFixtureSelect...");
+//       console.log(
+//         "🔗 [EventBasicInfo] onFixtureSelect existe?",
+//         !!onFixtureSelect
+//       );
+
+//       onFixtureSelect?.(selectedFixture.previewId, selectedFixture);
+
+//       console.log("✅ [EventBasicInfo] onFixtureSelect chamado!");
+//     } else {
+//       console.warn("⚠️ [EventBasicInfo] Fixture NÃO encontrado na lista!");
+//     }
+//   };
+
+//   return (
+//     <>
+//       {/* Modalidade */}
+//       <FormControl fullWidth margin="normal">
+//         <InputLabel>Modalidade</InputLabel>
+//         <Select name="sport" value="Soccer" disabled label="Modalidade">
+//           <MenuItem value="Soccer">Futebol</MenuItem>
+//         </Select>
+//       </FormControl>
+
+//       {/* SELECT de Ligas */}
+//       <FormControl fullWidth margin="normal" sx={{ position: "relative" }}>
+//         <Autocomplete
+//           options={
+//             organizedLeagues
+//               ? [
+//                   ...organizedLeagues.mainCountries.flatMap((c) => c.leagues),
+//                   ...organizedLeagues.otherCountries.flatMap((c) => c.leagues),
+//                 ]
+//               : []
+//           }
+//           getOptionLabel={(option) => option.name}
+//           value={
+//             organizedLeagues
+//               ? [
+//                   ...organizedLeagues.mainCountries.flatMap((c) => c.leagues),
+//                   ...organizedLeagues.otherCountries.flatMap((c) => c.leagues),
+//                 ].find((l) => l.name === newEvent.league) || null
+//               : null
+//           }
+//           onChange={(_, value) => {
+//             if (value && value.apiSportsLeagueId) {
+//               handleLeagueSelect({
+//                 leagueId: value.apiSportsLeagueId,
+//                 season: value.season,
+//               });
+//             }
+//           }}
+//           noOptionsText={errorLeagues || "Nenhuma liga encontrada"}
+//           loadingText="Carregando ligas..."
+//           loading={loadingLeagues}
+//           renderInput={(params) => (
+//             <TextField
+//               {...params}
+//               label="Liga"
+//               placeholder="Selecione uma liga"
+//               error={!!errorLeagues}
+//             />
+//           )}
+//           ListboxComponent={(props) =>
+//             organizedLeagues && (
+//               <CountriesListBox
+//                 {...props}
+//                 data={organizedLeagues}
+//                 onSelectLeague={handleLeagueSelect}
+//               />
+//             )
+//           }
+//         />
+//       </FormControl>
+
+//       {/* SELECT de Partidas */}
+//       <FormControl
+//         fullWidth
+//         margin="normal"
+//         disabled={!selectedLeagueId || loadingFixtures}
+//       >
+//         <InputLabel>Partida</InputLabel>
+//         <Select
+//           name="apiEventId"
+//           value={newEvent.apiEventId || ""}
+//           onChange={handleFixtureChange}
+//           label="Partida"
+//         >
+//           <MenuItem value="" disabled>
+//             {loadingFixtures
+//               ? "Carregando partidas..."
+//               : selectedLeagueId
+//               ? "Selecione uma partida"
+//               : "Selecione uma liga primeiro"}
+//           </MenuItem>
+
+//           {errorFixtures && (
+//             <MenuItem value="" disabled>
+//               {errorFixtures}
+//             </MenuItem>
+//           )}
+
+//           {fixtures.map((fixture) => (
+//             <MenuItem
+//               key={fixture.previewId}
+//               value={fixture.apiSportsEventId?.toString() || ""}
+//             >
+//               {`${fixture.teams.home.name} vs ${
+//                 fixture.teams.away.name
+//               } - ${new Date(fixture.date).toLocaleDateString("pt-BR")}`}
+//             </MenuItem>
+//           ))}
+//         </Select>
+//       </FormControl>
+//     </>
+//   );
+// };
+
 import React, { useEffect, useState } from "react";
 import {
-  Box,
-  Typography,
   MenuItem,
   Select,
   FormControl,
   InputLabel,
-  CircularProgress,
-  SelectChangeEvent,
-  Autocomplete,
   TextField,
+  SelectChangeEvent,
 } from "@mui/material";
-import { useTheSportsDb } from "@/hooks/useTheSportsDb";
-import {
-  League,
-  Sport,
-  NextEvents,
-} from "@/lib/api/theSportsDb/interface/theSportsDb.interface";
 import { EventBasicInfoProps } from "../../props/modalAddEvent.props";
-import { useSportsTranslation } from "@/modules/events/hooks/useSportsTranslation";
-import { leagueTranslations } from "@/utils/leaguesMap";
-import Image from "next/image";
+import { soccerApi } from "@/lib/api/apiSports/soccer/soccerApi";
+import { DiscoverFixture } from "@/lib/cache/schemas/discoveryFixture.schema";
+import { OrganizedLeaguesResponse } from "@/lib/api/apiSports/soccer/schemas/discoveryOrganized.schema";
+import { LeagueSelectionModal } from "./LeagueSelectionModal";
+import { FixtureSelectionModal } from "./FixtureSelectionModal";
 
 export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
   newEvent,
   onSelectChange,
+  onFixtureSelect,
 }) => {
-  const [selectedSport, setSelectedSport] = useState<string>("");
+  const [organizedLeagues, setOrganizedLeagues] =
+    useState<OrganizedLeaguesResponse | null>(null);
+  const [fixtures, setFixtures] = useState<DiscoverFixture[]>([]);
   const [selectedLeagueId, setSelectedLeagueId] = useState<number | null>(null);
-
-  // Hook para buscar esportes (modalidades)
-  const {
-    data: sportsData,
-    loading: loadingSports,
-    error: errorSports,
-  } = useTheSportsDb("sports");
-
-  // Hook para buscar todas as ligas
-  const {
-    data: leaguesData,
-    loading: loadingLeagues,
-    error: errorLeagues,
-  } = useTheSportsDb("leagues");
-
-  // Hook para buscar próximos eventos da liga selecionada
-  const {
-    data: eventsData,
-    loading: loadingEvents,
-    error: errorEvents,
-  } = useTheSportsDb(
-    "events",
-    selectedLeagueId ? String(selectedLeagueId) : undefined
-  );
-
-  // Hook de tradução
-  const { getTranslatedSportsList, getTranslatedLeaguesList } =
-    useSportsTranslation();
-
-  // Traduzir os dados vindos da API
-  const translatedSports = Array.isArray(sportsData)
-    ? getTranslatedSportsList((sportsData as Sport[]).map((s) => s.strSport))
-    : [];
-
-  const translatedLeagues = Array.isArray(leaguesData)
-    ? getTranslatedLeaguesList(leaguesData as League[])
-    : [];
-
-  // Filtra as ligas com base no esporte selecionado
-  const filteredLeagues = translatedLeagues.filter(
-    (league) => league.strSport === selectedSport
-  );
-
+  const [loadingLeagues, setLoadingLeagues] = useState(false);
+  const [loadingFixtures, setLoadingFixtures] = useState(false);
+  const [errorLeagues, setErrorLeagues] = useState<string | null>(null);
+  const [errorFixtures, setErrorFixtures] = useState<string | null>(null);
+  // Estados dos modais
+  const [leagueModalOpen, setLeagueModalOpen] = useState(false);
+  const [fixtureModalOpen, setFixtureModalOpen] = useState(false);
+  // Buscar ligas ao montar
   useEffect(() => {
-    if (errorSports) console.error("Erro ao buscar esportes:", errorSports);
-    if (errorLeagues) console.error("Erro ao buscar ligas:", errorLeagues);
-    if (errorEvents) console.error("Erro ao buscar eventos:", errorEvents);
-  }, [errorSports, errorLeagues, errorEvents]);
+    const fetchOrganizedLeagues = async () => {
+      setLoadingLeagues(true);
+      setErrorLeagues(null);
+      try {
+        const data = await soccerApi.getOrganizedLeagues("current", false);
+        setOrganizedLeagues(data);
+      } catch (error) {
+        console.error("Erro ao buscar ligas organizadas:", error);
+        setErrorLeagues("Erro ao carregar ligas organizadas");
+      } finally {
+        setLoadingLeagues(false);
+      }
+    };
+    fetchOrganizedLeagues();
+  }, []);
 
-  const handleSportChange = (event: SelectChangeEvent<string>) => {
-    const sport = event.target.value;
-    setSelectedSport(sport);
+  // Buscar fixtures quando liga selecionada
+  useEffect(() => {
+    if (!selectedLeagueId) {
+      setFixtures([]);
+      return;
+    }
+    const fetchFixtures = async () => {
+      setLoadingFixtures(true);
+      setErrorFixtures(null);
+      try {
+        const data = await soccerApi.getNextFixtures(
+          selectedLeagueId,
+          20,
+          "current"
+        );
+        const normalizedData = data.map((fixture) => ({
+          ...fixture,
+          league: {
+            ...fixture.league,
+            flag: fixture.league.flag ?? undefined,
+            logo: fixture.league.logo ?? undefined,
+          },
+          teams: {
+            home: {
+              ...fixture.teams.home,
+              logo: fixture.teams.home.logo ?? undefined,
+            },
+            away: {
+              ...fixture.teams.away,
+              logo: fixture.teams.away.logo ?? undefined,
+            },
+          },
+        }));
+        setFixtures(normalizedData);
+      } catch (error) {
+        console.error("Erro ao buscar fixtures:", error);
+        setErrorFixtures("Erro ao carregar partidas");
+      } finally {
+        setLoadingFixtures(false);
+      }
+    };
+    fetchFixtures();
+  }, [selectedLeagueId]);
 
-    const syntheticEvent = {
-      ...event,
-      target: {
-        ...event.target,
-        name: "modality",
-        value: sport,
-      },
-    } as SelectChangeEvent<string>;
+  const handleLeagueSelect = (leagueData: {
+    leagueId: number;
+    season: number | null;
+  }) => {
+    if (!organizedLeagues) return;
 
-    onSelectChange(syntheticEvent);
+    const allLeagues = [
+      ...organizedLeagues.mainCountries.flatMap((c) => c.leagues),
+      ...organizedLeagues.otherCountries.flatMap((c) => c.leagues),
+    ];
+
+    const selectedLeague = allLeagues.find(
+      (l) => l.apiSportsLeagueId === leagueData.leagueId
+    );
+
+    if (selectedLeague) {
+      onSelectChange({
+        target: { name: "league", value: selectedLeague.name },
+      } as SelectChangeEvent<string>);
+      setSelectedLeagueId(leagueData.leagueId);
+    }
   };
 
-  const handleLeagueChange = (event: SelectChangeEvent<string>) => {
-    const leagueName = event.target.value;
+  const handleFixtureSelect = (previewId: string, fixture: DiscoverFixture) => {
+    console.log("🎯 [EventBasicInfo] handleFixtureSelect CHAMADO!");
+    console.log("📝 [EventBasicInfo] previewId:", previewId);
+    console.log("📦 [EventBasicInfo] Fixture completo:", fixture);
 
-    onSelectChange({
-      ...event,
-      target: {
-        ...event.target,
-        name: "league",
-        value: leagueName,
-      },
-    } as SelectChangeEvent<string>);
+    onFixtureSelect?.(previewId, fixture);
+  };
 
-    const selectedLeague = translatedLeagues.find(
-      (l) => l.strLeague === leagueName
+  // Formatar o texto exibido no campo de partida
+  const getFixtureDisplayText = () => {
+    if (!newEvent.apiSportsEventId) return "";
+    
+    const selectedFixture = fixtures.find(
+      (f) => f.apiSportsEventId?.toString() === newEvent.apiSportsEventId
     );
 
-    setSelectedLeagueId(
-      selectedLeague ? Number(selectedLeague.idLeague) : null
-    );
+    if (selectedFixture) {
+      return `${selectedFixture.teams.home.name} vs ${selectedFixture.teams.away.name}`;
+    }
+
+    return newEvent.apiSportsEventId;
   };
 
   return (
     <>
-      {/* Filtra para deixar só Futebol */}
+      {/* Modalidade */}
       <FormControl fullWidth margin="normal">
         <InputLabel>Modalidade</InputLabel>
-        <Select
-          name="modality"
-          value={selectedSport}
-          onChange={handleSportChange}
-          label="Modalidade"
-        >
-          {loadingSports ? (
-            <MenuItem value="" disabled>
-              <CircularProgress size={20} sx={{ mr: 1 }} />
-              Carregando modalidades...
-            </MenuItem>
-          ) : (
-            translatedSports
-              .filter((sport) => sport.value === "Soccer")
-              .map((sport) => (
-                <MenuItem key={sport.value} value={sport.value}>
-                  {sport.label}
-                </MenuItem>
-              ))
-          )}
+        <Select name="sport" value="Soccer" disabled label="Modalidade">
+          <MenuItem value="Soccer">Futebol</MenuItem>
         </Select>
       </FormControl>
 
-      {/* SELECT de Ligas com Busca */}
-      <FormControl fullWidth margin="normal" sx={{ position: "relative" }}>
-        <Autocomplete
-          disabled={!selectedSport}
-          options={filteredLeagues}
-          getOptionLabel={(option) => {
-            const translation = leagueTranslations[option.strLeague];
-            return translation?.name ?? option.strLeague;
-          }}
-          value={
-            filteredLeagues.find((l) => l.strLeague === newEvent.league) || null
-          }
-          onChange={(_, value) => {
-            const syntheticEvent = {
-              target: {
-                name: "league",
-                value: value?.strLeague ?? "",
-              },
-            } as SelectChangeEvent<string>;
-            handleLeagueChange(syntheticEvent);
-          }}
-          noOptionsText="Nenhuma liga encontrada"
-          loadingText="Carregando ligas..."
-          loading={loadingLeagues}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Liga"
-              placeholder={
-                selectedSport
-                  ? "Selecione uma liga"
-                  : "Selecione uma modalidade primeiro"
-              }
-            />
-          )}
-          renderOption={(props, option) => {
-            const translation = leagueTranslations[option.strLeague];
-            const isCountryCode = (flag?: string) =>
-              flag && /^[A-Z]{2}$/.test(flag);
-
-            return (
-              <Box component="li" {...props}>
-                <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                  {translation?.logo ? (
-                    <Box
-                      sx={{
-                        width: 30,
-                        height: 25,
-                        position: "relative",
-                        flexShrink: 0,
-                      }}
-                    >
-                      <Image
-                        src={translation.logo}
-                        alt={translation.name}
-                        width={25}
-                        height={25}
-                        style={{ objectFit: "contain" }}
-                      />
-                    </Box>
-                  ) : translation?.flag && isCountryCode(translation.flag) ? (
-                    <Box sx={{ width: 30, height: 25, flexShrink: 0 }}>
-                      <Image
-                        src={`https://flagcdn.com/w40/${translation.flag.toLowerCase()}.png`}
-                        alt={translation.name}
-                        width={25}
-                        height={25}
-                        style={{ objectFit: "cover" }}
-                      />
-                    </Box>
-                  ) : (
-                    <Typography>{translation?.flag}</Typography>
-                  )}
-                  <Typography>
-                    {translation?.name ?? option.strLeague}
-                  </Typography>
-                </Box>
-              </Box>
-            );
-          }}
-          slotProps={{
-            popper: {
-              modifiers: [
-                {
-                  name: "flip",
-                  enabled: false,
-                },
-              ],
-            },
-          }}
-        />
-      </FormControl>
-
-      {/* SELECT de Eventos */}
-      <FormControl
+      {/* Campo de Liga (abre modal ao clicar) */}
+      <TextField
         fullWidth
         margin="normal"
-        disabled={!selectedLeagueId || loadingEvents}
-      >
-        <InputLabel>Evento</InputLabel>
-        <Select
-          name="event"
-          value={newEvent.apiEventId || ""}
-          onChange={onSelectChange}
-          label="Evento"
-        >
-          <MenuItem value="" disabled>
-            {loadingEvents
-              ? "Carregando eventos..."
-              : selectedLeagueId
-              ? "Selecione um evento"
-              : "Selecione uma liga primeiro"}
-          </MenuItem>
+        label="Liga"
+        value={newEvent.league || ""}
+        onClick={() => setLeagueModalOpen(true)}
+        placeholder="Selecione uma liga"
+        InputProps={{
+          readOnly: true,
+        }}
+        sx={{
+          cursor: "pointer",
+          "& .MuiInputBase-root": {
+            cursor: "pointer",
+          },
+        }}
+      />
 
-          {Array.isArray(eventsData) &&
-            (eventsData as NextEvents[]).map((e) => (
-              <MenuItem key={e.idEvent} value={e.idEvent}>
-                {e.strEvent}
-              </MenuItem>
-            ))}
-        </Select>
-      </FormControl>
+      {/* Campo de Partida (abre modal ao clicar) */}
+      <TextField
+        fullWidth
+        margin="normal"
+        label="Partida"
+        value={getFixtureDisplayText()}
+        onClick={() => selectedLeagueId && setFixtureModalOpen(true)}
+        placeholder={
+          selectedLeagueId
+            ? "Selecione uma partida"
+            : "Selecione uma liga primeiro"
+        }
+        disabled={!selectedLeagueId || loadingFixtures}
+        InputProps={{
+          readOnly: true,
+        }}
+        sx={{
+          cursor: selectedLeagueId ? "pointer" : "not-allowed",
+          "& .MuiInputBase-root": {
+            cursor: selectedLeagueId ? "pointer" : "not-allowed",
+          },
+        }}
+      />
+
+      {/* Modal de Seleção de Liga */}
+      <LeagueSelectionModal
+        open={leagueModalOpen}
+        onClose={() => setLeagueModalOpen(false)}
+        organizedLeagues={organizedLeagues}
+        loading={loadingLeagues}
+        error={errorLeagues}
+        onSelectLeague={handleLeagueSelect}
+        selectedLeagueName={newEvent.league}
+      />
+
+      {/* Modal de Seleção de Partida */}
+      <FixtureSelectionModal
+        open={fixtureModalOpen}
+        onClose={() => setFixtureModalOpen(false)}
+        fixtures={fixtures}
+        loading={loadingFixtures}
+        error={errorFixtures}
+        onSelectFixture={handleFixtureSelect}
+        selectedFixtureId={newEvent.apiSportsEventId || ""}
+        disabled={!selectedLeagueId}
+      />
     </>
   );
 };

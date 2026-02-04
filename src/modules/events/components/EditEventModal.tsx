@@ -41,7 +41,7 @@ const EditEventModal: React.FC<EditEventModalProps> = ({
           fullWidth
           label="Tipo de Evento"
           name="eventType"
-          value={event.eventType}
+          value={event.sport}
           onChange={onChange}
           margin="normal"
         />
@@ -49,7 +49,7 @@ const EditEventModal: React.FC<EditEventModalProps> = ({
           fullWidth
           label="Evento"
           name="event"
-          value={event.event}
+          value={event.eventDescription}
           onChange={onChange}
           margin="normal"
         />
@@ -66,7 +66,7 @@ const EditEventModal: React.FC<EditEventModalProps> = ({
           label="Valor da Aposta"
           name="amount"
           type="number"
-          value={event.amount}
+          value={event.stake}
           onChange={onChange}
           margin="normal"
         />

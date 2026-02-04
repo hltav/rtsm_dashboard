@@ -3,7 +3,13 @@
  * eventDate já vem em horário de Brasília do backend
  */
 
-const SAO_PAULO_TZ = "America/Sao_Paulo";
+
+
+export function getUserTimezone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone;
+}
+
+const USER_TZ = getUserTimezone();
 
 export function formatEventDate(
   eventDate: string | null | undefined,
@@ -16,7 +22,7 @@ export function formatEventDate(
     if (isNaN(date.getTime())) return "Data inválida";
 
     const optionsBase = {
-      timeZone: SAO_PAULO_TZ,
+      timeZone: USER_TZ,
       hour: "2-digit" as const,
       minute: "2-digit" as const,
     };
@@ -76,14 +82,14 @@ export function getRelativeEventDate(
 
     const now = new Date();
     const formatterDate = new Intl.DateTimeFormat("pt-BR", {
-      timeZone: SAO_PAULO_TZ,
+      timeZone: USER_TZ,
       year: "numeric",
       month: "2-digit",
       day: "2-digit",
     });
 
     const formatterTime = new Intl.DateTimeFormat("pt-BR", {
-      timeZone: SAO_PAULO_TZ,
+      timeZone: USER_TZ,
       hour: "2-digit",
       minute: "2-digit",
     });
@@ -108,7 +114,7 @@ export function getRelativeEventDate(
 
     if (diffDays > 1 && diffDays <= 7) {
       const weekday = new Intl.DateTimeFormat("pt-BR", {
-        timeZone: SAO_PAULO_TZ,
+        timeZone: USER_TZ,
         weekday: "long",
       }).format(date);
       return `${weekday.charAt(0).toUpperCase() + weekday.slice(1)} às ${timeStr}`;
@@ -186,7 +192,7 @@ export function groupEventsByDate(
     try {
       const date = new Date(event.eventDate);
       const dateKey = new Intl.DateTimeFormat("en-CA", {
-        timeZone: SAO_PAULO_TZ,
+        timeZone: USER_TZ,
         year: "numeric",
         month: "2-digit",
         day: "2-digit",
@@ -221,7 +227,7 @@ export function formatGroupDate(dateKey: string): string {
     if (diffDays === -1) return "Ontem";
 
     return new Intl.DateTimeFormat("pt-BR", {
-      timeZone: SAO_PAULO_TZ,
+      timeZone: USER_TZ,
       weekday: "long",
       day: "numeric",
       month: "long",
@@ -239,7 +245,7 @@ export function formatTime(eventDate: string | null | undefined): string {
   try {
     const date = new Date(eventDate);
     return new Intl.DateTimeFormat("pt-BR", {
-      timeZone: SAO_PAULO_TZ,
+      timeZone: USER_TZ,
       hour: "2-digit",
       minute: "2-digit",
     }).format(date);
@@ -256,7 +262,7 @@ export function formatDate(eventDate: string | null | undefined): string {
   try {
     const date = new Date(eventDate);
     return new Intl.DateTimeFormat("pt-BR", {
-      timeZone: SAO_PAULO_TZ,
+      timeZone: USER_TZ,
       day: "2-digit",
       month: "2-digit",
       year: "numeric",

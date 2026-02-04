@@ -12,43 +12,50 @@ import { EventBasicInfo } from "./addEvents/EventBasicInfo";
 import { EventDetails } from "./addEvents/EventDetails";
 import { EventResultSelect } from "./addEvents/EventResultSelect";
 import { ModalEventActions } from "./addEvents/EventActions";
-import { createEvent } from "@/lib/api/events/eventsApi";
-import { useAuth } from "@/components/Providers/AuthContext";
-import { FullEventSchema, FullEvent } from "@/modules/events/schemas/EventItem";
+import { createBet } from "@/lib/api/events/eventsApi";
+import { FullBet } from "@/modules/events/schemas/EventItem";
 import { ZodError } from "zod";
-import { initialEventState } from "../interfaces/initialEventsStates";
-import { theSportsDbService } from "@/lib/api/theSportsDb/apiTheSportsDb";
-import { League } from "@/lib/api/theSportsDb/interface/theSportsDb.interface";
+import { initialCreateBetState } from "../interfaces/initialEventsStates";
+import { DiscoverFixture } from "@/lib/api/apiSports/soccer/schemas/discoveryFixture.schema";
+import {
+  CreateBetPayload,
+  CreateBetSchema,
+} from "../schemas/CreateBetPlay.schema";
+import { imageProxyApi } from "@/lib/api/image/imageProxyApi";
 
 const AddEventModal: React.FC<{
   open: boolean;
   onClose: () => void;
-  onAdd?: (newEvent: FullEvent) => void;
+  onAdd?: (newEvent: FullBet) => void;
 }> = ({ open, onClose, onAdd }) => {
   const theme = useTheme();
-  const { user } = useAuth();
 
-  const [newEvent, setNewEvent] =
-    useState<Omit<FullEvent, "id">>(initialEventState);
+  const [newEvent, setNewEvent] = useState<CreateBetPayload>(
+    initialCreateBetState,
+  );
+
+  // ✅ CORRIGIDO: Sintaxe correta do useState com Record
   const [validationErrors, setValidationErrors] = useState<
     Record<string, string>
   >({});
 
   const handleNewEventChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
     const { name, value } = e.target;
     setNewEvent((prev) => ({
       ...prev,
-      [name]: ["amount", "odd", "bankId"].includes(name)
-        ? Number(value)
-        : value,
+      // Garante que bankrollId seja número e os demais sigam como string/value
+      [name]: name === "bankrollId" ? Number(value) : value,
     }));
 
+    // Limpa erros de validação ao digitar
     if (validationErrors[name]) {
-      const newErrors = { ...validationErrors };
-      delete newErrors[name];
-      setValidationErrors(newErrors);
+      setValidationErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[name];
+        return newErrors;
+      });
     }
   };
 
@@ -68,97 +75,92 @@ const AddEventModal: React.FC<{
     setNewEvent((prev) => ({ ...prev, odd }));
   };
 
-  const handleEventSelect = async (apiEventId: string) => {
+  const handleFixtureSelect = async (
+    previewId: string,
+    fixture: DiscoverFixture,
+  ) => {
+    console.log("🔥 [AddEventModal] handleFixtureSelect CHAMADO!");
+    console.log("📦 [AddEventModal] previewId:", previewId);
+    console.log("📦 [AddEventModal] fixture:", fixture);
+
     try {
-      const event = await theSportsDbService.getEventById(apiEventId);
+      // 🔍 TESTE: Chame diretamente aqui para verificar
+      console.log(
+        "🖼️ [AddEventModal] Logo home ANTES:",
+        fixture.teams.home.logo,
+      );
+      const testeProxy = imageProxyApi.getFullProxyUrl(fixture.teams.home.logo);
+      console.log("✅ [AddEventModal] Logo home DEPOIS:", testeProxy);
 
-      if (!event) {
-        return;
-      }
+      setNewEvent((prev) => {
+        const updated = {
+          ...prev,
+          eventDescription: `${fixture.teams.home.name} vs ${fixture.teams.away.name}`,
+          apiSportsEventId: fixture.apiSportsEventId?.toString() || null,
+          tsdbEventId: fixture.tsdbEventId || null,
+          homeTeam: fixture.teams.home.name,
+          awayTeam: fixture.teams.away.name,
+          homeTeamBadge: fixture.teams.home.logo || null,
+          awayTeamBadge: fixture.teams.away.logo || null,
+          leagueBadge: fixture.league.logo || null,
+          league: fixture.league.name,
+          eventDate: fixture.date,
+          sport: "Soccer",
+        };
 
-      let leagueData: League | null = null;
+        console.log("📊 [AddEventModal] Estado ATUALIZADO:", updated);
+        return updated;
+      });
 
-      const leagueId = event.idLeague ?? null;
-
-      if (leagueId) {
-        leagueData = await theSportsDbService.getLeagueById(String(leagueId));
-      } else {
-        console.warn("⚠️ Evento não possui idLeague");
-      }
-
-      setNewEvent((prev) => ({
-        ...prev,
-        event: event.strEvent,
-        apiEventId: event.idEvent,
-        homeTeam: event.strHomeTeam || null,
-        awayTeam: event.strAwayTeam || null,
-        eventDate: event.strTimestamp || null,
-        strCountry: event.strCountry || null,
-        league: leagueData?.strLeague || event.strLeague || prev.league,
-        strBadge: leagueData?.strBadge || null,
-        strLeague: leagueData?.strLeague || null,
-        strHomeTeamBadge: event.strHomeTeamBadge || null,
-        strAwayTeamBadge: event.strAwayTeamBadge || null,
-        strTimestamp: event.strTimestamp || null,
-        strTime: event.strTime || null,
-        strTimeLocal: event.strTimeLocal || null,
-        dateEvent: event.dateEvent || null,
-        dateEventLocal: event.dateEventLocal || null,
-      }));
+      console.log("✅ [AddEventModal] Fixture processado com sucesso");
     } catch (err) {
-      console.error("❌ Erro ao buscar evento externo:", err);
+      console.error("❌ [AddEventModal] Erro ao processar fixture:", err);
     }
   };
 
   const handleSave = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (!user?.id) {
-      console.error("Usuário não autenticado!");
-      return;
-    }
-
     try {
-      const validatedEvent = FullEventSchema.omit({ id: true }).parse({
-        ...newEvent,
-        userId: user.id,
-        eventType: newEvent.eventType === "" ? null : newEvent.eventType,
-      });
+      const validatedPayload = CreateBetSchema.parse(newEvent);
+      const savedBet = await createBet(validatedPayload);
 
-      const savedEvent = await createEvent(
-        validatedEvent,
-        user.id,
-        validatedEvent.bankId
-      );
+      onAdd?.(savedBet);
 
-      onAdd?.(savedEvent);
-
-      setNewEvent(initialEventState);
+      setNewEvent(initialCreateBetState);
       setValidationErrors({});
       onClose();
     } catch (error) {
       if (error instanceof ZodError) {
         const errors: Record<string, string> = {};
+
         error.issues.forEach((issue) => {
           const field = issue.path[0] as string;
           errors[field] = issue.message;
         });
+
         setValidationErrors(errors);
         console.error("Erros de validação:", errors);
       } else {
-        console.error("Erro ao criar evento:", error);
+        console.error("Erro ao criar aposta:", error);
       }
     }
   };
 
   const handleClose = () => {
-    setNewEvent(initialEventState);
+    setNewEvent(initialCreateBetState);
     setValidationErrors({});
     onClose();
   };
 
   return (
-    <Modal open={open} onClose={handleClose}>
+    <Modal
+      open={open}
+      onClose={(event, reason) => {
+        if (reason === "backdropClick") return;
+        onClose();
+      }}
+    >
       <Box
         sx={{
           ...modalStyle,
@@ -180,10 +182,8 @@ const AddEventModal: React.FC<{
         <EventBasicInfo
           newEvent={newEvent}
           onNewEventChange={handleNewEventChange}
-          onSelectChange={(e) => {
-            handleSelectChange(e);
-            if (e.target.name === "event") handleEventSelect(e.target.value);
-          }}
+          onSelectChange={handleSelectChange}
+          onFixtureSelect={handleFixtureSelect}
           validationErrors={validationErrors}
         />
         <EventDetails

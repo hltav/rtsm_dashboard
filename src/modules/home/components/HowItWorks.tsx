@@ -48,7 +48,6 @@ const HowItWorks: React.FC = () => {
                   sx={{ display: "flex", alignItems: "flex-start", mb: 2 }}
                 >
                   <CheckCircleOutlineIcon
-                    color="primary"
                     sx={{ mr: 1.5, mt: 0.5, flexShrink: 0 }}
                   />
                   <Typography variant="body1" color="text.primary">

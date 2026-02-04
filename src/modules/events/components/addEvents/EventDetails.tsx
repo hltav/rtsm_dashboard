@@ -76,8 +76,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
         <FormControl fullWidth margin="normal">
           <InputLabel>Opções do Mercado</InputLabel>
           <Select
-            name="optionMarket"
-            value={newEvent.optionMarket || ""}
+            name="selection"
+            value={newEvent.selection || ""}
             onChange={handleSelectChange}
             label="Opções do Mercado"
           >
@@ -94,8 +94,8 @@ export const EventDetails: React.FC<EventDetailsProps> = ({
       <FormControl fullWidth margin="normal">
         <InputLabel>Valor(Unids)</InputLabel>
         <Select
-          name="amount"
-          value={newEvent.amount ? newEvent.amount.toFixed(2) : ""}
+          name="stake"
+          value={newEvent.stake ? newEvent.stake : ""}
           onChange={handleSelectChange}
           label="Valor(Unids)"
         >

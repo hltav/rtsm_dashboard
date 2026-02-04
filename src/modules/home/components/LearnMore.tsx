@@ -17,30 +17,26 @@ const features = [
     title: "Análise de Dados",
     description:
       "Gráficos automáticos que mostram exatamente onde está seu lucro e onde estão seus vazamentos de dinheiro.",
-    icon: <InsightsIcon sx={{ fontSize: 70, color: "primary.main", mb: 2 }} />,
+    icon: <InsightsIcon sx={{ fontSize: 70, mb: 2 }} />,
   },
   {
     title: "Gestão de Banca",
     description:
       "Ferramentas dedicadas para controlar seu saldo, definir unidades e proteger seu capital a longo prazo.",
-    icon: (
-      <AccountBalanceWalletIcon
-        sx={{ fontSize: 70, color: "primary.main", mb: 2 }}
-      />
-    ),
+    icon: <AccountBalanceWalletIcon sx={{ fontSize: 70, mb: 2 }} />,
   },
   {
     title: "Evolução Contínua",
     description:
       "Histórico detalhado para você revisar suas entradas e transformar erros passados em green futuro.",
-    icon: <SchoolIcon sx={{ fontSize: 70, color: "primary.main", mb: 2 }} />,
+    icon: <SchoolIcon sx={{ fontSize: 70, mb: 2 }} />,
   },
 ];
 
 const LearnMore: React.FC = () => {
   return (
-    <Box sx={{ py: { xs: 4, md: 8 }, bgcolor: "background.default" }}>
-      <Container maxWidth="lg">
+    <Box sx={{ py: { xs: 4, md: 8 }, bgcolor: "background.default" }} >
+      <Container maxWidth="lg" >
         {/* Cabeçalho */}
         <Box textAlign="center" mb={{ xs: 5, md: 8 }}>
           <Typography
@@ -65,7 +61,7 @@ const LearnMore: React.FC = () => {
         <Grid container spacing={{ xs: 2, md: 4 }} justifyContent="center">
           {features.map((feature, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
-              <Card sx={{ textAlign: "center", p: 3, height: "100%" }}>
+              <Card sx={{ textAlign: "center", p: 3, height: "100%" }} elevation={0}>
                 <CardContent>
                   {feature.icon}
                   <Typography variant="h5" fontWeight={600} gutterBottom>

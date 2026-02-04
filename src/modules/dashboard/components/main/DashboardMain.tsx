@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -6,9 +7,7 @@ import {
   Box,
   Grid,
   Card,
-  CardContent,
   CircularProgress,
-  useTheme,
   FormControl,
   InputLabel,
   Select,
@@ -16,11 +15,10 @@ import {
   SelectChangeEvent,
   Alert,
 } from "@mui/material";
-import { useEvents } from "@/modules/events/hooks/useEvents";
-import { useBankrollContext } from "@/components/Providers/BankrollContext";
+import { useEventsData } from "@/modules/events/hooks/useEventsData";
+import { useBankrolls } from "@/modules/bankroll/hook/useBankrolls";
 import { formatCurrency } from "@/utils/formatCurrency";
-import { EventItem } from "@/modules/events/schemas/EventItem";
-import { BankrollDto } from "@/modules/bankroll/schema/bankroll.schema";
+import { FullBet } from "@/modules/events/schemas/EventItem";
 import MetricCard from "../../metrics/MetricCard";
 import ModalityBarChart from "../../charts/main/ModalityBarChart";
 import ResultPieChart from "../../charts/main/ResultPieChart";
@@ -28,139 +26,108 @@ import BankrollBalanceChart from "../../charts/BankrollBalanceChart";
 import BankrollChips from "./mainComponents/BankrollChips";
 
 const DashboardMainPage: React.FC = () => {
-  const theme = useTheme();
-  const { events, loading: eventsLoading } = useEvents();
-  const { bankrolls, isLoading: bankrollLoading } = useBankrollContext();
+  // 1. Usando hooks do TanStack Query em vez de Contextos manuais
+  const { data: events = [], isLoading: eventsLoading } = useEventsData();
+  const { data: bankrolls = [], isLoading: bankrollLoading } = useBankrolls();
+
   const loading = eventsLoading || bankrollLoading;
+
   const [dashboardSelectedBankrollId, setDashboardSelectedBankrollId] =
     useState<string>("all");
 
+  // Ajusta a seleção inicial baseada nos dados carregados
   useEffect(() => {
-    if (!bankrolls) return;
-
-    if (bankrolls.length === 0) {
-      setDashboardSelectedBankrollId("all");
-    } else if (bankrolls.length === 1) {
+    if (bankrolls.length === 1) {
       setDashboardSelectedBankrollId(String(bankrolls[0].id));
-    } else {
+    } else if (bankrolls.length === 0) {
       setDashboardSelectedBankrollId("all");
     }
   }, [bankrolls]);
 
   const getFilteredEvents = useCallback(
-    (bankrollId: string): EventItem[] => {
-      if (bankrollId === "all") {
-        return events;
-      }
-
+    (bankrollId: string): FullBet[] => {
+      if (bankrollId === "all") return events;
       const bankrollIdNum = parseInt(bankrollId, 10);
-      return events.filter((event: EventItem) => {
-        return event.bankId === bankrollIdNum;
-      });
+      return events.filter((event) => event.bankrollId === bankrollIdNum);
     },
-    [events]
+    [events],
   );
 
   const getBankrollBalance = useCallback(
     (bankrollId: string): number => {
+      if (!bankrolls.length) return 0;
+
       if (bankrollId === "all") {
-        return (
-          bankrolls?.reduce((sum: number, bank: BankrollDto) => {
-            const balanceAsNumber = Number(bank.balance) || 0;
-            return sum + balanceAsNumber;
-          }, 0) ?? 0
+        return bankrolls.reduce(
+          (sum, bank) => sum + (Number(bank.balance) || 0),
+          0,
         );
       }
 
-      const bankrollIdNum = parseInt(bankrollId, 10);
-      const bankroll = bankrolls?.find(
-        (bank: BankrollDto) => bank.id === bankrollIdNum
-      );
+      // Comparação robusta de ID (string com string)
+      const bankroll = bankrolls.find((b) => String(b.id) === bankrollId);
       return bankroll ? Number(bankroll.balance) || 0 : 0;
     },
-    [bankrolls]
+    [bankrolls],
   );
 
-  const getMetricsByBankroll = useCallback(
-    (bankrollId: string) => {
-      const filteredEvents = getFilteredEvents(bankrollId);
+  const metrics = useMemo(() => {
+    const filteredEvents = getFilteredEvents(dashboardSelectedBankrollId);
+    let profitLoss = 0,
+      wagered = 0,
+      wageredInUnits = 0;
+    let wins = 0,
+      losses = 0,
+      voids = 0,
+      totalROI = 0;
+    const pending: FullBet[] = [];
 
-      let profitLoss = 0;
-      let wagered = 0;
-      let wins = 0;
-      let losses = 0;
-      let voids = 0;
-      let totalROI = 0;
+    filteredEvents.forEach((event) => {
+      const amount = Number(event.stake) || 0;
+      const unitsStaked = Number(event.stakeInUnits) || 0;
+      wageredInUnits += unitsStaked;
 
-      const pending: EventItem[] = [];
+      if (!event.result || event.result === "pending") {
+        pending.push(event);
+        return;
+      }
 
-      filteredEvents.forEach((event: EventItem) => {
-        const amount = Number(event.amount) || 0;
-        if (!event.result || event.result === "pending") {
-          pending.push(event);
-          return;
-        }
+      wagered += amount;
+      if (event.result === "win") {
+        const profit = amount * (parseFloat(event.odd) || 1) - amount;
+        profitLoss += profit;
+        totalROI += profit;
+        wins++;
+      } else if (event.result === "lose") {
+        profitLoss -= amount;
+        totalROI -= amount;
+        losses++;
+      } else if (event.result === "void" || event.result === "returned") {
+        voids++;
+      }
+    });
 
-        wagered += amount;
-
-        if (event.result === "win") {
-          const oddValue = parseFloat(event.odd) || 1;
-          const profit = amount * oddValue - amount;
-          profitLoss += profit;
-          totalROI += profit;
-          wins++;
-        } else if (event.result === "lose") {
-          profitLoss -= amount;
-          totalROI -= amount;
-          losses++;
-        } else if (event.result === "void" || event.result === "returned") {
-          voids++;
-        }
-      });
-
-      const total = filteredEvents.length;
-      const decidedEvents = wins + losses;
-      const rate = decidedEvents > 0 ? (wins / decidedEvents) * 100 : 0;
-      const roi = wagered > 0 ? (totalROI / wagered) * 100 : 0;
-
-      return {
-        totalProfitLoss: parseFloat(profitLoss.toFixed(2)),
-        totalWagered: parseFloat(wagered.toFixed(2)),
-        winRate: parseFloat(rate.toFixed(2)),
-        roi: parseFloat(roi.toFixed(2)),
-        totalEvents: total,
-        winCount: wins,
-        lossCount: losses,
-        voidCount: voids,
-        pendingEvents: pending,
-      };
-    },
-    [getFilteredEvents]
-  );
-
-  const {
-    totalProfitLoss,
-    totalWagered,
-    winRate,
-    roi,
-    totalEvents,
-    winCount,
-    lossCount,
-    pendingEvents,
-  } = useMemo(() => {
-    return getMetricsByBankroll(dashboardSelectedBankrollId);
-  }, [dashboardSelectedBankrollId, getMetricsByBankroll]);
+    const decided = wins + losses;
+    return {
+      totalProfitLoss: Number(profitLoss.toFixed(2)),
+      totalWageredInUnits: Number(wageredInUnits.toFixed(2)),
+      winRate: decided > 0 ? Number(((wins / decided) * 100).toFixed(2)) : 0,
+      roi: wagered > 0 ? Number(((totalROI / wagered) * 100).toFixed(2)) : 0,
+      totalEvents: filteredEvents.length,
+      winCount: wins,
+      lossCount: losses,
+      pendingEvents: pending,
+    };
+  }, [dashboardSelectedBankrollId, getFilteredEvents]);
 
   const totalBalance = useMemo(() => {
     return getBankrollBalance(dashboardSelectedBankrollId);
   }, [dashboardSelectedBankrollId, getBankrollBalance]);
 
   const selectedBankrollName = useMemo(() => {
-    if (dashboardSelectedBankrollId === "all") {
-      return "Todas as Bancas";
-    }
+    if (dashboardSelectedBankrollId === "all") return "Todas as Bancas";
     const bankroll = bankrolls.find(
-      (b) => b.id === parseInt(dashboardSelectedBankrollId, 10)
+      (b) => String(b.id) === dashboardSelectedBankrollId,
     );
     return bankroll?.name || "Banca Selecionada";
   }, [dashboardSelectedBankrollId, bankrolls]);
@@ -169,7 +136,22 @@ const DashboardMainPage: React.FC = () => {
     setDashboardSelectedBankrollId(event.target.value);
   };
 
-  const hasData = totalEvents > 0 || totalBalance > 0;
+  const hasData = metrics.totalEvents > 0 || totalBalance > 0;
+
+  if (loading) {
+    return (
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          minHeight: "100vh",
+        }}
+      >
+        <CircularProgress />
+      </Box>
+    );
+  }
 
   return (
     <Box
@@ -180,7 +162,6 @@ const DashboardMainPage: React.FC = () => {
       }}
     >
       <Container maxWidth={false}>
-        {/* Cabeçalho com título e seletor de banca */}
         <Box
           sx={{
             display: "flex",
@@ -201,19 +182,15 @@ const DashboardMainPage: React.FC = () => {
           </Box>
 
           <FormControl sx={{ minWidth: 200 }} size="small">
-            <InputLabel id="bankroll-select-label">
-              Selecione a banca
-            </InputLabel>
+            <InputLabel>Selecione a banca</InputLabel>
             <Select
-              labelId="bankroll-select-label"
-              id="bankroll-select"
               value={dashboardSelectedBankrollId}
               label="Selecione a banca"
               onChange={handleBankrollChange}
             >
               <MenuItem value="all">Todas as bancas</MenuItem>
-              {bankrolls?.map((bankroll: BankrollDto) => (
-                <MenuItem key={bankroll.id} value={bankroll.id.toString()}>
+              {bankrolls.map((bankroll) => (
+                <MenuItem key={bankroll.id} value={String(bankroll.id)}>
                   {bankroll.name}
                 </MenuItem>
               ))}
@@ -221,99 +198,60 @@ const DashboardMainPage: React.FC = () => {
           </FormControl>
         </Box>
 
-        {loading ? (
-          <Box
-            sx={{ display: "flex", justifyContent: "center", minHeight: 300 }}
-          >
-            <CircularProgress />
-          </Box>
-        ) : !hasData ? (
-          <Alert severity="info" sx={{ mt: 2 }}>
-            Nenhum dado disponível para exibir. Comece adicionando bancas e
-            eventos.
+        {!hasData ? (
+          <Alert severity="info">
+            Nenhum dado disponível. Adicione bancas e eventos para começar.
           </Alert>
         ) : (
           <Grid container spacing={3}>
-            {/* Cards de Métricas Principais */}
-            <Grid item xs={6} sm={6} md={4} lg={2}>
+            {/* Metric Cards */}
+            <Grid item xs={6} md={4} lg={2}>
               <MetricCard
-                title="Unidades de Lucro"
-                value={`${
-                  totalProfitLoss >= 0 ? "+ " : " "
-                }${totalProfitLoss} unids`}
-                color={
-                  totalProfitLoss >= 0 ? "#17ad1a" : theme.palette.error.main
-                }
-                subText={`Total de apostas: ${totalEvents}`}
+                title="Lucro"
+                value={`${metrics.totalProfitLoss} unids`}
+                color={metrics.totalProfitLoss >= 0 ? "#17ad1a" : "#e42a2a"}
               />
             </Grid>
-
-            <Grid item xs={6} sm={6} md={4} lg={2}>
+            <Grid item xs={6} md={4} lg={2}>
               <MetricCard
                 title="Saldo Total"
                 value={formatCurrency(totalBalance)}
-                color={theme.palette.mode === "dark" ? "#73889d" : "#73889d"}
-                valueColor={
-                  theme.palette.mode === "dark" ? "#73889d" : undefined
-                }
-                subText={`Bancas: ${selectedBankrollName}`}
+                color="#73889d"
               />
             </Grid>
-
-            <Grid item xs={6} sm={6} md={4} lg={2}>
+            <Grid item xs={6} md={4} lg={2}>
               <MetricCard
                 title="Entradas Pendentes"
-                value={pendingEvents.length + " entradas"}
-                color={pendingEvents.length > 0 ? "#E0A800" : "#17ad1a"}
-                subText={`${
-                  totalEvents > 0
-                    ? ((pendingEvents.length / totalEvents) * 100).toFixed(1)
-                    : 0
-                }% do total`}
+                value={`${metrics.pendingEvents.length} entradas`}
+                color={metrics.pendingEvents.length > 0 ? "#E0A800" : "#17ad1a"}
               />
             </Grid>
-
-            <Grid item xs={6} sm={6} md={4} lg={2}>
+            <Grid item xs={6} md={4} lg={2}>
               <MetricCard
-                title="Stake Total Apostada"
-                value={totalWagered + " unids"}
-                color={theme.palette.info.main}
-                subText={
-                  totalEvents > 0
-                    ? `Média: ${(totalWagered / totalEvents).toFixed(2)} unids`
-                    : "Sem apostas"
-                }
+                title="Total de Stakes Investidas"
+                value={`${metrics.totalWageredInUnits} unids`}
+                color="#09acf8"
               />
             </Grid>
-
-            <Grid item xs={6} sm={6} md={4} lg={2}>
+            <Grid item xs={6} md={4} lg={2}>
               <MetricCard
-                title="Taxa de Vitórias"
-                value={winRate.toFixed(1)}
-                color={winRate > 50 ? "#17ad1a" : theme.palette.warning.main}
+                title="Taxa de Acerto"
+                value={`${metrics.winRate}`}
                 isCurrency={false}
-                subText={`Ganha/Perdida: ${winCount}/${lossCount}`}
+                color={metrics.winRate > 50 ? "#17ad1a" : "#E0A800"}
               />
             </Grid>
-
-            {/* ROI Card - Nova métrica adicionada */}
-            <Grid item xs={6} sm={6} md={4} lg={2}>
+            <Grid item xs={6} md={4} lg={2}>
               <MetricCard
-                title="ROI"
-                value={`${roi >= 0 ? "+" : ""}${roi.toFixed(2)}`}
-                color={roi >= 0 ? "#17ad1a" : theme.palette.error.main}
+                title="Rentabilidade (ROI)"
+                value={`${metrics.roi}`}
                 isCurrency={false}
-                subText="Retorno sobre Investimento"
+                color={metrics.roi >= 0 ? "#17ad1a" : "#e42a2a"}
               />
             </Grid>
 
-            {/* Gráficos */}
-            <Grid
-              item
-              xs={12}
-              lg={12}
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
+            {/* Charts & Table */}
+            <Grid item xs={12}>
               <Card elevation={0} sx={{ p: 2 }}>
                 <Typography variant="h6" gutterBottom>
                   Evolução da Banca
@@ -322,72 +260,42 @@ const DashboardMainPage: React.FC = () => {
                   bankrollId={
                     dashboardSelectedBankrollId === "all"
                       ? "all"
-                      : parseInt(dashboardSelectedBankrollId, 10)
-                  }
-                />
-              </Card>
-            </Grid>
-
-            <Grid
-              item
-              xs={12}
-              lg={6}
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              <Card elevation={0} sx={{ p: 2, height: "100%" }}>
-                <Typography variant="h6" gutterBottom>
-                  Distribuição por Modalidade
-                </Typography>
-                <ModalityBarChart
-                  selectedBankrollId={
-                    dashboardSelectedBankrollId === "all"
-                      ? null
                       : Number(dashboardSelectedBankrollId)
                   }
                 />
               </Card>
             </Grid>
 
-            <Grid
-              item
-              xs={12}
-              lg={6}
-              sx={{ display: { xs: "none", sm: "block" } }}
-            >
-              <Card elevation={0} sx={{ p: 2, height: "100%" }}>
-                <Typography variant="h6" gutterBottom>
-                  Distribuição por Resultados
-                </Typography>
-                <ResultPieChart
-                  selectedBankrollId={
-                    dashboardSelectedBankrollId === "all"
-                      ? null
-                      : Number(dashboardSelectedBankrollId)
-                  }
-                />
-              </Card>
+            <Grid item xs={12} md={6}>
+              <ModalityBarChart
+                selectedBankrollId={
+                  dashboardSelectedBankrollId === "all"
+                    ? null
+                    : Number(dashboardSelectedBankrollId)
+                }
+              />
             </Grid>
 
-            {/* Chips das Bancas */}
+            <Grid item xs={12} md={6}>
+              <ResultPieChart
+                selectedBankrollId={
+                  dashboardSelectedBankrollId === "all"
+                    ? null
+                    : Number(dashboardSelectedBankrollId)
+                }
+              />
+            </Grid>
+
             <Grid item xs={12}>
-              <Card elevation={0}>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Resumo das Bancas
-                  </Typography>
-                  <BankrollChips
-                    bankrolls={
-                      dashboardSelectedBankrollId === "all"
-                        ? bankrolls
-                        : bankrolls.filter(
-                            (bank) =>
-                              bank.id ===
-                              parseInt(dashboardSelectedBankrollId, 10)
-                          )
-                    }
-                  />
-                </CardContent>
-              </Card>
+              <BankrollChips
+                bankrolls={
+                  dashboardSelectedBankrollId === "all"
+                    ? bankrolls
+                    : bankrolls.filter(
+                        (b) => String(b.id) === dashboardSelectedBankrollId,
+                      )
+                }
+              />
             </Grid>
           </Grid>
         )}

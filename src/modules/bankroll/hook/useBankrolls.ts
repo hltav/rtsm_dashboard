@@ -8,56 +8,59 @@ interface ApiError extends Error {
   code?: string;
 }
 
-export function useBankrolls(userId: number) {
+// 1. Hook de Listagem: Agora não depende de userId
+export function useBankrolls() {
   return useQuery({
-    queryKey: ["bankrolls", userId],
-    queryFn: () => bankrollApi.getAll(userId),
-    staleTime: 1000 * 60 * 5, // 5 minutos
-    gcTime: 1000 * 60 * 20, // 20 minutos
-    enabled: !!userId,
+    queryKey: ["bankrolls"], // Chave simplificada
+    queryFn: () => bankrollApi.getAll(),
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 20,
     refetchOnWindowFocus: false,
     retry: (failureCount, error: ApiError) => {
-      if (error.status === 404 || error.statusCode === 404) {
-        return false;
-      }
-      return failureCount < 3;
+      // 404 agora retorna [] no seu bankrollApi, mas mantemos o check por segurança
+      if (error.status === 404 || error.statusCode === 404) return false;
+      return failureCount < 2;
     },
   });
 }
 
-export function useCreateBankroll(userId: number) {
+// 2. Hook de Criação
+export function useCreateBankroll() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (data: Omit<BankrollDto, "id" | "userId">) =>
-      bankrollApi.create(data, userId),
+      bankrollApi.create(data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["bankrolls", userId] });
+      // Invalida todas as queries de bankrolls de forma simples
+      queryClient.invalidateQueries({ queryKey: ["bankrolls"] });
     },
   });
 }
 
-export function useUpdateBankroll(userId: number) {
+// 3. Hook de Edição
+export function useUpdateBankroll() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: ({
       id,
       data,
     }: {
-      id: string;
+      id: number; // Alterado para number para bater com seu service
       data: Omit<BankrollDto, "id" | "userId">;
     }) => bankrollApi.update(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["bankrolls", userId] });
+      queryClient.invalidateQueries({ queryKey: ["bankrolls"] });
     },
   });
 }
 
-export function useDeleteBankroll(userId: number) {
+// 4. Hook de Deleção
+export function useDeleteBankroll() {
   const queryClient = useQueryClient();
   return useMutation({
-    mutationFn: (id: string) => bankrollApi.delete(id),
+    mutationFn: (id: number) => bankrollApi.delete(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["bankrolls", userId] });
+      queryClient.invalidateQueries({ queryKey: ["bankrolls"] });
     },
   });
 }

@@ -1,13 +1,13 @@
 import { useQuery, useQueryClient } from "@tanstack/react-query";
-import { getEvents } from "@/lib/api/events/eventsApi";
-import { EventItem } from "@/modules/events/schemas/EventItem";
+import { getBets } from "@/lib/api/events/eventsApi";
+import { FullBet } from "@/modules/events/schemas/EventItem";
 
 export const useEventsData = () => {
   const queryClient = useQueryClient();
-  return useQuery<EventItem[]>({
+  return useQuery<FullBet[]>({
     queryKey: ["events"],
     queryFn: async () => {
-      const data = await getEvents();
+      const data = await getBets();
       queryClient.invalidateQueries({ queryKey: ["bankrolls"] });
       return data;
     },

@@ -26,7 +26,7 @@ const FilterModal: React.FC<FilterModalProps> = ({
   onFilterChange,
   onClearFilters,
   uniqueEvents,
-  uniqueModalities,
+  uniqueSports,
   uniqueLeagues,
   uniqueMarkets,
   uniqueOdds,
@@ -86,15 +86,15 @@ const FilterModal: React.FC<FilterModalProps> = ({
         >
           <FormControl fullWidth>
             <InputLabel
-              id="event-label"
+              id="eventDescription-label"
               sx={{ color: theme.palette.text.secondary }}
             >
               Evento
             </InputLabel>
             <Select
-              labelId="event-label"
+              labelId="eventDescription-label"
               name="event"
-              value={filters.event}
+              value={filters.eventDescription}
               onChange={onFilterChange}
               label="Evento"
             >
@@ -109,20 +109,20 @@ const FilterModal: React.FC<FilterModalProps> = ({
 
           <FormControl fullWidth>
             <InputLabel
-              id="modality-label"
+              id="sport-label"
               sx={{ color: theme.palette.text.secondary }}
             >
               Modalidade
             </InputLabel>
             <Select
-              labelId="modality-label"
-              name="modality"
-              value={filters.modality}
+              labelId="sport-label"
+              name="sport"
+              value={filters.sports}
               onChange={onFilterChange}
               label="Modalidade"
             >
               <MenuItem value="">Todos</MenuItem>
-              {uniqueModalities.map((mod) => (
+              {uniqueSports.map((mod) => (
                 <MenuItem key={mod} value={mod}>
                   {translateSport(mod)}
                 </MenuItem>

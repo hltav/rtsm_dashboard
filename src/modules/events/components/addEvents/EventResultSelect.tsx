@@ -63,10 +63,10 @@ export const EventResultSelect: React.FC<EventResultSelectProps> = ({
   const handleBankChange = (e: SelectChangeEvent<string>) => {
     const { value } = e.target;
 
-    const bankId = Number(value);
+    const bankrollId = Number(value);
 
     onSelectChange({
-      target: { name: "bankId", value: bankId },
+      target: { name: "bankrollId", value: bankrollId },
     } as unknown as React.ChangeEvent<HTMLInputElement>);
   };
 
@@ -85,11 +85,15 @@ export const EventResultSelect: React.FC<EventResultSelectProps> = ({
         />
       </FormControl>
 
-      <FormControl fullWidth margin="normal" error={!!validationErrors.bankId}>
+      <FormControl
+        fullWidth
+        margin="normal"
+        error={!!validationErrors.bankrollId}
+      >
         <InputLabel>Banca</InputLabel>
         <Select
-          name="bankId"
-          value={newEvent.bankId === 0 ? "" : String(newEvent.bankId)}
+          name="bankrollId"
+          value={newEvent.bankrollId === 0 ? "" : String(newEvent.bankrollId)}
           onChange={handleBankChange}
           label="Banca"
           disabled={loading || !user}
@@ -108,8 +112,8 @@ export const EventResultSelect: React.FC<EventResultSelectProps> = ({
             <MenuItem disabled>Nenhuma banca encontrada</MenuItem>
           )}
         </Select>
-        {validationErrors.bankId && (
-          <FormHelperText>{validationErrors.bankId}</FormHelperText>
+        {validationErrors.bankrollId && (
+          <FormHelperText>{validationErrors.bankrollId}</FormHelperText>
         )}
       </FormControl>
     </>

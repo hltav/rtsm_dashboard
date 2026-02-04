@@ -30,7 +30,7 @@ const ResultPieChart: React.FC<ResultPieChartProps> = ({
   const filteredEvents = useMemo(() => {
     if (selectedBankrollId === null) return events;
 
-    return events.filter((e) => e.bankId === selectedBankrollId);
+    return events.filter((e) => e.bankrollId === selectedBankrollId);
   }, [events, selectedBankrollId]);
 
   const { resultData, totalEventsDecided } = useMemo(() => {

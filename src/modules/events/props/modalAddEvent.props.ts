@@ -1,10 +1,12 @@
 import { SelectChangeEvent } from "@mui/material";
 import { AddEventModalProps } from "./events.props";
+import { DiscoverFixture } from "@/lib/api/apiSports/soccer/schemas/discoveryFixture.schema";
 
 export interface EventBasicInfoProps {
   newEvent: AddEventModalProps["newEvent"];
   onNewEventChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   onSelectChange: (event: SelectChangeEvent<string>) => void;
+   onFixtureSelect: (previewId: string, fixture: DiscoverFixture) => Promise<void>;
   validationErrors: Record<string, string>;
 }
 

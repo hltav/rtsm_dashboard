@@ -13,12 +13,12 @@ interface NotificationContextType {
   showNotification: (
     message: string,
     severity: AlertColor,
-    autoHideDuration?: number
+    autoHideDuration?: number,
   ) => void;
 }
 
 const NotificationContext = createContext<NotificationContextType | undefined>(
-  undefined
+  undefined,
 );
 
 export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -28,7 +28,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
   const [message, setMessage] = useState("");
   const [severity, setSeverity] = useState<AlertColor>("info");
   const [duration, setDuration] = useState(3000);
-  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const showNotification = useCallback(
     (msg: string, svr: AlertColor, autoHideDuration = 3000) => {
@@ -45,7 +45,7 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
         setOpen(false);
       }, autoHideDuration);
     },
-    []
+    [],
   );
 
   const handleClose = () => {
@@ -72,10 +72,10 @@ export const NotificationProvider: React.FC<{ children: React.ReactNode }> = ({
         onClose={handleClose}
         anchorOrigin={{ vertical: "top", horizontal: "center" }}
         sx={{
-          maxWidth: "80%",
+          maxWidth: "100%",
           "& .MuiAlert-root": {
             width: "100%",
-            fontSize: "0.875rem",
+            fontSize: "1.5rem",
           },
         }}
       >
@@ -91,7 +91,7 @@ export const useNotification = () => {
   const context = useContext(NotificationContext);
   if (!context) {
     throw new Error(
-      "useNotification must be used within a NotificationProvider"
+      "useNotification must be used within a NotificationProvider",
     );
   }
   return context;

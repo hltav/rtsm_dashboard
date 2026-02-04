@@ -1,9 +1,10 @@
 import { z } from "zod";
-import { ResultEnum } from "./EventItem";
+import { Result } from "./Result.schema";
+
 
 export const UpdateEventDtoSchema = z.object({
   userId: z.number(),
-  bankId: z.number().int().positive().optional(),
+  bankrollId: z.number().int().positive().optional(),
   modality: z.string().trim().min(1).optional(),
   eventType: z.string().optional().nullable(),
   league: z.string().trim().min(1).optional(),
@@ -14,7 +15,7 @@ export const UpdateEventDtoSchema = z.object({
   optionMarket: z.string().trim().optional(),
   amount: z.number().positive("Valor deve ser positivo").optional(),
   odd: z.string().optional(),
-  result: ResultEnum.optional(),
+  result: Result.optional(),
 
   // Campos de integração
   apiEventId: z.string().optional().nullable(),
