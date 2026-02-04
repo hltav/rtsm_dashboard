@@ -31,7 +31,7 @@ const ModalityBarChart: React.FC<ModalityBarChartProps> = ({
     const map: { [key: string]: number } = {};
 
     filteredEvents.forEach((event) => {
-      const modality = event.modality || "Sem Modalidade";
+      const modality = event.selection || "Sem Modalidade";
       if (!map[modality]) {
         map[modality] = 0;
       }
