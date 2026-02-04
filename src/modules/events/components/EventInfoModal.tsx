@@ -61,7 +61,7 @@ const EventInfoModal: React.FC<EventInfoModalProps> = ({
                     Evento
                   </TableCell>
                   <TableCell sx={{ color: theme.palette.text.primary }}>
-                    {event.event}
+                    {event.eventDescription}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -100,7 +100,7 @@ const EventInfoModal: React.FC<EventInfoModalProps> = ({
                     Aposta
                   </TableCell>
                   <TableCell sx={{ color: theme.palette.text.primary }}>
-                    {event.amount} unidades
+                    {event.stake} unidades
                   </TableCell>
                 </TableRow>
                 <TableRow>
