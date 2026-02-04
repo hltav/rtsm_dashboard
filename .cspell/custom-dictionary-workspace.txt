@@ -190,6 +190,7 @@ cadastrada
 CAFA
 cairá
 Calcula
+calculados
 Calculamos
 calcular
 cálculo
@@ -1105,10 +1106,12 @@ Resultado
 resultados
 Resumo
 retirada
+Retiradas
 retirado
 Retirar
 retornada
 retornadas
+retornado
 Retornamos
 retornará
 retorno
@@ -1134,6 +1137,7 @@ sabe
 SAFF
 Saiba
 Saldo
+Saldos
 Salvadorenha
 salvas
 Salvou
