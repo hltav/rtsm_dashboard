@@ -292,6 +292,7 @@ consumir
 contagem
 Contagem
 Contextos
+Continente
 Contínua
 Continuação
 continuar
@@ -609,6 +610,7 @@ Ginástica
 Gira
 Girabola
 Girone
+globo
 Golfe
 Golfo
 gols
@@ -627,6 +629,8 @@ habilitar
 Handebol
 Herdeiro
 hidratação
+hierárquica
+hierárquicos
 hintrc
 Hipismo
 hipotética
@@ -759,6 +763,7 @@ ligadas
 ligados
 ligas
 Ligue
+Lilás
 limpamos
 limpeza
 limpo
@@ -866,6 +871,7 @@ múltiplas
 Múltiplos
 Mundial
 Mundo
+musgo
 Nacionais
 Nacional
 Nações
@@ -915,6 +921,7 @@ oferece
 Olímpica
 Olímpico
 Ontem
+opção
 opcionais
 Opcional
 opções
@@ -1060,6 +1067,7 @@ Qualificatória
 quantidade
 quebra
 quebrar
+queimado
 Queniana
 Quirguistão
 quisermos
@@ -1169,6 +1177,7 @@ separadores
 separados
 Série
 seriea
+séries
 Sério
 Sérvia
 setou
@@ -1319,6 +1328,7 @@ vezes
 Vietnã
 Vietnamita
 vinda
+Vinho
 virando
 vírgula
 visibilidade

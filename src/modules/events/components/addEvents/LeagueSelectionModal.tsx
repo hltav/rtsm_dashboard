@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState, useMemo } from "react";
 import {
   Dialog,
@@ -21,7 +21,10 @@ interface LeagueSelectionModalProps {
   organizedLeagues: OrganizedLeaguesResponse | null;
   loading: boolean;
   error: string | null;
-  onSelectLeague: (leagueData: { leagueId: number; season: number | null }) => void;
+  onSelectLeague: (leagueData: {
+    leagueId: number;
+    season: number | null;
+  }) => void;
   selectedLeagueName: string;
   elevation?: number;
 }
@@ -42,12 +45,14 @@ export const LeagueSelectionModal: React.FC<LeagueSelectionModalProps> = ({
 
     if (!searchTerm) return organizedLeagues;
 
-    const filterCountries = (countries: typeof organizedLeagues.mainCountries) =>
+    const filterCountries = (
+      countries: typeof organizedLeagues.mainCountries,
+    ) =>
       countries
         .map((country) => ({
           ...country,
           leagues: country.leagues.filter((league) =>
-            league.name.toLowerCase().includes(searchTerm.toLowerCase())
+            league.name.toLowerCase().includes(searchTerm.toLowerCase()),
           ),
         }))
         .filter((country) => country.leagues.length > 0);
@@ -80,7 +85,9 @@ export const LeagueSelectionModal: React.FC<LeagueSelectionModalProps> = ({
       fullWidth
       PaperProps={{ elevation }}
     >
-      <DialogTitle sx={{ display: "flex", alignItems: "center", gap: 1, pb: 1 }}>
+      <DialogTitle
+        sx={{ display: "flex", alignItems: "center", gap: 1, pb: 1 }}
+      >
         <Typography variant="h6" sx={{ flex: 1 }}>
           Selecionar Liga
         </Typography>
