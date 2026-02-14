@@ -78,6 +78,7 @@ apagar
 aparece
 aparecer
 Apelido
+apisports
 aplicados
 Aplicamos
 aplicar
@@ -342,6 +343,7 @@ definitiva
 deformar
 deild
 Deild
+deixa
 deixe
 dela
 deleção
@@ -521,10 +523,12 @@ Extrai
 extraído
 extrair
 fácil
+falhar
 falhará
 faltava
 Faroé
 Faso
+Favorate
 favorita
 favoritas
 favorito
@@ -865,6 +869,7 @@ mostre
 motivação
 Motorsport
 Movimentações
+mudado
 mudou
 Mulan
 múltiplas
@@ -1191,6 +1196,8 @@ simultâneas
 Sincroniza
 Sincronizado
 Sincronizando
+sincronizar
+síncrono
 Singapura
 Sinuca
 Síria
