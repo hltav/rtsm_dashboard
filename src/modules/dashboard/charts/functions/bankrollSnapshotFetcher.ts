@@ -5,7 +5,7 @@ import { useMonthlySnapshots } from "@/modules/bankroll/hook/snapshots/useMonthl
 import { buildSeries } from "./bankrollBalance.functions";
 import { ResultFilter, SeriesData } from "../types/bankrollBalance.types";
 
-type Period = "day" | "week" | "month" | "year";
+type Period = "day" | "week" | "month" | "year" | "custom";
 type RangeParams = { startDate: string; endDate: string };
 
 export const BankrollSnapshotFetcher = memo(
@@ -28,14 +28,14 @@ export const BankrollSnapshotFetcher = memo(
     const dailyQ = useDailySnapshots(
       id,
       range,
-      period === "week" || period === "month",
+      period === "week" || period === "month" || period === "custom",
     );
     const monthlyQ = useMonthlySnapshots(id, { year }, period === "year");
 
     const series = useMemo(() => {
       if (period === "day")
         return buildSeries(hourlyQ.data ?? [], resultFilter);
-      if (period === "week" || period === "month")
+      if (period === "week" || period === "month" || period === "custom")
         return buildSeries(dailyQ.data ?? [], resultFilter);
       return buildSeries(monthlyQ.data ?? [], resultFilter);
     }, [period, hourlyQ.data, dailyQ.data, monthlyQ.data, resultFilter]);

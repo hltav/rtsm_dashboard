@@ -5,7 +5,6 @@ import {
   CardContent,
   Typography,
   Box,
-  useTheme,
   CircularProgress,
 } from "@mui/material";
 import { useEvents } from "@/modules/events/hooks/useEvents";
@@ -23,7 +22,6 @@ interface ResultPieChartProps {
 const ResultPieChart: React.FC<ResultPieChartProps> = ({
   selectedBankrollId,
 }) => {
-  const theme = useTheme();
   const { events, loading } = useEvents();
   const chartHeight = 300;
 
@@ -50,15 +48,15 @@ const ResultPieChart: React.FC<ResultPieChartProps> = ({
 
     const data: ResultDataItem[] = [
       { name: "Vitória", value: winCount, color: "#17ad1a" },
-      { name: "Derrota", value: lossCount, color: theme.palette.error.main },
-      { name: "Anulada", value: voidCount, color: theme.palette.warning.main },
+      { name: "Derrota", value: lossCount, color: "#e42a2a" },
+      { name: "Anulada", value: voidCount, color: "#6c757d" },
     ].filter((item) => item.value > 0);
 
     return {
       resultData: data,
       totalEventsDecided: winCount + lossCount + voidCount,
     };
-  }, [filteredEvents, theme]);
+  }, [filteredEvents]);
 
   const pieSeries = [
     {

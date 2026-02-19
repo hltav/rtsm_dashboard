@@ -2,176 +2,7 @@ import { GetDailySnapshotDTO } from "@/modules/bankroll/schema/snapshots/dailySn
 import { GetHourlySnapshotDTO } from "@/modules/bankroll/schema/snapshots/hourlySnapshot.schema";
 import { ResultFilter, SeriesData } from "../types/bankrollBalance.types";
 import { GetMonthlySnapshotDTO } from "@/modules/bankroll/schema/snapshots/monthlySnapshot.schema";
-
-// export function parseDecimalString(value: string | undefined): number {
-//   return value ? Number(value) : 0;
-// }
-
-// export function dailySnapshotToDate(s: GetDailySnapshotDTO): Date {
-//   // meio-dia pra evitar efeito timezone “virando o dia”
-//   return new Date(s.year, s.month - 1, s.day, 12, 0, 0);
-// }
-
-// /**
-//  * ✅ Overloads pra ficar 100% tipado (sem union e sem any)
-//  */
-// export function buildSeries(
-//   snapshots: GetDailySnapshotDTO[],
-//   resultFilter: ResultFilter,
-// ): SeriesData;
-// export function buildSeries(
-//   snapshots: GetHourlySnapshotDTO[],
-//   resultFilter: ResultFilter,
-// ): SeriesData;
-// export function buildSeries(
-//   snapshots: GetDailySnapshotDTO[] | GetHourlySnapshotDTO[],
-//   resultFilter: ResultFilter,
-// ): SeriesData {
-//   if (snapshots.length === 0) {
-//     return { dates: [], balances: [], netProfit: 0 };
-//   }
-
-//   // Detecta pelo campo exclusivo do daily
-//   const isDaily = "year" in snapshots[0];
-
-//   const sorted = [...snapshots].sort((a, b) => {
-//     if (isDaily) {
-//       const da = dailySnapshotToDate(a as GetDailySnapshotDTO).getTime();
-//       const db = dailySnapshotToDate(b as GetDailySnapshotDTO).getTime();
-//       return da - db;
-//     }
-
-//     const da = new Date((a as GetHourlySnapshotDTO).bucketStart).getTime();
-//     const db = new Date((b as GetHourlySnapshotDTO).bucketStart).getTime();
-//     return da - db;
-//   });
-
-//   const filtered = sorted.filter((s) => {
-//     if (resultFilter === "all") return true;
-
-//     const profit = isDaily
-//       ? parseDecimalString((s as GetDailySnapshotDTO).dailyProfit)
-//       : parseDecimalString((s as GetHourlySnapshotDTO).hourlyProfit);
-
-//     if (resultFilter === "won") return profit > 0;
-//     if (resultFilter === "lost") return profit < 0;
-//     if (resultFilter === "profitloss") return profit !== 0;
-//     return true;
-//   });
-
-//   if (filtered.length === 0) {
-//     return { dates: [], balances: [], netProfit: 0 };
-//   }
-
-//   const dates = filtered.map((s) =>
-//     isDaily
-//       ? dailySnapshotToDate(s as GetDailySnapshotDTO)
-//       : new Date((s as GetHourlySnapshotDTO).bucketStart),
-//   );
-
-//   const balances = filtered.map((s) =>
-//     parseDecimalString(
-//       isDaily
-//         ? (s as GetDailySnapshotDTO).balance
-//         : (s as GetHourlySnapshotDTO).balance,
-//     ),
-//   );
-
-//   const first = balances[0] ?? 0;
-//   const last = balances[balances.length - 1] ?? 0;
-
-//   return {
-//     dates,
-//     balances,
-//     netProfit: last - first,
-//   };
-// }
-
-// function parseDecimalString(value: string | undefined): number {
-//   return value ? Number(value) : 0;
-// }
-
-// function dailySnapshotToDate(s: GetDailySnapshotDTO): Date {
-//   // meio-dia pra evitar timezone “virando o dia”
-//   return new Date(s.year, s.month - 1, s.day, 12, 0, 0);
-// }
-
-// function monthlySnapshotToDate(s: GetMonthlySnapshotDTO): Date {
-//   // dia 15 ao meio-dia = bem estável para plotagem mensal
-//   return new Date(s.year, s.month - 1, 15, 12, 0, 0);
-// }
-
-// /** Overloads: sem union exposto e sem any */
-// export function buildSeries(
-//   snapshots: GetDailySnapshotDTO[],
-//   resultFilter: ResultFilter,
-// ): SeriesData;
-// export function buildSeries(
-//   snapshots: GetHourlySnapshotDTO[],
-//   resultFilter: ResultFilter,
-// ): SeriesData;
-// export function buildSeries(
-//   snapshots: GetMonthlySnapshotDTO[],
-//   resultFilter: ResultFilter,
-// ): SeriesData;
-
-// // Implementação única
-// export function buildSeries(
-//   snapshots:
-//     | GetDailySnapshotDTO[]
-//     | GetHourlySnapshotDTO[]
-//     | GetMonthlySnapshotDTO[],
-//   resultFilter: ResultFilter,
-// ): SeriesData {
-//   if (snapshots.length === 0) return { dates: [], balances: [], netProfit: 0 };
-
-//   const firstItem = snapshots[0];
-
-//   const kind =
-//     "bucketStart" in firstItem
-//       ? "hourly"
-//       : "day" in firstItem
-//         ? "daily"
-//         : "month" in firstItem
-//           ? "monthly"
-//           : "unknown";
-
-//   if (kind === "unknown") return { dates: [], balances: [], netProfit: 0 };
-
-//   const filtered = snapshots.filter((s) => {
-//     if (resultFilter === "all") return true;
-
-//     const profit =
-//       kind === "hourly"
-//         ? parseDecimalString((s as GetHourlySnapshotDTO).hourlyProfit)
-//         : kind === "daily"
-//           ? parseDecimalString((s as GetDailySnapshotDTO).dailyProfit)
-//           : parseDecimalString((s as GetMonthlySnapshotDTO).monthlyProfit);
-
-//     if (resultFilter === "won") return profit > 0;
-//     if (resultFilter === "lost") return profit < 0;
-//     if (resultFilter === "profitloss") return profit !== 0;
-//     return true;
-//   });
-
-//   if (filtered.length === 0) return { dates: [], balances: [], netProfit: 0 };
-
-//   const dates = filtered.map((s) => {
-//     if (kind === "hourly")
-//       return new Date((s as GetHourlySnapshotDTO).bucketStart);
-//     if (kind === "daily") return dailySnapshotToDate(s as GetDailySnapshotDTO);
-//     return monthlySnapshotToDate(s as GetMonthlySnapshotDTO);
-//   });
-
-//   const balances = filtered.map((s) =>
-//     parseDecimalString((s as { balance?: string }).balance),
-//   );
-
-//   const first = balances[0] ?? 0;
-//   const last = balances[balances.length - 1] ?? 0;
-
-//   return { dates, balances, netProfit: last - first };
-// }
+import { GetWeeklySnapshotDTO } from "@/modules/bankroll/schema/snapshots/weeklySnapshot.schema";
 
 function parseDecimalString(value: string | undefined): number {
   return value ? Number(value) : 0;
@@ -180,6 +11,17 @@ function parseDecimalString(value: string | undefined): number {
 function dailySnapshotToDate(s: GetDailySnapshotDTO): Date {
   // meio-dia pra evitar timezone “virando o dia”
   return new Date(s.year, s.month - 1, s.day, 12, 0, 0);
+}
+
+function weeklySnapshotToDate(s: GetWeeklySnapshotDTO): Date {
+  // Converte ano + número da semana ISO para a segunda-feira daquela semana
+  const jan4 = new Date(s.year, 0, 4); // 4 de jan sempre está na semana 1
+  const startOfWeek1 = new Date(jan4);
+  startOfWeek1.setDate(jan4.getDate() - ((jan4.getDay() + 6) % 7)); // segunda da semana 1
+  const date = new Date(startOfWeek1);
+  date.setDate(startOfWeek1.getDate() + (s.week - 1) * 7);
+  date.setHours(12, 0, 0, 0);
+  return date;
 }
 
 function monthlySnapshotToDate(s: GetMonthlySnapshotDTO): Date {
@@ -197,6 +39,10 @@ export function buildSeries(
   resultFilter: ResultFilter,
 ): SeriesData;
 export function buildSeries(
+  snapshots: GetWeeklySnapshotDTO[],
+  resultFilter: ResultFilter,
+): SeriesData;
+export function buildSeries(
   snapshots: GetMonthlySnapshotDTO[],
   resultFilter: ResultFilter,
 ): SeriesData;
@@ -206,6 +52,7 @@ export function buildSeries(
   snapshots:
     | GetDailySnapshotDTO[]
     | GetHourlySnapshotDTO[]
+    | GetWeeklySnapshotDTO[]
     | GetMonthlySnapshotDTO[],
   resultFilter: ResultFilter,
 ): SeriesData {
@@ -218,28 +65,42 @@ export function buildSeries(
       ? "hourly"
       : "day" in firstItem
         ? "daily"
-        : "month" in firstItem
-          ? "monthly"
-          : "unknown";
+        : "week" in firstItem
+          ? "weekly"
+          : "month" in firstItem
+            ? "monthly"
+            : "unknown";
 
   if (kind === "unknown") return { dates: [], balances: [], netProfit: 0 };
 
   const profitOf = (
-    s: GetDailySnapshotDTO | GetHourlySnapshotDTO | GetMonthlySnapshotDTO,
+    s:
+      | GetDailySnapshotDTO
+      | GetHourlySnapshotDTO
+      | GetWeeklySnapshotDTO
+      | GetMonthlySnapshotDTO,
   ): number => {
     if (kind === "hourly")
       return parseDecimalString((s as GetHourlySnapshotDTO).hourlyProfit);
     if (kind === "daily")
       return parseDecimalString((s as GetDailySnapshotDTO).dailyProfit);
+    if (kind === "weekly")
+      return parseDecimalString((s as GetWeeklySnapshotDTO).weeklyProfit);
     return parseDecimalString((s as GetMonthlySnapshotDTO).monthlyProfit);
   };
 
   const dateOf = (
-    s: GetDailySnapshotDTO | GetHourlySnapshotDTO | GetMonthlySnapshotDTO,
+    s:
+      | GetDailySnapshotDTO
+      | GetHourlySnapshotDTO
+      | GetWeeklySnapshotDTO
+      | GetMonthlySnapshotDTO,
   ): Date => {
     if (kind === "hourly")
       return new Date((s as GetHourlySnapshotDTO).bucketStart);
     if (kind === "daily") return dailySnapshotToDate(s as GetDailySnapshotDTO);
+    if (kind === "weekly")
+      return weeklySnapshotToDate(s as GetWeeklySnapshotDTO);
     return monthlySnapshotToDate(s as GetMonthlySnapshotDTO);
   };
 

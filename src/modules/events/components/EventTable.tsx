@@ -25,6 +25,7 @@ import { translateLeague } from "@/utils/leaguesMap";
 import { translateSport } from "@/utils/sportsMap";
 import { renderLeagueWithBadge } from "@/components/images/LeagueBadge";
 import { formatEventDate } from "@/utils/date.utils";
+import { resultConfig } from "../functions/chipResultColor";
 
 interface EventTableProps {
   events: FullBet[];
@@ -46,7 +47,6 @@ const EventTable: React.FC<EventTableProps> = ({
   const [openConfirm, setOpenConfirm] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const { showNotification } = useNotification();
-
   const { data: bankrolls } = useBankrolls();
 
   const banksMap = useMemo(() => {
@@ -90,8 +90,6 @@ const EventTable: React.FC<EventTableProps> = ({
     });
   }, [events]);
 
-  console.log("Sorted Events:", sortedEvents);
-
   return (
     <TableContainer
       component={Paper}
@@ -104,55 +102,55 @@ const EventTable: React.FC<EventTableProps> = ({
         <TableHead>
           <TableRow>
             <StyledTableCell align="center" sx={{ paddingRight: "" }}>
-              Evento
+              EVENTO
             </StyledTableCell>
             <StyledTableCell
               align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
-              Modalidade
+              MODALIDADE
             </StyledTableCell>
             <StyledTableCell
               align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
-              Liga
+              LIGA
             </StyledTableCell>
             <StyledTableCell
               align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
-              Mercado
+              MERCADO
             </StyledTableCell>
             <StyledTableCell
               align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
-              Unids
+              UNID
             </StyledTableCell>
             <StyledTableCell
               align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
-              Odd
+              ODD
             </StyledTableCell>
             <StyledTableCell
               align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
-              Banca
+              BANCA
             </StyledTableCell>
             <StyledTableCell
               align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
-              Resultado
+              RESULTADO
             </StyledTableCell>
             <StyledTableCell
               align="center"
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
-              Ações
+              AÇÕES
             </StyledTableCell>
           </TableRow>
         </TableHead>
@@ -395,9 +393,11 @@ const EventTable: React.FC<EventTableProps> = ({
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  {event.market && event.selection
+                  <Box>{event.market}</Box>
+                  <Box>{event.selection}</Box>
+                  {/* {event.market && event.selection
                     ? `${event.market} - ${event.selection}`
-                    : event.market || event.selection || "-"}
+                    : event.market || event.selection || "-"} */}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
@@ -421,22 +421,37 @@ const EventTable: React.FC<EventTableProps> = ({
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
-                  {event.result}
+                  <Chip
+                    label={resultConfig[event.result]?.label || event.result}
+                    size="medium"
+                    variant="outlined"
+                    sx={{
+                      width: 100,
+                      justifyContent: "center",
+                      backgroundColor:
+                        resultConfig[event.result]?.color || "default",
+                      borderColor:
+                        resultConfig[event.result]?.color || "default",
+                      color: "#1A2B42",
+                      fontWeight: 600,
+                    }}
+                  />
                 </StyledTableCell>
+
                 <StyledTableCell
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
                 >
                   <IconButton
-                    sx={{ color: theme.palette.success.main }}
+                    sx={{ color: "#17ad1a" }}
                     onClick={() => onInfoClick(event)}
                   >
                     <InfoIcon />
                   </IconButton>
                   <IconButton
                     onClick={() => setOpenConfirm(event.id ?? null)}
-                    color="error"
                     disabled={isDeleting}
+                    sx={{ color: "#e42a2a" }}
                   >
                     <RemoveCircle color="inherit" />
                   </IconButton>

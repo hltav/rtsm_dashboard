@@ -29,9 +29,7 @@ const BankrollChips: React.FC<BankrollChipsProps> = ({ bankrolls }) => {
                   variant="outlined"
                   sx={{
                     p: 1,
-
                     color: customColor,
-
                     borderColor: customColor,
                   }}
                 />

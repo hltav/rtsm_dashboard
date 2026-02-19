@@ -302,6 +302,7 @@ contraste
 Controle
 conversão
 Converta
+Converte
 convertemos
 Convertendo
 convertido
@@ -332,6 +333,7 @@ curto
 customizada
 Customizando
 Damallsvenskan
+daquela
 daqui
 Dardos
 Datas
@@ -369,12 +371,14 @@ Desestrutura
 desfeita
 desmontar
 desnecessário
+desta
 destaque
 Detalhado
 Detalhados
 DETALHADOS
 Detecta
 devem
+Devolvida
 Dhivehi
 diálogo
 Dica
@@ -428,6 +432,7 @@ Empate
 encerrando
 encerrar
 encontrada
+então
 entenda
 entradas
 Entradas
@@ -705,6 +710,7 @@ inseridos
 insuficiente
 integração
 inteiro
+inteiros
 Inteligente
 Inteligentes
 intencionalmente
@@ -823,6 +829,7 @@ máxima
 Média
 médio
 Medvedev
+Meia
 Meistriliiga
 MELHORADA
 Melhore
@@ -895,6 +902,7 @@ Nigeriana
 NISA
 nível
 nocaute
+noite
 nomes
 Nord
 Nordeste
@@ -975,6 +983,7 @@ Pega
 Pegar
 Pegue
 Pênalti
+Pendente
 pendentes
 Pendentes
 Pequena
@@ -1085,11 +1094,13 @@ Rebotes
 Recarregue
 recebe
 recebem
+recebidas
 recente
 recolher
 recomputação
 Reconheça
 Recopa
+recua
 Recursos
 Redefination
 redimensionamento
@@ -1168,6 +1179,7 @@ secundário
 Segona
 SEGREDO
 SEGUINDO
+SEGUINTE
 Segunda
 Segundas
 segura

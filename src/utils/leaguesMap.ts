@@ -166,8 +166,8 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     name: "Coppa Italia",
     logo: `/badges_leagues/coppa_italia.png`,
   },
-  "Dutch KNVB Cup": {
-    name: "KNVB Copa da Holanda",
+  "KNVB Beker": {
+    name: "Copa da Holanda",
     logo: `/badges_leagues/knvb_beker_holanda.png`,
   },
   "Copa Argentina": {
@@ -186,7 +186,7 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     name: "Copa da Liga Francesa",
     logo: `/badges_leagues/coupe_de_la_ligue_france.png`,
   },
-  "EFL Cup": {
+  "League Cup": {
     name: "Copa da Liga Inglesa",
     logo: `/badges_leagues/efl_carabao_cup.png`,
   },
@@ -227,8 +227,7 @@ export const leagueTranslations: Record<string, LeagueTranslation> = {
     logo: `/badges_leagues/Flag_of_Wales.png`,
   },
   "UEFA Nations League": {
-    name: "UEFA Nations League",
-    logo: `/badges_leagues/uefa-nations-league.png`,
+    name: "UEFA Nations League"
   },
   "African Cup of Nations": {
     name: "Copa das Nações Africanas",
