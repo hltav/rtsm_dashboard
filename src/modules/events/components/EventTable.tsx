@@ -26,6 +26,8 @@ import { translateSport } from "@/utils/sportsMap";
 import { renderLeagueWithBadge } from "@/components/images/LeagueBadge";
 import { formatEventDate } from "@/utils/date.utils";
 import { resultConfig } from "../functions/chipResultColor";
+import { formatCurrency } from "@/utils/formatCurrency";
+import { calculateNetProfit } from "../functions/cauculateProfit";
 
 interface EventTableProps {
   events: FullBet[];
@@ -133,6 +135,34 @@ const EventTable: React.FC<EventTableProps> = ({
               sx={{ display: { xs: "none", sm: "table-cell" } }}
             >
               ODD
+            </StyledTableCell>
+            <StyledTableCell
+              align="center"
+              sx={{
+                display: {
+                  xs: "none",
+                  sm: "table-cell",
+                  fontSize: "0.75rem",
+                  fontWeight: "bold",
+                },
+              }}
+            >
+              RETORNO
+              <Box
+                sx={{
+                  display: {
+                    xs: "none",
+                    sm: "flex", // Mudamos de table-cell para flex
+                  },
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-around",
+                  fontSize: "0.7rem",
+                }}
+              >
+                <Box sx={{ justifyContent: "center" }}>BRUTO</Box>
+                <Box sx={{ justifyContent: "center" }}>LÍQUIDO</Box>
+              </Box>
             </StyledTableCell>
             <StyledTableCell
               align="center"
@@ -395,9 +425,6 @@ const EventTable: React.FC<EventTableProps> = ({
                 >
                   <Box>{event.market}</Box>
                   <Box>{event.selection}</Box>
-                  {/* {event.market && event.selection
-                    ? `${event.market} - ${event.selection}`
-                    : event.market || event.selection || "-"} */}
                 </StyledTableCell>
                 <StyledTableCell
                   align="center"
@@ -411,6 +438,36 @@ const EventTable: React.FC<EventTableProps> = ({
                 >
                   {event.odd}
                 </StyledTableCell>
+                <StyledTableCell
+                  align="center"
+                  sx={{ display: { xs: "none", sm: "table-cell" } }}
+                >
+                  <Box
+                    sx={{
+                      display: {
+                        xs: "none",
+                        sm: "flex", // Mudamos de table-cell para flex
+                      },
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      gap: 3, // Opcional: adiciona espaçamento entre itens dentro da célula
+                    }}
+                  >
+                    <Table sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                      {formatCurrency(event.potentialReturn)}
+                    </Table>
+                    <Table sx={{ display: { xs: "none", sm: "table-cell" } }}>
+                      {/* {returnCurrency(event.actualReturn ?? "")} */}
+                      {calculateNetProfit(
+                        event.actualReturn,
+                        event.unitValue,
+                        event.stakeInUnits, // ou event.stake, dependendo da sua lógica
+                      )}
+                    </Table>
+                  </Box>
+                </StyledTableCell>
+
                 <StyledTableCell
                   align="center"
                   sx={{ display: { xs: "none", sm: "table-cell" } }}
