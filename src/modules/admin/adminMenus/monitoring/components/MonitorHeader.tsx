@@ -13,7 +13,7 @@ import {
 import RefreshIcon from "@mui/icons-material/Refresh";
 import { SystemMonitoringHeaderProps } from "@/modules/admin/props/monitoring/systemMonitoring.props";
 
-export default function SystemMonitoringHeader({
+export default function MonitorHeader({
   period,
   setPeriod,
   refreshData,

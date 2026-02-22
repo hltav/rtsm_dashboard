@@ -82,28 +82,29 @@
 "use client";
 import React, { useState } from "react";
 import { Box, Container, Grid } from "@mui/material";
-import CriticalErrors from "./components/CriticalErros";
+import CriticalErrors from "./components/CriticalErrors";
 import DashboardFooter from "./components/DashboardFooter";
-import DatabaseMetrics from "./components/DatabaseMetrics";
-import SystemMonitoringHeader from "./components/MonitoringHeader";
+import DatabaseMetrics from "./components/DbMetrics";
 import PerformanceReport from "./components/PerformanceReport";
 import RecentRequests from "./components/RecentRequests";
 import { generateMockErrors } from "../../props/monitoring/mocks.generators";
 import { useDatabaseMetrics } from "../../hooks/useDatabaseMetrics.hook";
 import { useRequestMetrics } from "../../hooks/useRequestMetrics.hook";
+import MonitorHeader from "./components/MonitorHeader";
 
 const Monitoring = () => {
   const [period, setPeriod] = useState("24h");
 
   const { metrics, history, loading } = useDatabaseMetrics(5000);
 
-  const { data: requestMetrics } = useRequestMetrics(10000);
+  const { data: requestMetrics } =
+    useRequestMetrics(10000);
   const [errors] = useState(generateMockErrors());
 
   return (
     <Box sx={{ width: "100%", minHeight: "100vh", py: 4 }}>
       <Container maxWidth="xl">
-        <SystemMonitoringHeader
+        <MonitorHeader
           period={period}
           setPeriod={setPeriod}
           refreshData={() => window.location.reload()}

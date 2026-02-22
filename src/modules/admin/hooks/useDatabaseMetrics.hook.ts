@@ -68,7 +68,7 @@ import { PerformanceMetrics } from "../schemas/monitoring/performanceMetrics.sch
 import {
   DatabaseMetricsData,
   MetricsHistoryPoint,
-} from "../adminMenus/monitoring/components/DatabaseMetrics";
+} from "../adminMenus/monitoring/components/DbMetrics";
 import { getPerformanceMetrics } from "../functions/monitoring/performance.function";
 
 export const useDatabaseMetrics = (interval = 5000) => {

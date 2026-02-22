@@ -25,7 +25,7 @@ interface DatabaseMetricsProps {
   loading: boolean;
 }
 
-const DatabaseMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics }) => {
+const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics }) => {
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={6} lg={3}>
@@ -79,4 +79,4 @@ const DatabaseMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics }) => {
   );
 };
 
-export default DatabaseMetrics;
+export default DbMetrics;
