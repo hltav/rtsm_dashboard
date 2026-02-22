@@ -14,9 +14,7 @@ import {
   TableRow,
   Chip,
 } from "@mui/material";
-import {
-  getMethodColor,
-} from "../../../props/monitoring/metricCard.props";
+import { getMethodColor } from "../../../props/monitoring/metricCard.props";
 import { BarChart3 } from "lucide-react";
 import { SlowRequest } from "../../../schemas/monitoring/requestMetrics.schema";
 
@@ -80,69 +78,6 @@ const RecentRequests: React.FC<RecentRequestsProps> = ({
             </TableHead>
 
             <TableBody>
-              {/* {requests.map((req) => {
-                const isError = req.status >= 400;
-
-                return (
-                  <TableRow
-                    key={req.id}
-                    hover
-                    sx={{
-                      "&:last-child td": { borderBottom: 0 },
-                    }}
-                  >
-                    <TableCell
-                      sx={{
-                        fontFamily: "monospace",
-                        fontSize: 13,
-                      }}
-                    >
-                      {req.path}
-                    </TableCell>
-
-                    <TableCell>
-                      <Chip
-                        label={req.method}
-                        size="small"
-                        color={getMethodColor(req.method)}
-                        variant="outlined"
-                      />
-                    </TableCell>
-
-                    <TableCell>
-                      <Box
-                        sx={{
-                          display: "flex",
-                          alignItems: "center",
-                          gap: 1,
-                          color: isError ? "error.main" : "success.main",
-                          fontSize: 14,
-                          fontWeight: 500,
-                        }}
-                      >
-                        <Box
-                          sx={{
-                            width: 8,
-                            height: 8,
-                            borderRadius: "50%",
-                            bgcolor: isError ? "error.main" : "success.main",
-                          }}
-                        />
-                        {req.status}
-                      </Box>
-                    </TableCell>
-
-                    <TableCell
-                      sx={{
-                        color: "text.secondary",
-                        fontSize: 13,
-                      }}
-                    >
-                      {req.duration}
-                    </TableCell>
-                  </TableRow>
-                );
-              })} */}
               {requests.map((req, index) => (
                 <TableRow
                   key={index}

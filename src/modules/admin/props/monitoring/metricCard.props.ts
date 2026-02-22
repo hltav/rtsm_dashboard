@@ -38,14 +38,14 @@ export interface ErrorItem {
 
 export type HttpMethod = "GET" | "POST" | "PUT" | "DELETE";
 
-export interface RecentRequest {
-  id: number;
-  path: string;
-  method: HttpMethod;
-  status: number;
-  duration: string;
-  timestamp: string;
-}
+// export interface RecentRequest {
+//   id: number;
+//   path: string;
+//   method: HttpMethod;
+//   status: number;
+//   duration: string;
+//   timestamp: string;
+// }
 
 export const getMethodColor = (method: string) => {
   switch (method) {

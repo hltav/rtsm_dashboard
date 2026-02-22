@@ -37,7 +37,7 @@ export const LoginForm: React.FC = () => {
         // 🚀 GRAVAR O COOKIE PARA O MIDDLEWARE LER
         // 'path=/' é essencial para que o middleware consiga ler em qualquer rota
         // 'max-age' define o tempo em segundos (ex: 7 dias)
-        document.cookie = `user=${JSON.stringify({ role: userProfile.role })}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+        //document.cookie = `user=${JSON.stringify({ role: userProfile.role })}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
 
         showNotification("Login realizado com sucesso!", "success", 4000);
 

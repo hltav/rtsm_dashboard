@@ -5,11 +5,6 @@ export interface CriticalError {
   time: string;
 }
 
-export interface CriticalErrorsProps {
-  errors: CriticalError[];
-  onOpenLogs?: () => void;
-}
-
 export interface PerformanceReportData {
   throughput: string;
   latencyP95: number;

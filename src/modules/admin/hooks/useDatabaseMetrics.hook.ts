@@ -1,66 +1,3 @@
-// import { useEffect, useRef, useState } from "react";
-// import { getDatabaseMetrics } from "../functions/monitoring/metrics.function";
-// import { DatabaseMetrics } from "../schemas/monitoring/databaseMetrics.schema";
-// import { MetricsHistoryPoint } from "../adminMenus/monitoring/components/DatabaseMetrics";
-
-// export const useDatabaseMetrics = (interval = 5000) => {
-//   const [data, setData] = useState<DatabaseMetrics | undefined>();
-//   const [history, setHistory] = useState<MetricsHistoryPoint[]>([]);
-//   const [loading, setLoading] = useState(true);
-
-//   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
-
-//   const fetchMetrics = async () => {
-//     try {
-//       const metrics = await getDatabaseMetrics();
-
-//       setData(metrics);
-
-//       if (metrics.status === "connected") {
-//         setHistory((prev) => {
-//           const updated = [
-//             ...prev,
-//             {
-//               time: new Date().toLocaleTimeString(),
-//               latency: metrics.latencyMs,
-//             },
-//           ];
-
-//           return updated.slice(-20);
-//         });
-//       }
-
-//       setLoading(false);
-//     } catch {
-//       setLoading(false);
-//     }
-//   };
-
-//   // 🔥 Effect robusto
-//   useEffect(() => {
-//     let isMounted = true;
-
-//     const run = async () => {
-//       if (!isMounted) return;
-//       await fetchMetrics();
-//     };
-
-//     run();
-
-//     intervalRef.current = setInterval(run, interval);
-
-//     return () => {
-//       isMounted = false;
-
-//       if (intervalRef.current) {
-//         clearInterval(intervalRef.current);
-//       }
-//     };
-//   }, [interval]);
-
-//   return { data, history, loading };
-// };
-
 import { useEffect, useRef, useState, useMemo } from "react";
 import { getDatabaseMetrics } from "../functions/monitoring/metrics.function";
 import { DatabaseMetrics } from "../schemas/monitoring/databaseMetrics.schema";
@@ -90,12 +27,19 @@ export const useDatabaseMetrics = (interval = 5000) => {
       setPerfData(perf);
 
       if (db.status === "connected") {
-        setHistory((prev) =>
-          [
+        setHistory((prev) => {
+          const updated = [
             ...prev,
-            { time: new Date().toLocaleTimeString(), latency: db.latencyMs },
-          ].slice(-20),
-        );
+            {
+              time: new Date().toLocaleTimeString(),
+              latency: db.latencyMs,
+              activeConnections: db.activeConnections,
+              cpuUsage: parseFloat(perf.cpu.avg),
+            },
+          ].slice(-20);
+
+          return updated;
+        });
       }
     } finally {
       setLoading(false);

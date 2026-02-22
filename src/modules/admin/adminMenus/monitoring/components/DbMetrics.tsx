@@ -17,6 +17,8 @@ export interface DatabaseMetricsData {
 export interface MetricsHistoryPoint {
   time: string;
   latency: number;
+  activeConnections: number;
+  cpuUsage: number;
 }
 
 interface DatabaseMetricsProps {
@@ -25,7 +27,32 @@ interface DatabaseMetricsProps {
   loading: boolean;
 }
 
-const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics }) => {
+const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
+  const calculateTrend = (previous: number, current: number) => {
+    if (!previous) return { value: "N/A", up: false };
+    const diff = ((current - previous) / previous) * 100;
+    return {
+      value: `${diff > 0 ? "+" : ""}${diff.toFixed(1)}%`,
+      up: diff > 0,
+    };
+  };
+
+  const prev = history[history.length - 2];
+  const curr = history[history.length - 1];
+
+  const latencyTrend = calculateTrend(
+    prev?.latency,
+    curr?.latency ?? parseFloat(dbMetrics.latency),
+  );
+  const connectionsTrend = calculateTrend(
+    prev?.activeConnections,
+    curr?.activeConnections ?? dbMetrics.activeConnections,
+  );
+  const cpuTrend = calculateTrend(
+    prev?.cpuUsage,
+    curr?.cpuUsage ?? parseFloat(dbMetrics.cpuUsage),
+  );
+
   return (
     <Grid container spacing={3}>
       <Grid item xs={12} md={6} lg={3}>
@@ -33,8 +60,8 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics }) => {
           title="Latência do Banco"
           value={`${dbMetrics.latency} ms`}
           icon={<Database color="#42a5f5" />}
-          trend="+2.4%"
-          trendUp={false}
+          trend={latencyTrend.value}
+          trendUp={latencyTrend.up}
         />
       </Grid>
 
@@ -43,8 +70,8 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics }) => {
           title="Conexões Ativas"
           value={dbMetrics.activeConnections}
           icon={<Activity color="#66bb6a" />}
-          trend="+12"
-          trendUp={true}
+          trend={connectionsTrend.value}
+          trendUp={connectionsTrend.up}
         />
       </Grid>
 
@@ -53,18 +80,16 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics }) => {
           title="Uso de CPU"
           value={`${dbMetrics.cpuUsage}%`}
           icon={<MemoryIcon sx={{ color: "#ab47bc" }} />}
-          trend="-0.5%"
-          trendUp={false}
+          trend={cpuTrend.value}
+          trendUp={cpuTrend.up}
         />
       </Grid>
 
       <Grid item xs={12} md={6} lg={3}>
         <MonitoringMetricCard
           title="Uso de Banco de Dados"
-          value={`${dbMetrics.storageUsed}`}
+          value={dbMetrics.storageUsed}
           icon={<Server color="#17ad1a" />}
-          trend="+3.5%"
-          trendUp={true}
         />
       </Grid>
 
