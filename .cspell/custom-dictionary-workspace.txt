@@ -8,6 +8,7 @@ ACERTO
 acertos
 acessibilidade
 acionado
+acontecendo
 Aconteceu
 Acreano
 acumulado
@@ -18,6 +19,7 @@ adição
 adicionada
 Adicionando
 ADICIONEI
+Administrador
 afeta
 afetam
 ÁFRICA
@@ -114,7 +116,10 @@ Assistências
 assumiremos
 Atenção
 ativa
+Ativar
+Atividade
 Atletismo
+atrás
 atributo
 atualizações
 Atualizando
@@ -144,6 +149,7 @@ Bancas
 bandeiras
 Barras
 baseada
+baseadas
 baseado
 baseados
 Baseie
@@ -162,6 +168,7 @@ biblioteca
 Bielorrussa
 Bielorrússia
 bloco
+Bloqueio
 Bolívar
 Bolívia
 Boliviana
@@ -274,7 +281,9 @@ Competições
 completamente
 completas
 completude
+complexo
 componentes
+comum
 comuns
 CONCACAF
 concretos
@@ -288,7 +297,9 @@ conseguiu
 conserto
 Considera
 considerando
+consiga
 consistência
+consolidada
 Constrói
 consumir
 contagem
@@ -300,6 +311,7 @@ Continuação
 continuar
 contínuo
 contraste
+controlador
 Controle
 conversão
 Converta
@@ -314,6 +326,7 @@ copiado
 Coppa
 Coreana
 Coreia
+corporativo
 CORREÇÃO
 correspondente
 corretamente
@@ -327,6 +340,7 @@ Cripto
 criptográfico
 Críquete
 CRÍTICO
+Críticos
 Croata
 cuidará
 Cupen
@@ -341,6 +355,7 @@ Datas
 decidir
 decisões
 dedicadas
+definidos
 Definimos
 definitiva
 deformar
@@ -414,6 +429,7 @@ Duelo
 Dupla
 duplicada
 duplicadas
+ecossistema
 Ecuabet
 EDITÁVEL
 Eerste
@@ -514,12 +530,14 @@ executando
 existia
 existisse
 Exóticos
+expandido
 expandir
 expansão
 Expansión
 expira
 expiração
 explicitamente
+Exportar
 exposto
 Expulso
 extensão
@@ -587,6 +605,7 @@ formatador
 Fórmula
 forneça
 fornecer
+FORNECIDOS
 França
 Francês
 Francesa
@@ -627,6 +646,7 @@ gols
 Gráfico
 gráficos
 Gratuitamente
+GRAVAR
 Grecia
 Grega
 Grêmio
@@ -756,6 +776,7 @@ Kosovan
 lançado
 lançamos
 lançando
+Latência
 legenda
 lerá
 Leste
@@ -782,6 +803,7 @@ limpos
 linhas
 Líquido
 líquidos
+Lisboa
 listagem
 Listar
 Lituana
@@ -802,6 +824,8 @@ maiúsculas
 Malásia
 Maldivas
 Maltesa
+manda
+mandando
 Mandante
 mandar
 manipulação
@@ -834,6 +858,7 @@ Meia
 Meistriliiga
 MELHORADA
 Melhore
+Membros
 menor
 mercados
 meses
@@ -890,10 +915,12 @@ Nacionais
 Nacional
 Nações
 Nadal
+NANA
 NASL
 Natação
 nativa
 naturalmente
+necessária
 negativa
 negativo
 negativos
@@ -901,6 +928,7 @@ Neozelandês
 nesta
 Nicaraguense
 Nigeriana
+ninguém
 NISA
 nível
 nocaute
@@ -935,6 +963,7 @@ Oeste
 oferece
 Olímpica
 Olímpico
+Oliveira
 Ontem
 opção
 opcionais
@@ -1059,6 +1088,7 @@ profitloss
 progresso
 projetos
 promessa
+Promover
 pronta
 pronunciada
 propaga
@@ -1070,6 +1100,7 @@ próprio
 próprios
 prorrogação
 prosseguir
+PROTEÇÃO
 proteger
 protegida
 provavelmente
@@ -1078,6 +1109,7 @@ Prva
 puder
 pura
 puro
+quadrado
 qualidade
 Qualificatória
 quantidade
@@ -1089,6 +1121,7 @@ Quirguistão
 quisermos
 Radicais
 rapidamente
+Rápidos
 raro
 realmente
 Rebaixamento
@@ -1097,6 +1130,7 @@ Recarregue
 recebe
 recebem
 recebidas
+Receita
 recente
 recolher
 recomputação
@@ -1113,12 +1147,16 @@ Regionais
 Regionalliga
 registrada
 Registre
+registros
+REGRA
 regras
 Rejeita
 rejeitar
 relançamos
 relativa
 relativo
+Relatório
+Relatórios
 relevante
 Removemos
 Removido
@@ -1199,6 +1237,7 @@ seriea
 séries
 Sério
 Sérvia
+Sessões
 setou
 signup
 Silencia
@@ -1206,6 +1245,7 @@ símbolos
 Simón
 Simplesmente
 simplificada
+Simulação
 simultâneas
 Sincroniza
 Sincronizado
@@ -1227,6 +1267,7 @@ SOLUÇÃO
 Somália
 Sombra
 Somente
+Souza
 Sportingbet
 sportsdb
 Srpska
@@ -1250,6 +1291,7 @@ Supercup
 Superettan
 Superleague
 Superliga
+Suspensos
 Svenska
 tabela
 Taca
@@ -1257,6 +1299,7 @@ Tailandesa
 Tajiquistão
 Tasmânia
 Tcheca
+TEMAS
 temos
 temporada
 temporárias
@@ -1306,6 +1349,7 @@ ucrania
 Ucrânia
 Ucraniana
 última
+Últimas
 último
 últimos
 única
@@ -1338,6 +1382,7 @@ vazamentos
 vazia
 vazias
 Veikkausliiga
+veja
 vence
 vencedor
 vendo
@@ -1352,6 +1397,7 @@ vinda
 Vinho
 virando
 vírgula
+Visão
 visibilidade
 Visitante
 visuais

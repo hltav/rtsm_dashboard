@@ -9,6 +9,13 @@ export function middleware(request: NextRequest) {
   }
 
   const accessToken = request.cookies.get("access_token")?.value;
+
+  // 🔑 Pegar a role do cookie (você deve salvar esse cookie no login)
+  const userCookie = request.cookies.get("user")?.value;
+  const user = userCookie ? JSON.parse(userCookie) : null;
+  const userRole = user?.role;
+
+  // --- CONFIGURAÇÃO DE SEGURANÇA (CSP) ---
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
   const isDev = process.env.NODE_ENV === "development";
 
@@ -41,28 +48,51 @@ export function middleware(request: NextRequest) {
   response.headers.set("Referrer-Policy", "strict-origin-when-cross-origin");
   response.headers.set(
     "Permissions-Policy",
-    "geolocation=(), microphone=(), camera=()"
+    "geolocation=(), microphone=(), camera=()",
   );
   response.headers.set("Cross-Origin-Embedder-Policy", "require-corp");
   response.headers.set("Cross-Origin-Opener-Policy", "same-origin");
   response.headers.set("Cross-Origin-Resource-Policy", "same-origin");
   response.headers.set(
     "Strict-Transport-Security",
-    "max-age=63072000; includeSubDomains; preload"
+    "max-age=63072000; includeSubDomains; preload",
   );
   response.headers.set("X-Frame-Options", "DENY");
   response.headers.set("X-Powered-By", "");
 
-  // Lógica de autenticação
-  if (pathname.startsWith("/dashboard") && !accessToken) {
-    return NextResponse.redirect(new URL("/login", request.url));
+  // --- 🛡️ LÓGICA DE PROTEÇÃO DE ROTAS BASEADA EM ROLE ---
+  const adminRoles = ["ADMIN", "SUPER_ADMIN", "SUPPORT"];
+  const isAdmin = userRole && adminRoles.includes(userRole.toUpperCase());
+
+  // Protege rotas de ADMIN
+  if (pathname.startsWith("/admin")) {
+    if (!accessToken) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+    if (!isAdmin) {
+      return NextResponse.redirect(new URL("/dashboard", request.url));
+    }
   }
 
-  if (pathname === "/login" && accessToken) {
-    return NextResponse.redirect(new URL("/dashboard", request.url));
+  // Protege rotas de DASHBOARD (Usuário comum + Bloqueio de Admin)
+  if (pathname.startsWith("/dashboard")) {
+    if (!accessToken) {
+      return NextResponse.redirect(new URL("/login", request.url));
+    }
+
+    // 🚫 NOVA REGRA: Se for admin tentando acessar dashboard de usuário
+    if (isAdmin) {
+      return NextResponse.redirect(new URL("/admin", request.url));
+    }
   }
 
-  return response;
+  // 3. Redirecionar se já estiver logado (Login/Register)
+  const authRoutes = ["/login", "/register"];
+  if (authRoutes.includes(pathname) && accessToken) {
+    // Garante que ninguém logado veja a tela de login, mandando cada um pro seu quadrado
+    const target = isAdmin ? "/admin" : "/dashboard";
+    return NextResponse.redirect(new URL(target, request.url));
+  }
 }
 
 export const config = {

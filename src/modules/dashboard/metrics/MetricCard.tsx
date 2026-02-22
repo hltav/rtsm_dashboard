@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
 import React from "react";
 import { Card, Typography, Box, useTheme } from "@mui/material";
@@ -6,6 +7,7 @@ export interface MetricCardProps {
   title: string;
   value: number | string;
   color: string;
+  change?: string;
   isCurrency?: boolean;
   subText?: string;
   valueColor?: string;
@@ -15,6 +17,7 @@ const MetricCard: React.FC<MetricCardProps> = ({
   title,
   value,
   color,
+  change,
   isCurrency = true,
   subText = "",
   valueColor,

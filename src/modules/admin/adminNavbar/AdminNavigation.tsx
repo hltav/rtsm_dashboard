@@ -1,16 +1,17 @@
 "use client";
 import React from "react";
 import { Box, Drawer, useMediaQuery } from "@mui/material";
-import { useDashboard } from "@/components/Providers/DashboardContext";
 import { NavigationProps } from "@/modules/user/props/navigation.props";
-import DrawerComponent from "./DrawerComponent";
+import AdminDrawerComponent from "./AdminDrawer";
+import { useAdmin } from "@/components/Providers/AdminContext";
 
-export const NavigationBar: React.FC<NavigationProps> = ({
+
+export const AdminNavigationBar: React.FC<NavigationProps> = ({
   open,
   mobileOpen,
   handleDrawerToggle,
 }) => {
-  const { setSelectedPage } = useDashboard();
+  const { setSelectedPage } = useAdmin();
 
   // Detecta se está no mobile (< 700px)
   const isMobile = useMediaQuery("(max-width:700px)");
@@ -48,7 +49,7 @@ export const NavigationBar: React.FC<NavigationProps> = ({
           },
         }}
       >
-        <DrawerComponent
+        <AdminDrawerComponent
           open={true}
           handleDrawerToggle={handleDrawerToggle}
           onMenuItemClick={handleMenuClick}
@@ -84,7 +85,7 @@ export const NavigationBar: React.FC<NavigationProps> = ({
           },
         }}
       >
-        <DrawerComponent
+        <AdminDrawerComponent
           open={open}
           handleDrawerToggle={handleDrawerToggle}
           onMenuItemClick={handleMenuClick}

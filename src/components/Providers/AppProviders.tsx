@@ -23,7 +23,7 @@ export function AppProviders({ children, nonce }: AppProvidersProps) {
     insertionPoint:
       typeof document !== "undefined"
         ? (document.querySelector(
-            'meta[name="mui-insertion-point"]'
+            'meta[name="mui-insertion-point"]',
           ) as HTMLElement) || undefined
         : undefined,
   });
@@ -39,7 +39,7 @@ export function AppProviders({ children, nonce }: AppProvidersProps) {
             gcTime: 1000 * 60 * 30,
           },
         },
-      })
+      }),
   );
 
   return (

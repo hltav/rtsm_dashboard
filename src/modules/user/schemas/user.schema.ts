@@ -1,6 +1,7 @@
+import { USER_ROLES_ENUM } from "@/types/role.type";
 import { z } from "zod";
 
-export const Role = z.enum(["USER", "ADMIN"]).optional();
+export const Role = z.enum(USER_ROLES_ENUM);
 export type Role = z.infer<typeof Role>;
 
 export const AddressSchema = z.object({

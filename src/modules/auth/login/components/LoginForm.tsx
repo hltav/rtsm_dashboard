@@ -33,8 +33,21 @@ export const LoginForm: React.FC = () => {
       const userProfile = await checkAuthStatus();
       if (userProfile) {
         updateUser(userProfile);
+
+        // 🚀 GRAVAR O COOKIE PARA O MIDDLEWARE LER
+        // 'path=/' é essencial para que o middleware consiga ler em qualquer rota
+        // 'max-age' define o tempo em segundos (ex: 7 dias)
+        document.cookie = `user=${JSON.stringify({ role: userProfile.role })}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
+
         showNotification("Login realizado com sucesso!", "success", 4000);
-        router.push("/dashboard");
+
+        const adminRoles = ["ADMIN", "SUPER_ADMIN", "SUPPORT"];
+
+        if (adminRoles.includes(userProfile.role)) {
+          router.push("/admin"); // Rota do novo módulo admin
+        } else {
+          router.push("/dashboard"); // Rota padrão de usuário
+        }
       } else {
         throw new Error("Não foi possível obter os dados do usuário.");
       }
