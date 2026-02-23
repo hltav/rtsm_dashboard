@@ -1,3 +1,7 @@
+import {
+  CacheMetrics,
+  cacheMetricsSchema,
+} from "@/modules/admin/schemas/monitoring/cacheMetrics.schema";
 import apiClient from "../../apiBaseUrl";
 import {
   DatabaseMetrics,
@@ -34,7 +38,14 @@ export const getAdminPerformance = async (period?: string) => {
   return response.data;
 };
 
-// ==================== REQUESTS ====================
+// ==================== CACHE =========================
+export const getAdminCacheMetrics = async (): Promise<CacheMetrics> => {
+  const response = await apiClient.get("/admin/monitoring/cache");
+
+  return cacheMetricsSchema.parse(response.data);
+};
+
+// ==================== REQUESTS ======================
 
 export const getAdminRequestMetrics = async (limit?: number) => {
   const response = await apiClient.get<RequestMetrics[]>(
@@ -46,7 +57,7 @@ export const getAdminRequestMetrics = async (limit?: number) => {
   return response.data;
 };
 
-// ==================== ERRORS ====================
+// ==================== ERRORS ========================
 
 export const getAdminErrorMetrics = async (hours?: number) => {
   const response = await apiClient.get<ErrorMetrics[]>("/admin/system/errors", {

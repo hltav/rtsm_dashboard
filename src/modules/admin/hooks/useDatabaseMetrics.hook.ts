@@ -7,12 +7,14 @@ import {
   MetricsHistoryPoint,
 } from "../adminMenus/monitoring/components/DbMetrics";
 import { getPerformanceMetrics } from "../functions/monitoring/performance.function";
+import { useCacheMetrics } from "./useCacheMetrics.hook";
 
 export const useDatabaseMetrics = (interval = 5000) => {
   const [dbData, setDbData] = useState<DatabaseMetrics | undefined>();
   const [perfData, setPerfData] = useState<PerformanceMetrics | undefined>();
   const [history, setHistory] = useState<MetricsHistoryPoint[]>([]);
   const [loading, setLoading] = useState(true);
+  const { data: cacheData } = useCacheMetrics(interval);
 
   const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
 
@@ -70,8 +72,16 @@ export const useDatabaseMetrics = (interval = 5000) => {
       cpuUsage: parseFloat(perfData.cpu.avg).toFixed(1),
       storageUsed: `${(dbData.sizeBytes / 1e6).toFixed(2)} MB`,
       uptime: perfData.trend,
+      redis: cacheData
+        ? {
+            status: cacheData.status,
+            usedMemoryHuman: cacheData.usedMemoryHuman,
+            hitRate: cacheData.hitRate,
+            connectedClients: cacheData.connectedClients,
+          }
+        : null,
     };
-  }, [dbData, perfData]);
+  }, [dbData, perfData, cacheData]);
 
   return { metrics, history, loading };
 };

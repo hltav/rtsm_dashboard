@@ -3,7 +3,7 @@ import React from "react";
 import { Grid } from "@mui/material";
 import MemoryIcon from "@mui/icons-material/Memory";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
-import { Activity, Database, Server } from "lucide-react";
+import { Activity, Database, DatabaseZap, Server } from "lucide-react";
 import MonitoringMetricCard from "../../../ui/monitoring/MonitoringMetricCard.ui";
 
 export interface DatabaseMetricsData {
@@ -12,6 +12,12 @@ export interface DatabaseMetricsData {
   cpuUsage: string;
   storageUsed: string;
   uptime: string;
+  redis: {
+    status: "connected" | "error";
+    usedMemoryHuman: string;
+    hitRate: number;
+    connectedClients: number;
+  } | null;
 }
 
 export interface MetricsHistoryPoint {
@@ -32,7 +38,7 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
     if (!previous) return { value: "N/A", up: false };
     const diff = ((current - previous) / previous) * 100;
     return {
-      value: `${diff > 0 ? "+" : ""}${diff.toFixed(1)}%`,
+      value: `${diff > 0 ? "+" : ""}${diff.toFixed(1)} %`,
       up: diff > 0,
     };
   };
@@ -69,7 +75,7 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
         <MonitoringMetricCard
           title="Conexões Ativas"
           value={dbMetrics.activeConnections}
-          icon={<Activity color="#66bb6a" />}
+          icon={<Activity color="#17ad1a" />}
           trend={connectionsTrend.value}
           trendUp={connectionsTrend.up}
         />
@@ -78,7 +84,7 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
       <Grid item xs={12} md={6} lg={3}>
         <MonitoringMetricCard
           title="Uso de CPU"
-          value={`${dbMetrics.cpuUsage}%`}
+          value={`${dbMetrics.cpuUsage} %`}
           icon={<MemoryIcon sx={{ color: "#ab47bc" }} />}
           trend={cpuTrend.value}
           trendUp={cpuTrend.up}
@@ -98,6 +104,30 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
           title="Tempo de Atividade"
           value={dbMetrics.uptime}
           icon={<AccessTimeIcon sx={{ color: "#ffa726" }} />}
+        />
+      </Grid>
+
+      <Grid item xs={12} md={6} lg={3}>
+        <MonitoringMetricCard
+          title="Client Redis"
+          value={
+            dbMetrics.redis?.status === "connected"
+              ? dbMetrics.redis.usedMemoryHuman
+              : "Desconectado"
+          }
+          icon={
+            <DatabaseZap
+              color={
+                dbMetrics.redis?.status === "connected" ?  "#17ad1a" : "#d31717"
+              }
+            />
+          }
+          trend={
+            dbMetrics.redis
+              ? `${dbMetrics.redis.hitRate.toFixed(1)} % hit`
+              : "N/A"
+          }
+          trendUp={dbMetrics.redis ? dbMetrics.redis.hitRate > 80 : false}
         />
       </Grid>
     </Grid>

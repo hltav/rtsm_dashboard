@@ -14,7 +14,6 @@ import {
   TableRow,
   Chip,
 } from "@mui/material";
-import { getMethodColor } from "../../../props/monitoring/metricCard.props";
 import { BarChart3 } from "lucide-react";
 import { SlowRequest } from "../../../schemas/monitoring/requestMetrics.schema";
 
@@ -92,8 +91,8 @@ const RecentRequests: React.FC<RecentRequestsProps> = ({
                     <Chip
                       label={req.method}
                       size="small"
-                      color={getMethodColor(req.method)}
                       variant="outlined"
+                      sx={{ color: "#17ad1a" }}
                     />
                   </TableCell>
 
@@ -103,7 +102,7 @@ const RecentRequests: React.FC<RecentRequestsProps> = ({
                         display: "flex",
                         alignItems: "center",
                         gap: 1,
-                        color: "success.main",
+                        color: "#17ad1a",
                         fontSize: 14,
                         fontWeight: 500,
                       }}
@@ -113,7 +112,7 @@ const RecentRequests: React.FC<RecentRequestsProps> = ({
                           width: 8,
                           height: 8,
                           borderRadius: "50%",
-                          bgcolor: "success.main",
+                          bgcolor: "#17ad1a",
                         }}
                       />
                       200

@@ -61,7 +61,7 @@ const MonitoringMetricCard: React.FC<MetricCardProps> = ({
                 gap: 0.5,
                 fontSize: 12,
                 fontWeight: "bold",
-                color: trendUp ? "success.main" : "error.main",
+                color: trendUp ? "#17ad1a" : "#d31717",
               }}
             >
               {trend}
