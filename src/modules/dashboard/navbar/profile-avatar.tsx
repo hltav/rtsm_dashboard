@@ -38,7 +38,7 @@ export const ProfileAvatar: React.FC = () => {
   const userName = `${user.firstname} ${user.lastname}`;
   const userEmail = user.email;
   const fallbackAvatar = `https://placehold.co/32x32/d1d1d1/000000?text=${user.firstname.charAt(
-    0
+    0,
   )}${user.lastname.charAt(0)}`;
   const userAvatarUrl = user.clientData?.image ?? fallbackAvatar;
 
@@ -64,7 +64,10 @@ export const ProfileAvatar: React.FC = () => {
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={handleClose}
+        onClick={() => {
+          handleClose(); 
+          logout(); 
+        }}
         PaperProps={{
           elevation: 0,
           sx: {

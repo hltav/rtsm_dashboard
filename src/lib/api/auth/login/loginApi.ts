@@ -66,7 +66,7 @@ export const getErrorMessage = (error: unknown, defaultMsg: string) => {
 export const loginService = async (data: LoginData) => {
   // Remova o try-catch - deixe o erro propagar naturalmente
   const res = await apiClient.post("/auth/login", data);
-  return { success: true, data: res.data };
+  return res.data;
 };
 
 export const checkAuthStatusService = async (): Promise<GetUser> => {

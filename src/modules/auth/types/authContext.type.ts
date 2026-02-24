@@ -1,3 +1,4 @@
+import { LoginResponse } from "@/modules/user/schemas/loginResponse.schema";
 import { GetUser } from "@/modules/user/schemas/user.schema";
 
 export interface AuthContextType {
@@ -6,7 +7,7 @@ export interface AuthContextType {
     email: string;
     password: string;
     rememberMe: boolean;
-  }) => Promise<{ success: boolean }>;
+  }) => Promise<LoginResponse>;
   logout: () => void;
   isAuthenticated: boolean;
   loading: boolean;

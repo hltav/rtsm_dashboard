@@ -17,7 +17,7 @@ export const LoginForm: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
-  const { login, updateUser, checkAuthStatus } = useAuth();
+  const { login } = useAuth();
   const { showNotification } = useNotification();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -26,30 +26,24 @@ export const LoginForm: React.FC = () => {
     setError(null);
 
     try {
-      // 1. Tenta o login
-      await login({ email: username, password, rememberMe });
+      // 1. Login direto (retorna { user, accessToken })
+      const response = await login({ email: username, password, rememberMe });
+      console.log("Resposta do Login:", response);
 
-      // 2. Busca perfil
-      const userProfile = await checkAuthStatus();
+      // 2. Extraímos os dados do retorno
+      const userProfile = response.user;
+
       if (userProfile) {
-        updateUser(userProfile);
-
-        // 🚀 GRAVAR O COOKIE PARA O MIDDLEWARE LER
-        // 'path=/' é essencial para que o middleware consiga ler em qualquer rota
-        // 'max-age' define o tempo em segundos (ex: 7 dias)
-        //document.cookie = `user=${JSON.stringify({ role: userProfile.role })}; path=/; max-age=${60 * 60 * 24 * 7}; SameSite=Lax`;
-
         showNotification("Login realizado com sucesso!", "success", 4000);
 
+        // 3. Redirecionamento instantâneo por Role
         const adminRoles = ["ADMIN", "SUPER_ADMIN", "SUPPORT"];
 
         if (adminRoles.includes(userProfile.role)) {
-          router.push("/admin"); // Rota do novo módulo admin
+          router.push("/admin");
         } else {
-          router.push("/dashboard"); // Rota padrão de usuário
+          router.push("/dashboard");
         }
-      } else {
-        throw new Error("Não foi possível obter os dados do usuário.");
       }
     } catch (err: unknown) {
       if (axios.isAxiosError(err)) {

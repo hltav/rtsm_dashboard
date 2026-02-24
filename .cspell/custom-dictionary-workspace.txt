@@ -28,7 +28,9 @@ AGREGAÇÃO
 agregados
 Agrupa
 Agrupamento
+AGUARDA
 aguardando
+ajuda
 Ajusta
 ajustado
 ajustando
@@ -55,6 +57,7 @@ Amanhã
 Amapaense
 amarelado
 amarelo
+amassar
 Amazonense
 Ambas
 ambiente
@@ -96,6 +99,7 @@ aprender
 aprendizado
 aprimore
 aproveitar
+aproximada
 Aquático
 Aquáticos
 Árabe
@@ -168,6 +172,8 @@ biblioteca
 Bielorrussa
 Bielorrússia
 bloco
+Bloqueamos
+bloquear
 Bloqueio
 Bolívar
 Bolívia
@@ -237,6 +243,7 @@ CECAFA
 célula
 células
 centralizado
+Chamada
 chamadas
 chamamos
 Chamando
@@ -287,11 +294,13 @@ comum
 comuns
 CONCACAF
 concretos
+CONDICIONAIS
 condicionalmente
 Confederações
 Conferência
 configuradas
 conflito
+confundir
 CONMEBOL
 conseguiu
 conserto
@@ -413,6 +422,7 @@ direto
 disciplina
 disparado
 disparar
+disso
 distorça
 Distribuição
 Divisão
@@ -446,6 +456,7 @@ Elitedivisionen
 Eliteserien
 Emirados
 Empate
+encerrada
 encerrando
 encerrar
 encontrada
@@ -545,6 +556,7 @@ externo
 Extintos
 Extrai
 extraído
+Extraímos
 extrair
 fácil
 falhar
@@ -587,6 +599,7 @@ Finalização
 finalizados
 Finlandesa
 Finlândia
+fixo
 fixos
 fizer
 flagcdn
@@ -599,6 +612,7 @@ folha
 fonte
 fontes
 Força
+Forçamos
 formatada
 formatado
 formatador
@@ -685,6 +699,7 @@ Húngara
 Ícone
 Ícones
 idêntico
+identifica
 identificando
 ignora
 Ignorando
@@ -693,6 +708,7 @@ Iguais
 Ilhas
 imagens
 imediata
+Imediato
 impactam
 Ímpar
 ímpares
@@ -728,6 +744,8 @@ inofensivo
 inserção
 insere
 inseridos
+Instantânea
+instantâneo
 insuficiente
 integração
 inteiro
@@ -798,6 +816,7 @@ ligas
 Ligue
 Lilás
 limpamos
+limpando
 limpeza
 limpo
 limpos
@@ -860,6 +879,7 @@ Meistriliiga
 MELHORADA
 Melhore
 Membros
+memória
 menor
 mercados
 meses
@@ -921,6 +941,7 @@ NASL
 Natação
 nativa
 naturalmente
+navega
 necessária
 negativa
 negativo
@@ -993,6 +1014,7 @@ panamericana
 Paquistão
 Paraguai
 Paraguaia
+paramos
 parcialmente
 Parë
 pareça
@@ -1037,6 +1059,8 @@ Peruana
 pesada
 pesquisar
 Pesquisar
+piscada
+piscadas
 Placar
 plotagem
 podemos
@@ -1082,7 +1106,9 @@ processa
 processado
 processados
 processamento
+processará
 processo
+processou
 Profesional
 Profissional
 profitloss
@@ -1141,6 +1167,7 @@ recua
 Recursos
 Redefination
 redimensionamento
+redirecionamos
 reenviar
 Reexecuta
 referência
@@ -1162,10 +1189,14 @@ relevante
 Removemos
 Removido
 renderizada
+renderizamos
 Renomeado
 repetir
+reserva
 reservados
+reservar
 respeitando
+responde
 Responsável
 restantes
 resto
@@ -1185,6 +1216,7 @@ retornará
 retorno
 retornou
 Retrátil
+revalidação
 Reverte
 revisar
 revisitar
@@ -1219,6 +1251,7 @@ Secundária
 secundário
 Segona
 SEGREDO
+seguimos
 SEGUINDO
 SEGUINTE
 Segunda
@@ -1242,6 +1275,7 @@ Sessões
 setou
 signup
 Silencia
+silencioso
 símbolos
 Simón
 Simplesmente
@@ -1286,6 +1320,7 @@ Sudoeste
 Sueca
 Suécia
 Suíça
+sumiu
 Supercopa
 Supercoppa
 Supercup
@@ -1336,8 +1371,10 @@ traduzir
 transformação
 transformar
 transformará
+transição
 trata
 tratado
+travada
 Trofeo
 Troféu
 Trophée
@@ -1401,6 +1438,7 @@ vírgula
 Visão
 visibilidade
 Visitante
+visível
 visuais
 visualização
 visualmente

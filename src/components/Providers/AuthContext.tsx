@@ -14,6 +14,8 @@ import {
   loginService,
   logoutService,
 } from "@/lib/api/auth/login/loginApi";
+import { LoginResponse } from "@/modules/user/schemas/loginResponse.schema";
+import { useQueryClient } from "@tanstack/react-query";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -26,17 +28,21 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [hasIncompleteProfile, setHasIncompleteProfile] = useState(false);
 
-  // Derivamos o estado de autenticação da presença do objeto user
   const isAuthenticated = !!user;
   const router = useRouter();
+  const queryClient = useQueryClient();
 
-  // Mantemos a lógica de perfil incompleto, pois é útil para a UI
   const checkProfileCompletion = useCallback((userData: GetUser | null) => {
+    if (!userData) {
+      setHasIncompleteProfile(false);
+      return;
+    }
+
     const isIncomplete =
-      userData &&
-      (!userData.clientData ||
-        !userData.clientData.cpf ||
-        !userData.clientData.phone);
+      !userData.clientData ||
+      !userData.clientData.cpf ||
+      !userData.clientData.phone;
+
     setHasIncompleteProfile(!!isIncomplete);
   }, []);
 
@@ -59,12 +65,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, [checkProfileCompletion]);
 
-  const login = async (data: LoginData) => {
+  const login = async (data: LoginData): Promise<LoginResponse> => {
     try {
       const res = await loginService(data);
-      // No sucesso, o backend já setou o cookie no navegador
-      setUser(res.data.user);
-      checkProfileCompletion(res.data.user);
+
+      setUser(res.user);
+      checkProfileCompletion(res.user);
+
       return res;
     } catch (err) {
       setUser(null);
@@ -73,15 +80,56 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
+  // const logout = async () => {
+  //   try {
+  //     await logoutService(); // Backend limpa o cookie (expira ele)
+  //     setUser(null);
+  //     setHasIncompleteProfile(false);
+  //     router.push("/login");
+  //   } catch {
+  //     setUser(null);
+  //     router.push("/login");
+  //   }
+  // };
+
+  // const logout = async () => {
+  //   // 1. Limpa o estado local imediatamente (UI responde na hora)
+  //   setUser(null);
+  //   setHasIncompleteProfile(false);
+
+  //   try {
+  //     // 2. Avisa o servidor em "segundo plano"
+  //     await logoutService();
+  //   } catch {
+  //     // Se der 403 ou 500, não importa, o usuário já foi limpo no front
+  //     console.warn(
+  //       "Servidor não processou o logout, mas a sessão local foi encerrada.",
+  //     );
+  //   } finally {
+  //     // 3. Redireciona
+  //     router.push("/login");
+  //   }
+  // };
+
   const logout = async () => {
     try {
-      await logoutService(); // Backend limpa o cookie (expira ele)
-      setUser(null);
-      setHasIncompleteProfile(false);
-      router.push("/login");
+      // 1) chama backend e AGUARDA apagar cookie
+      await logoutService();
     } catch {
+      // mesmo se falhar, seguimos limpando o client
+    } finally {
+      // 2) limpa estados do client
       setUser(null);
-      router.push("/login");
+
+      // ✅ limpa cache de dados (muito importante)
+      queryClient.clear();
+
+      // 3) navega e força revalidação do App Router
+      router.replace("/login");
+      router.refresh();
+
+      // (fallback nuclear se ainda tiver "travada")
+      // window.location.href = "/login";
     }
   };
 
