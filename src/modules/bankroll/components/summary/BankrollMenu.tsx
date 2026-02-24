@@ -99,7 +99,6 @@ const BankrollMenu: React.FC = () => {
         return;
       }
       try {
-        // Agora não usamos mais user.id
         const data = await bankrollApi.getAll();
         setBankrolls(Array.isArray(data) ? data : [data]);
       } catch (error) {

@@ -25,7 +25,7 @@ const ProfileContentPage: React.FC = () => {
 
   const { user, updateUser } = useAuth();
   const [isEditing, setIsEditing] = useState(false);
-  const { uploadAvatar } = useUserAvatar(user?.id);
+  const { uploadAvatar } = useUserAvatar();
   const [avatarKey, setAvatarKey] = useState(Date.now());
 
   const { showNotification } = useNotification();
@@ -42,7 +42,7 @@ const ProfileContentPage: React.FC = () => {
     : getImageUrl(user?.clientData?.image);
 
   const handleTextFieldChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
@@ -54,7 +54,7 @@ const ProfileContentPage: React.FC = () => {
   };
 
   const handleImageChange = async (
-    event: React.ChangeEvent<HTMLInputElement>
+    event: React.ChangeEvent<HTMLInputElement>,
   ) => {
     const file = event.target.files?.[0];
     if (!file) return;
@@ -87,7 +87,7 @@ const ProfileContentPage: React.FC = () => {
       console.error("Erro ao fazer upload do avatar:", error);
       showNotification(
         "Erro ao fazer upload do avatar. Tente novamente.",
-        "error"
+        "error",
       );
       setFormData((prev) => ({
         ...prev,
@@ -100,8 +100,6 @@ const ProfileContentPage: React.FC = () => {
     event.preventDefault();
 
     if (isEditing && user && user.clientData?.id) {
-      const clientDataId = user.clientData.id;
-
       const dataToUpdate = {
         ...user.clientData,
         image: formData.image,
@@ -114,10 +112,7 @@ const ProfileContentPage: React.FC = () => {
       };
 
       try {
-        const response = await clientDataService.update(
-          clientDataId,
-          dataToUpdate
-        );
+        const response = await clientDataService.update(dataToUpdate);
 
         if (updateUser) {
           updateUser({
