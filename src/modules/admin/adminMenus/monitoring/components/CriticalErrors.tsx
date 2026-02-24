@@ -119,6 +119,7 @@ const CriticalErrors: React.FC<CriticalErrorsProps> = ({
               mt: 1,
               borderStyle: "dashed",
               textTransform: "none",
+              color:"text.primary"
             }}
           >
             Abrir Log de Erros Completo

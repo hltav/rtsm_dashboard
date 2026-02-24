@@ -24,6 +24,7 @@ const MonitoringMetricCard: React.FC<MetricCardProps> = ({
         "&:hover": {
           transform: "scale(1.02)",
         },
+        cursor:"pointer"
       }}
     >
       <CardContent>
