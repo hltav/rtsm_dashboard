@@ -1,24 +1,24 @@
 import apiClient from "../../apiBaseUrl";
 import { DiscoverFixture } from "./schemas/discoveryFixture.schema";
-import { DiscoverLeague } from "./schemas/discoveryLeague.schema";
+// import { DiscoverLeague } from "./schemas/discoveryLeague.schema";
 import { OrganizedLeaguesResponse } from "./schemas/discoveryOrganized.schema";
 
 export const soccerApi = {
   // 🏆 Buscar ligas (current | season específica)
-  async getLeagues(season?: string): Promise<DiscoverLeague[]> {
-    const response = await apiClient.get("/soccer/discovery/leagues", {
-      params: season ? { season } : undefined,
-    });
+  // async getLeagues(season?: string): Promise<DiscoverLeague[]> {
+  //   const response = await apiClient.get("/soccer/discovery/leagues", {
+  //     params: season ? { season } : undefined,
+  //   });
 
-    console.log("Ligas recebidas da API:", response.data);
-    return response.data;
-  },
+  //   console.log("Ligas recebidas da API:", response.data);
+  //   return response.data;
+  // },
 
   // ⚽ Buscar próximas partidas de uma liga
   async getNextFixtures(
     leagueId: number,
     next = 10,
-    season?: number | "current"
+    season?: number | "current",
   ): Promise<DiscoverFixture[]> {
     const response = await apiClient.get("/soccer/discovery/next-fixtures", {
       params: {
@@ -33,7 +33,7 @@ export const soccerApi = {
 
   // 🟢 Buscar temporada atual de uma liga
   async getCurrentSeason(
-    leagueId: number
+    leagueId: number,
   ): Promise<{ league: number; currentSeason: number | null }> {
     const response = await apiClient.get("/soccer/discovery/current-season", {
       params: { league: leagueId },
@@ -43,8 +43,8 @@ export const soccerApi = {
   },
 
   async getOrganizedLeagues(
-    season?: string,
-    refresh = false
+    season?: number | "current",
+    refresh = false,
   ): Promise<OrganizedLeaguesResponse> {
     const response = await apiClient.get(
       "/soccer/discovery/leagues/organized",
@@ -53,7 +53,7 @@ export const soccerApi = {
           ...(season ? { season } : {}),
           refresh,
         },
-      }
+      },
     );
 
     console.log("Ligas organizadas recebidas da API:", response.data);
