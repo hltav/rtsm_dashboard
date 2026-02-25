@@ -28,6 +28,8 @@ export const CountriesListBox = forwardRef<
   );
   const { favoriteLeagueIds, toggleFavoriteLeague } = useFavorateLeagues();
 
+  const [favoritesOpen, setFavoritesOpen] = useState(false);
+
   const toggleCountry = (country: string) => {
     setOpenCountries((prev) => ({ ...prev, [country]: !prev[country] }));
   };
@@ -189,9 +191,17 @@ export const CountriesListBox = forwardRef<
       {favoriteLeaguesList.length > 0 && (
         <>
           <Box
-            sx={{ display: "flex", flexDirection: "row", alignItems: "center" }}
+            onClick={() => setFavoritesOpen((prev) => !prev)}
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              cursor: "pointer",
+              borderRadius: 1,
+              p: 1,
+              "&:hover": { backgroundColor: "action.hover" },
+            }}
           >
-            <StarRoundedIcon sx={{ color: "secondary.dark" }} />
             <Typography
               variant="overline"
               sx={{
@@ -200,61 +210,79 @@ export const CountriesListBox = forwardRef<
                 fontWeight: "bold",
                 display: "block",
                 mb: 1,
+                flex: 1,
               }}
             >
+              <StarRoundedIcon sx={{ color: "secondary.dark" }} />
               FAVORITAS
             </Typography>
+            {favoritesOpen ? (
+              <ExpandLess fontSize="small" sx={{ color: "text.disabled" }} />
+            ) : (
+              <ExpandMore fontSize="small" sx={{ color: "text.disabled" }} />
+            )}
           </Box>
 
-          {favoriteLeaguesList.map((league) => (
-            <Box
-              key={league.previewId}
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "space-between",
-                pl: 2,
-                pr: 1,
-                py: 0.8,
-                cursor: "pointer",
-                borderRadius: 1,
-                "&:hover": { backgroundColor: "action.selected" },
-              }}
-              onClick={() =>
-                onSelectLeague({
-                  leagueId: league.apiSportsLeagueId,
-                  season: league.season,
-                })
-              }
-            >
-              <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                {league.logo && (
-                  <SafeImage
-                    src={league.logo}
-                    alt={`Logo da ${league.name}`}
-                    width={20}
-                    height={20}
-                    style={{ borderRadius: "50%", objectFit: "cover" }}
-                  />
-                )}
-                <Typography variant="caption" sx={{ color: "text.secondary" }}>
-                  {league.name}
-                </Typography>
-              </Box>
+          {favoritesOpen && (
+            <>
+              {favoriteLeaguesList.map((league) => (
+                <Box
+                  key={league.previewId}
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    pl: 2,
+                    pr: 1,
+                    py: 0.8,
+                    cursor: "pointer",
+                    borderRadius: 1,
+                    "&:hover": { backgroundColor: "action.selected" },
+                  }}
+                  onClick={() =>
+                    onSelectLeague({
+                      leagueId: league.apiSportsLeagueId,
+                      season: league.season,
+                    })
+                  }
+                >
+                  <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+                    {league.logo && (
+                      <SafeImage
+                        src={league.logo}
+                        alt={`Logo da ${league.name}`}
+                        width={20}
+                        height={20}
+                        style={{ borderRadius: "50%", objectFit: "cover" }}
+                      />
+                    )}
+                    <Typography
+                      variant="caption"
+                      sx={{ color: "text.secondary" }}
+                    >
+                      {league.name}
+                    </Typography>
+                  </Box>
 
-              <FavoriteLeagueButton
-                isFavorite={favoriteLeagueIds.has(league.apiSportsLeagueId)}
-                onToggle={(e) => {
-                  e.stopPropagation(); // segurança extra
-                  toggleFavoriteLeague(league);
+                  <FavoriteLeagueButton
+                    isFavorite={favoriteLeagueIds.has(league.apiSportsLeagueId)}
+                    onToggle={(e) => {
+                      e.stopPropagation(); // segurança extra
+                      toggleFavoriteLeague(league);
+                    }}
+                  />
+                </Box>
+              ))}
+
+              <Box
+                sx={{
+                  my: 2,
+                  borderBottom: "1px solid",
+                  borderColor: "divider",
                 }}
               />
-            </Box>
-          ))}
-
-          <Box
-            sx={{ my: 2, borderBottom: "1px solid", borderColor: "divider" }}
-          />
+            </>
+          )}
         </>
       )}
 
