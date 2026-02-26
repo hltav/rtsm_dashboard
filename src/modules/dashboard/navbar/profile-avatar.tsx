@@ -64,10 +64,6 @@ export const ProfileAvatar: React.FC = () => {
         id="account-menu"
         open={open}
         onClose={handleClose}
-        onClick={() => {
-          handleClose(); 
-          logout(); 
-        }}
         PaperProps={{
           elevation: 0,
           sx: {
