@@ -43,14 +43,14 @@ export const soccerApi = {
   },
 
   async getOrganizedLeagues(
-    season?: number | "current",
+    scope?: "current" | "all",
     refresh = false,
   ): Promise<OrganizedLeaguesResponse> {
     const response = await apiClient.get(
       "/soccer/discovery/leagues/organized",
       {
         params: {
-          ...(season ? { season } : {}),
+          ...(scope ? { scope } : {}),
           refresh,
         },
       },
