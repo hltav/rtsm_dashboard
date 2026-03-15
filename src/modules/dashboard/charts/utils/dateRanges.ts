@@ -83,26 +83,34 @@ export function getRange(
         startDate: toBrazilRangeISO(startOfDay(date), "start"),
         endDate: toBrazilRangeISO(endOfDay(date), "end"),
       };
+
     case "week":
       return {
-        startDate: toBrazilRangeISO(startOfPreviousWeek(date), "start"),
-        endDate: toBrazilRangeISO(endOfPreviousWeek(date), "end"),
+        startDate: toBrazilRangeISO(startOfWeek(date), "start"),
+        endDate: toBrazilRangeISO(endOfWeek(date), "end"),
       };
+
     case "month":
-      // daily usa year/month/day como inteiros, sem timezone
       return {
         startDate: toDateOnly(startOfMonth(date)),
         endDate: toDateOnly(endOfMonth(date)),
       };
+
     case "year":
       return {
         startDate: toDateOnly(startOfYear(date)),
         endDate: toDateOnly(endOfYear(date)),
       };
+
     case "custom":
       return {
         startDate: toDateOnly(startOfDay(customRange?.start ?? date)),
         endDate: toDateOnly(endOfDay(customRange?.end ?? date)),
+      };
+    default:
+      return {
+        startDate: toBrazilRangeISO(startOfDay(date), "start"),
+        endDate: toBrazilRangeISO(endOfDay(date), "end"),
       };
   }
 }

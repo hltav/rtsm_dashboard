@@ -13,7 +13,7 @@ export function useYearlySnapshots(
   enabled = true,
 ) {
   return useQuery<GetYearlySnapshotDTO[]>({
-    queryKey: ["bankroll", bankrollId, "snapshots", "yearly"],
+    queryKey: ["bankroll", bankrollId, "snapshots", "yearly", params ?? {}],
     queryFn: async () => {
       const res = await yearlySnapshotApi.getSnapshots(bankrollId, params);
       return res.data;

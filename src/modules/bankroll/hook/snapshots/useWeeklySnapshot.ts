@@ -10,9 +10,9 @@ export function useWeeklySnapshots(
   bankrollId: number,
   params?: WeeklyParams,
   enabled = true,
-  ) {
+) {
   return useQuery<GetWeeklySnapshotDTO[]>({
-    queryKey: ["bankroll", bankrollId, "snapshots", "weekly"],
+    queryKey: ["bankroll", bankrollId, "snapshots", "weekly", params ?? {}],
     queryFn: async () => {
       const res = await weeklySnapshotApi.getSnapshots(bankrollId, params);
       return res.data;

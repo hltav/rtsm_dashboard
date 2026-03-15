@@ -22,7 +22,16 @@ import { ptBR } from "date-fns/locale";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
-import { getRange, Period } from "./utils/dateRanges";
+import {
+  endOfDay,
+  endOfMonth,
+  endOfWeek,
+  getRange,
+  Period,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+} from "./utils/dateRanges";
 import {
   ResultUnitsFilter,
   SeriesUnitsData,
@@ -34,6 +43,7 @@ import {
   normalizeMonthly,
 } from "./functions/normalizeSnapshots";
 import { BankrollUnitsSnapshotFetcher } from "./functions/bankrollUnitsSnapshotFetcher";
+import { parseRangeDates, isInRange } from "./helpers/range.helpers";
 
 export default function BankrollUnitsChart({
   bankrollId,
@@ -116,18 +126,66 @@ export default function BankrollUnitsChart({
     if (isAll) return { dates: [], values: [], net: 0 };
 
     if (period === "day") {
-      const normalized = normalizeHourly(hourlyQ.data ?? []);
-      return buildUnitsSeries(normalized, resultFilter);
+      const raw = hourlyQ.data ?? [];
+      const { start, end } = parseRangeDates(range);
+
+      const filtered =
+        start && end
+          ? raw.filter((r) => {
+              const d = new Date(r.bucketStart);
+              return isInRange(d, start, end);
+            })
+          : raw;
+
+      const normalized = normalizeHourly(filtered);
+      return buildUnitsSeries(normalized, resultFilter, true);
     }
 
     if (period === "week" || period === "month" || period === "custom") {
-      const normalized = normalizeDaily(dailyQ.data ?? []);
-      return buildUnitsSeries(normalized, resultFilter);
+      const raw = dailyQ.data ?? [];
+
+      const filtered = raw.filter((r) => {
+        const d = new Date(r.year, r.month - 1, r.day, 0, 0, 0, 0);
+
+        if (period === "week") {
+          const start = startOfWeek(safeSelectedDate);
+          const end = endOfWeek(safeSelectedDate);
+          return d >= start && d <= end;
+        }
+
+        if (period === "month") {
+          const start = startOfMonth(safeSelectedDate);
+          const end = endOfMonth(safeSelectedDate);
+          return d >= start && d <= end;
+        }
+
+        if (period === "custom" && customStart && customEnd) {
+          const start = startOfDay(customStart);
+          const end = endOfDay(customEnd);
+          return d >= start && d <= end;
+        }
+
+        return true;
+      });
+
+      const normalized = normalizeDaily(filtered);
+      return buildUnitsSeries(normalized, resultFilter, true);
     }
 
     const normalized = normalizeMonthly(monthlyQ.data ?? []);
-    return buildUnitsSeries(normalized, resultFilter);
-  }, [isAll, period, hourlyQ.data, dailyQ.data, monthlyQ.data, resultFilter]);
+    return buildUnitsSeries(normalized, resultFilter, true);
+  }, [
+    isAll,
+    period,
+    hourlyQ.data,
+    dailyQ.data,
+    monthlyQ.data,
+    resultFilter,
+    range,
+    safeSelectedDate,
+    customStart,
+    customEnd,
+  ]);
 
   const profitColor = singleSeries.net >= 0 ? "#17ad1a" : "#c62828";
 
@@ -387,7 +445,9 @@ export default function BankrollUnitsChart({
                       fontWeight: 600,
                     }}
                   >
-                    {singleSeries.net >= 0 ? "Lucro: " : "Perdas: "}
+                    {singleSeries.net >= 0
+                      ? "Lucro do Período: "
+                      : "Perdas do Período: "}
                     {singleSeries.net.toLocaleString("pt-BR")} unids
                   </Typography>
                 )}
