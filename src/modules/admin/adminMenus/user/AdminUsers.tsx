@@ -945,7 +945,7 @@ const AdminUsers: React.FC = () => {
         p: { xs: 2, md: 4 },
       }}
     >
-      <Container maxWidth="xl">
+      <Container maxWidth={false} disableGutters sx={{ p: 0 }}>
         {/* HEADER */}
         <Stack direction="row" justifyContent="space-between" mb={4}>
           <Typography variant="h4" fontWeight={800}>

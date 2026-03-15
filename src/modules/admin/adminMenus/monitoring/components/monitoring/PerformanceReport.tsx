@@ -8,7 +8,7 @@ import {
   Button,
   Grid,
 } from "@mui/material";
-import { PerformanceReportProps } from "../../../props/monitoring/errors.props";
+import { PerformanceReportProps } from "../../../../props/monitoring/errors.props";
 
 const PerformanceReport: React.FC<PerformanceReportProps> = ({
   period,

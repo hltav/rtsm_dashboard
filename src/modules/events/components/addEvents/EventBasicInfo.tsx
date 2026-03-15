@@ -121,10 +121,6 @@ export const EventBasicInfo: React.FC<EventBasicInfoProps> = ({
   };
 
   const handleFixtureSelect = (previewId: string, fixture: DiscoverFixture) => {
-    console.log("🎯 [EventBasicInfo] handleFixtureSelect CHAMADO!");
-    console.log("📝 [EventBasicInfo] previewId:", previewId);
-    console.log("📦 [EventBasicInfo] Fixture completo:", fixture);
-
     onFixtureSelect?.(previewId, fixture);
   };
 

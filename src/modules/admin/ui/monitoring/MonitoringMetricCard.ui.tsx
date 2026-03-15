@@ -1,5 +1,4 @@
 "use client";
-
 import React from "react";
 import { Card, CardContent, Box, Typography } from "@mui/material";
 import ArrowUpwardIcon from "@mui/icons-material/ArrowUpward";

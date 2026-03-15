@@ -55,7 +55,6 @@ export const FixtureSelectionModal: React.FC<FixtureSelectionModalProps> = ({
   }, [fixtures, searchTerm]);
 
   const handleSelectFixture = (fixture: DiscoverFixture) => {
-    console.log("🎯 [FixtureModal] Fixture selecionado:", fixture);
     onSelectFixture(fixture.previewId, fixture);
     onClose();
     setSearchTerm("");

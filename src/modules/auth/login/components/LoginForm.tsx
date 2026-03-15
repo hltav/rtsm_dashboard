@@ -28,7 +28,6 @@ export const LoginForm: React.FC = () => {
     try {
       // 1. Login direto (retorna { user, accessToken })
       const response = await login({ email: username, password, rememberMe });
-      console.log("Resposta do Login:", response);
 
       // 2. Extraímos os dados do retorno
       const userProfile = response.user;

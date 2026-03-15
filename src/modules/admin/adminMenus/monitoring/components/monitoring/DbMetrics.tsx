@@ -4,7 +4,7 @@ import { Grid } from "@mui/material";
 import MemoryIcon from "@mui/icons-material/Memory";
 import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { Activity, Database, DatabaseZap, Server } from "lucide-react";
-import MonitoringMetricCard from "../../../ui/monitoring/MonitoringMetricCard.ui";
+import MonitoringMetricCard from "../../../../ui/monitoring/MonitoringMetricCard.ui";
 
 export interface DatabaseMetricsData {
   latency: string;
@@ -61,7 +61,7 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
 
   return (
     <Grid container spacing={3}>
-      <Grid item xs={12} md={6} lg={3}>
+      <Grid item xs={12} md={6} lg={2}>
         <MonitoringMetricCard
           title="Latência do Banco"
           value={`${dbMetrics.latency} ms`}
@@ -71,7 +71,7 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
         />
       </Grid>
 
-      <Grid item xs={12} md={6} lg={3}>
+      <Grid item xs={12} md={6} lg={2}>
         <MonitoringMetricCard
           title="Conexões Ativas"
           value={dbMetrics.activeConnections}
@@ -81,7 +81,7 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
         />
       </Grid>
 
-      <Grid item xs={12} md={6} lg={3}>
+      <Grid item xs={12} md={6} lg={2}>
         <MonitoringMetricCard
           title="Uso de CPU"
           value={`${dbMetrics.cpuUsage} %`}
@@ -91,7 +91,7 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
         />
       </Grid>
 
-      <Grid item xs={12} md={6} lg={3}>
+      <Grid item xs={12} md={6} lg={2}>
         <MonitoringMetricCard
           title="Uso de Banco de Dados"
           value={dbMetrics.storageUsed}
@@ -99,7 +99,7 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
         />
       </Grid>
 
-      <Grid item xs={12} md={6} lg={3}>
+      <Grid item xs={12} md={6} lg={2}>
         <MonitoringMetricCard
           title="Tempo de Atividade"
           value={dbMetrics.uptime}
@@ -107,7 +107,7 @@ const DbMetrics: React.FC<DatabaseMetricsProps> = ({ dbMetrics, history }) => {
         />
       </Grid>
 
-      <Grid item xs={12} md={6} lg={3}>
+      <Grid item xs={12} md={6} lg={2}>
         <MonitoringMetricCard
           title="Client Redis"
           value={

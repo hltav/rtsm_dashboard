@@ -22,7 +22,6 @@ export default function MonitorHeader({
   return (
     <Box
       sx={{
-        maxWidth: "1280px",
         mx: "auto",
         display: "flex",
         flexDirection: { xs: "column", md: "row" },
@@ -35,11 +34,11 @@ export default function MonitorHeader({
       {/* Left */}
       <Box>
         <Typography variant="h4" fontWeight="bold" gutterBottom>
-          Monitoramento de Sistema
+          Visão Geral do Sistema
         </Typography>
 
         <Typography variant="body2" color="text.secondary">
-          RT Sports Manager - Performance e Métricas
+          Performance e Métricas
         </Typography>
       </Box>
 

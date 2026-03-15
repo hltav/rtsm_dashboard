@@ -20,17 +20,13 @@ const AppBarComponent: React.FC<AppBarComponentProps> = ({
       elevation={0}
       sx={{
         borderRadius: 0,
-        width: "100vw",
-        maxWidth: "100%",
+        width: "100%",
         left: 0,
         right: 0,
         margin: 0,
         padding: 0,
-        overflow: "hidden",
-        backgroundColor:"#1A2B42",
-        "@media (max-width:600px)": {
-          minWidth: "100vw",
-        },
+        backgroundColor: "#1A2B42",
+        border: "none",
       }}
     >
       <Toolbar>

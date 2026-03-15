@@ -12,7 +12,6 @@ const DashboardFooter: React.FC<DashboardFooterProps> = ({ version }) => {
     <Box
       component="footer"
       sx={{
-        maxWidth: "1280px",
         mx: "auto",
         mt: 8,
         py: 3,

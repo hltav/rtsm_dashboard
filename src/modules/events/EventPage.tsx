@@ -133,10 +133,9 @@ const EventContentPage = () => {
       <Box
         sx={{
           minHeight: "100%",
-          p: { xs: 2, sm: 4 },
         }}
       >
-        <Container maxWidth={false} sx={{ p: 0 }}>
+        <Container maxWidth={false} disableGutters sx={{ p: 0 }}>
           <Box
             sx={{
               display: "flex",

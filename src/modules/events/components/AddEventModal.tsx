@@ -21,7 +21,6 @@ import {
   CreateBetPayload,
   CreateBetSchema,
 } from "../schemas/CreateBetPlay.schema";
-import { imageProxyApi } from "@/lib/api/image/imageProxyApi";
 
 const AddEventModal: React.FC<{
   open: boolean;
@@ -79,19 +78,7 @@ const AddEventModal: React.FC<{
     previewId: string,
     fixture: DiscoverFixture,
   ) => {
-    console.log("🔥 [AddEventModal] handleFixtureSelect CHAMADO!");
-    console.log("📦 [AddEventModal] previewId:", previewId);
-    console.log("📦 [AddEventModal] fixture:", fixture);
-
     try {
-      // 🔍 TESTE: Chame diretamente aqui para verificar
-      console.log(
-        "🖼️ [AddEventModal] Logo home ANTES:",
-        fixture.teams.home.logo,
-      );
-      const testeProxy = imageProxyApi.getFullProxyUrl(fixture.teams.home.logo);
-      console.log("✅ [AddEventModal] Logo home DEPOIS:", testeProxy);
-
       setNewEvent((prev) => {
         const updated = {
           ...prev,
@@ -108,11 +95,8 @@ const AddEventModal: React.FC<{
           sport: "Soccer",
         };
 
-        console.log("📊 [AddEventModal] Estado ATUALIZADO:", updated);
         return updated;
       });
-
-      console.log("✅ [AddEventModal] Fixture processado com sucesso");
     } catch (err) {
       console.error("❌ [AddEventModal] Erro ao processar fixture:", err);
     }

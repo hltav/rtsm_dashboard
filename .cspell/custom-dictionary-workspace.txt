@@ -20,11 +20,13 @@ adicionada
 Adicionando
 ADICIONEI
 Administrador
+administrativas
 afeta
 afetam
 ÁFRICA
 Africanas
 AGREGAÇÃO
+agregado
 agregados
 Agrupa
 Agrupamento
@@ -68,12 +70,14 @@ Amistosos
 ampla
 analisar
 Análise
+análises
 analisys
 andamento
 Andorrana
 Angolana
 Antecipado
 antigo
+antigos
 Anula
 Anulada
 anuladas
@@ -100,12 +104,14 @@ aprendizado
 aprimore
 aproveitar
 aproximada
+aproximados
 Aquático
 Aquáticos
 Árabe
 Árabes
 Argelina
 argumento
+argumentos
 Armênia
 arredondada
 Artes
@@ -122,11 +128,13 @@ Atenção
 ativa
 Ativar
 Atividade
+Ativos
 Atletismo
 atrás
 atributo
 atualizações
 Atualizando
+atualmente
 Aumenta
 ausente
 Austrália
@@ -221,6 +229,7 @@ Campeones
 Campionato
 Canadense
 Capixaba
+captura
 capturado
 carga
 Caribe
@@ -273,8 +282,10 @@ coerentes
 coincidem
 coisa
 Coleta
+colocar
 Colômbia
 Colombiana
+colou
 coluna
 Combinações
 Combinado
@@ -293,15 +304,19 @@ componentes
 comum
 comuns
 CONCACAF
+Concluído
 concretos
 CONDICIONAIS
 condicionalmente
 Confederações
 Conferência
+confiável
 configuradas
+configurado
 conflito
 confundir
 CONMEBOL
+consegue
 conseguiu
 conserto
 Considera
@@ -320,6 +335,8 @@ Continuação
 continuar
 contínuo
 contraste
+controla
+controlado
 controlador
 Controle
 conversão
@@ -338,6 +355,7 @@ Coreia
 corporativo
 CORREÇÃO
 correspondente
+correspondentes
 corretamente
 correto
 Corrige
@@ -345,6 +363,7 @@ COSAFA
 crescimento
 criação
 criada
+Criamos
 Cripto
 criptográfico
 Críquete
@@ -352,9 +371,11 @@ CRÍTICO
 Críticos
 Croata
 cuidará
+cumulativo
 Cupen
 curto
 customizada
+customizamos
 Customizando
 Damallsvenskan
 daquela
@@ -372,11 +393,13 @@ deild
 Deild
 deixa
 deixe
+deixo
 dela
 deleção
 deletada
 deletado
 deletados
+delimita
 demais
 demonstração
 demorarem
@@ -385,12 +408,14 @@ dependendo
 depender
 Depósitos
 Derde
+Deriva
 Derivamos
 Derrota
 Desativado
 descendente
 Descubra
 desempenho
+desenho
 desenvolvendo
 Desestrutura
 desfeita
@@ -404,6 +429,7 @@ DETALHADOS
 Detecta
 devem
 Devolvida
+devolvo
 Dhivehi
 diálogo
 Dica
@@ -424,6 +450,7 @@ disparado
 disparar
 disso
 distorça
+Distribui
 Distribuição
 Divisão
 Divisie
@@ -456,6 +483,7 @@ Elitedivisionen
 Eliteserien
 Emirados
 Empate
+empurra
 encerrada
 encerrando
 encerrar
@@ -485,6 +513,8 @@ Escocês
 Escocesa
 Escócia
 escolhe
+escolhido
+Escondendo
 Esiliiga
 Eslovaca
 Eslovena
@@ -496,6 +526,7 @@ Espanha
 ESPANHA
 Espanhola
 Especiais
+especializado
 específica
 especificado
 específicos
@@ -524,6 +555,7 @@ Estoniana
 estranho
 estratégias
 estritamente
+estrito
 Eswatini
 Etiópia
 Euroliga
@@ -534,10 +566,12 @@ Evento
 evolua
 exatamente
 Exato
+exatos
 excluir
 exclusão
 exclusivo
 executando
+Exemplos
 existia
 existisse
 Exóticos
@@ -548,10 +582,12 @@ Expansión
 expira
 expiração
 explicitamente
+Exportação
 Exportar
 exposto
 Expulso
 extensão
+externa
 externo
 Extintos
 Extrai
@@ -561,6 +597,7 @@ extrair
 fácil
 falhar
 falhará
+Falhos
 faltava
 Faroé
 Faso
@@ -572,6 +609,7 @@ favoritos
 Favs
 fazemos
 fazendo
+fecho
 Federação
 Federacion
 Federación
@@ -585,6 +623,7 @@ Femininos
 ferramenta
 Ferramentas
 ficam
+filas
 Filipina
 Filt
 Filtra
@@ -613,6 +652,7 @@ fonte
 fontes
 Força
 Forçamos
+formas
 formatada
 formatado
 formatador
@@ -620,9 +660,11 @@ Fórmula
 forneça
 fornecer
 FORNECIDOS
+fortemente
 França
 Francês
 Francesa
+Frequentes
 Funciona
 funcionar
 funcione
@@ -643,6 +685,7 @@ garantidamente
 Garros
 Gaúcho
 Gelo
+genéricas
 genéricos
 gente
 Georgiana
@@ -700,6 +743,7 @@ Húngara
 Ícones
 idêntico
 identifica
+Identificador
 identificando
 ignora
 Ignorando
@@ -723,9 +767,11 @@ incluídos
 incondicional
 Incrementa
 independente
+indicadora
 individualmente
 Indonésia
 inferidos
+Inferimos
 informação
 Informe
 Inglaterra
@@ -821,6 +867,7 @@ limpeza
 limpo
 limpos
 linhas
+líquidas
 Líquido
 líquidos
 Lisboa
@@ -829,6 +876,7 @@ Listar
 Lituana
 Lituânia
 locais
+localmente
 Logamos
 lógicos
 Longo
@@ -848,6 +896,7 @@ manda
 mandando
 Mandante
 mandar
+mandou
 manipulação
 Mantém
 mantêm
@@ -897,6 +946,7 @@ Mianmar
 milhar
 Minhas
 miniatura
+mínima
 mínimo
 Minutagem
 minutos
@@ -926,12 +976,14 @@ Movimentações
 mudado
 Mudamos
 mudou
+muitas
 Mulan
 múltiplas
 Múltiplos
 Mundial
 Mundo
 musgo
+mutáveis
 Nacionais
 Nacional
 Nações
@@ -981,6 +1033,8 @@ Ocorreu
 oculta
 ocultadas
 ocultados
+ocupa
+ocupar
 Oeste
 oferece
 Olímpica
@@ -999,6 +1053,7 @@ ordenar
 organizadas
 otimização
 Otimizada
+otimizar
 ótimo
 Ouro
 Pacífico
@@ -1031,6 +1086,7 @@ passar
 PASSOU
 Patinação
 Paulista
+Pausar
 Pede
 pedir
 Pega
@@ -1044,12 +1100,14 @@ Pequena
 pequeno
 perdas
 perde
+perder
 Pereira
 Perigosa
 período
 Período
 permanece
 permanente
+permissivo
 permitindo
 permitir
 Pérsico
@@ -1057,6 +1115,7 @@ Persiste
 personalizados
 Peruana
 pesada
+Pesadas
 pesquisar
 Pesquisar
 piscada
@@ -1081,6 +1140,7 @@ Portuguesa
 posição
 possivelmente
 possui
+postou
 Prata
 Prazo
 precisam
@@ -1089,6 +1149,7 @@ precisará
 preencham
 Preenche
 preferir
+prefira
 prejuízo
 Première
 Prepara
@@ -1099,6 +1160,7 @@ preto
 primário
 primeira
 Primera
+Primitivos
 Príncipe
 prioridade
 Privacidade
@@ -1106,6 +1168,7 @@ processa
 processado
 processados
 processamento
+Processando
 processará
 processo
 processou
@@ -1131,8 +1194,10 @@ PROTEÇÃO
 proteger
 protegida
 provavelmente
+proxificada
 próximo
 Prva
+públicos
 puder
 pura
 puro
@@ -1140,6 +1205,7 @@ quadrado
 qualidade
 Qualificatória
 quantidade
+quanto
 quebra
 quebrar
 queimado
@@ -1153,6 +1219,7 @@ raro
 realmente
 Rebaixamento
 Rebotes
+recalcula
 Recarregue
 recebe
 recebem
@@ -1189,6 +1256,7 @@ relevante
 Removemos
 Removido
 renderizada
+renderizado
 renderizamos
 Renomeado
 repetir
@@ -1198,6 +1266,7 @@ reservar
 respeitando
 responde
 Responsável
+responsiva
 restantes
 resto
 resultado
@@ -1208,6 +1277,7 @@ retirada
 Retiradas
 retirado
 Retirar
+Retomar
 retornada
 retornadas
 retornado
@@ -1216,6 +1286,7 @@ retornará
 retorno
 retornou
 Retrátil
+reutilizáveis
 revalidação
 Reverte
 revisar
@@ -1227,6 +1298,7 @@ robusta
 robusto
 roda
 Romena
+Rótulo
 Roxo
 rtsportsmanager
 Ruanda
@@ -1263,6 +1335,7 @@ selecionar
 Seletor
 Senegalesa
 senhas
+sentido
 separador
 separadores
 separados
@@ -1283,6 +1356,7 @@ simplificada
 Simulação
 simultâneas
 Sincroniza
+Sincronização
 Sincronizado
 Sincronizando
 sincronizar
@@ -1294,6 +1368,7 @@ sobrecarregar
 sobreposição
 SOBREPOSTO
 Sobrescreve
+sobrescrevendo
 sobrescrever
 sobrescrita
 sobrescrito
@@ -1302,6 +1377,7 @@ SOLUÇÃO
 Somália
 Sombra
 Somente
+souber
 Souza
 Sportingbet
 sportsdb
@@ -1327,6 +1403,7 @@ Supercup
 Superettan
 Superleague
 Superliga
+suportar
 Suspensos
 Svenska
 tabela
@@ -1356,6 +1433,7 @@ texto
 tigo
 tipada
 tipado
+tipados
 tipagem
 tipos
 Titano
@@ -1365,6 +1443,7 @@ Toppserien
 Torneio
 Torneo
 Totais
+trabalhos
 tradução
 traduz
 traduzir
@@ -1375,10 +1454,12 @@ transição
 trata
 tratado
 travada
+três
 Trofeo
 Troféu
 Trophée
 Tunisiana
+tupla
 Turca
 Turcomenistão
 Turquia
@@ -1428,12 +1509,15 @@ Venezuelana
 Verão
 Verificamos
 Vermelho
+versões
 vezes
 Vietnã
 Vietnamita
+Vinculação
 vinda
 Vinho
 virando
+virar
 vírgula
 Visão
 visibilidade
@@ -1441,6 +1525,7 @@ Visitante
 visível
 visuais
 visualização
+visualizar
 visualmente
 vitória
 Vitória

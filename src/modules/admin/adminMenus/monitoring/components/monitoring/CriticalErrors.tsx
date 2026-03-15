@@ -148,7 +148,7 @@ import {
   useTheme,
 } from "@mui/material";
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
-import { RecentError } from "../../../schemas/monitoring/errorMetrics.schema";
+import { RecentError } from "../../../../schemas/monitoring/errorMetrics.schema";
 
 interface CriticalErrorsProps {
   errors: RecentError[];

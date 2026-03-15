@@ -13,6 +13,7 @@ import {
   styled,
   useTheme,
   Chip,
+  alpha,
 } from "@mui/material";
 import { Info as InfoIcon, RemoveCircle } from "@mui/icons-material";
 import { FullBet } from "../schemas/EventItem";
@@ -96,9 +97,15 @@ const EventTable: React.FC<EventTableProps> = ({
     <TableContainer
       component={Paper}
       elevation={0}
-      sx={{
+      sx={(theme) => ({
         bgcolor: theme.palette.background.paper,
-      }}
+        border: "1px solid",
+        borderRadius: 2,
+        borderColor:
+          theme.palette.mode === "light"
+            ? alpha(theme.palette.primary.main, 0.18)
+            : theme.palette.divider,
+      })}
     >
       <Table aria-label="events table">
         <TableHead>
@@ -152,7 +159,7 @@ const EventTable: React.FC<EventTableProps> = ({
                 sx={{
                   display: {
                     xs: "none",
-                    sm: "flex", // Mudamos de table-cell para flex
+                    sm: "flex",
                   },
                   flexDirection: "row",
                   alignItems: "center",

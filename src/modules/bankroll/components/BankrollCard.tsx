@@ -10,7 +10,6 @@ import {
   Stack,
 } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
-import InfoIcon from "@mui/icons-material/Info";
 import DeleteForeverOutlinedIcon from "@mui/icons-material/DeleteForeverOutlined";
 import { BankrollCardProps } from "../props/bankrollCard.props";
 import { formatCurrency } from "@/utils/formatCurrency";
@@ -18,7 +17,6 @@ import { formatCurrency } from "@/utils/formatCurrency";
 export const BankrollCard = ({
   bankroll,
   onEdit,
-  onViewDetails,
   onDelete,
 }: BankrollCardProps) => {
   const theme = useTheme();
@@ -108,16 +106,6 @@ export const BankrollCard = ({
           alignItems: "center",
         }}
       >
-        <IconButton
-          sx={{
-            color: theme.palette.success.main,
-            fontSize: "10px",
-          }}
-          onClick={() => onViewDetails(bankroll.id)}
-        >
-          <InfoIcon />
-        </IconButton>
-
         <IconButton
           size="small"
           sx={{ color: theme.palette.warning.main }}

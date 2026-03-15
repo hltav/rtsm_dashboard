@@ -15,7 +15,7 @@ import {
   Chip,
 } from "@mui/material";
 import { BarChart3 } from "lucide-react";
-import { SlowRequest } from "../../../schemas/monitoring/requestMetrics.schema";
+import { SlowRequest } from "../../../../schemas/monitoring/requestMetrics.schema";
 
 interface RecentRequestsProps {
   requests: SlowRequest[];

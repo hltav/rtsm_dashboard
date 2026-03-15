@@ -4,10 +4,10 @@ import MetricCard from "@/modules/dashboard/metrics/MetricCard";
 
 export default function AdminMain() {
   return (
-    <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
+    <Box component="main" sx={{ flexGrow: 1 }}>
       <Toolbar />
 
-      <Container maxWidth="lg">
+      <Container maxWidth={false} disableGutters sx={{ p: 0 }}>
         <Typography variant="h4" gutterBottom>
           Olá, Administrador
         </Typography>

@@ -5,4 +5,6 @@ export interface NavigationProps {
   isDesktop: boolean;
   handleDrawerToggle: () => void;
   handleThemeToggle: () => void;
+  drawerWidth?: number;
+  collapsedWidth?: number;
 }

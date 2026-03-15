@@ -5,7 +5,7 @@ import { PerformanceMetrics } from "../schemas/monitoring/performanceMetrics.sch
 import {
   DatabaseMetricsData,
   MetricsHistoryPoint,
-} from "../adminMenus/monitoring/components/DbMetrics";
+} from "../adminMenus/monitoring/components/monitoring/DbMetrics";
 import { getPerformanceMetrics } from "../functions/monitoring/performance.function";
 import { useCacheMetrics } from "./useCacheMetrics.hook";
 

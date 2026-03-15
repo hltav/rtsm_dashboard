@@ -3,7 +3,7 @@ import ProfileContainerPage from "@/modules/profile/ProfileContainerPage";
 import { useAdmin } from "@/components/Providers/AdminContext";
 import AdminMain from "../adminMain/AdminMain";
 import { AppUsers } from "../adminMenus/user/UserTest";
-import Monitoring from "../adminMenus/monitoring/Monitoring";
+import MonitoringContent from "../adminMenus/monitoring/MonitoringContent";
 
 const AdminMenuContent = () => {
   const { selectedPage } = useAdmin();
@@ -16,7 +16,7 @@ const AdminMenuContent = () => {
     case "reports":
       return <EventPage />;
     case "monitoring":
-      return <Monitoring />;
+      return <MonitoringContent />;
     case "adminMain":
     default:
       return <AdminMain />;

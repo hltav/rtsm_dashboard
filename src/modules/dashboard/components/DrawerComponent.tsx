@@ -1,3 +1,118 @@
+// "use client";
+// import React from "react";
+// import {
+//   Box,
+//   Divider,
+//   IconButton,
+//   List,
+//   ListItemButton,
+//   ListItemIcon,
+//   ListItemText,
+//   Tooltip,
+//   Typography,
+// } from "@mui/material";
+// import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+// import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+// import { MenuItem, menuItems } from "./MenuItems";
+// import { DrawerComponentProps } from "../interface/drawerComponentProps";
+
+// const DrawerComponent: React.FC<DrawerComponentProps> = ({
+//   open,
+//   handleDrawerToggle,
+//   onMenuItemClick,
+// }) => {
+//   const { selectedPage } = useDashboard();
+//   return (
+//     <Box
+//       sx={{
+//         width: "100%",
+//         bgcolor: "primary.main",
+//         height: "100vh",
+//         display: "flex",
+//         flexDirection: "column",
+//         borderRadius: 0,
+//         elevation: 0,
+//       }}
+//     >
+//       <Divider sx={{ bgcolor: "primary.light" }} />
+//       <List sx={{ flexGrow: 1, elevation:0 }}>
+//         {open && (
+//           <Typography
+//             variant="h6"
+//             noWrap
+//             sx={{ color: "#E0A800", fontWeight: 700 }}
+//           >
+//             {" "}
+//           </Typography>
+//         )}
+//         <IconButton
+//           onClick={handleDrawerToggle}
+//           sx={{
+//             color: "#E0A800",
+//             display: { xs: "none", md: "flex", justifyContent: "right" },
+//           }}
+//         >
+//           {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+//         </IconButton>
+//         {menuItems.map((item: MenuItem) => (
+//           <Tooltip
+//             key={item.text}
+//             title={!open ? item.text : ""}
+//             placement="right"
+//           >
+//             <ListItemButton
+//               onClick={() => onMenuItemClick(item.key)}
+//               selected={selectedPage === item.key}
+//               sx={{
+//                 minHeight: 48,
+//                 justifyContent: "center",
+//                 px: 2.5,
+//                 "&:hover": { bgcolor: "primary.dark" },
+//                 "&.Mui-selected": {
+//                   bgcolor: "secondary.main",
+//                   "& .MuiListItemIcon-root": {
+//                     color: "#1A2B42",
+//                   },
+//                   "& .MuiListItemText-root": {
+//                     color: "#1A2B42",
+//                     "& .MuiTypography-root": {
+//                       color: "#1A2B42",
+//                       fontWeight: 600,
+//                     },
+//                   },
+//                 },
+//                 marginLeft: "10px",
+//               }}
+//             >
+//               <ListItemIcon
+//                 sx={{
+//                   minWidth: 0,
+//                   mr: open ? 3 : "auto",
+//                   justifyContent: "center",
+//                   color: "secondary.main",
+//                 }}
+//               >
+//                 {item.icon}
+//               </ListItemIcon>
+//               <ListItemText
+//                 primary={item.text}
+//                 sx={{
+//                   opacity: open ? 1 : 0,
+//                   color: "white",
+//                   whiteSpace: "nowrap",
+//                 }}
+//               />
+//             </ListItemButton>
+//           </Tooltip>
+//         ))}
+//       </List>
+
+//       <Divider sx={{ bgcolor: "primary.light" }} />
+//     </Box>
+//   );
+// };
+
+// export default DrawerComponent;
 "use client";
 import React from "react";
 import {
@@ -11,10 +126,10 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import { usePathname } from "next/navigation";
 import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import { MenuItem, menuItems } from "./MenuItems";
-import { useDashboard } from "@/components/Providers/DashboardContext";
 import { DrawerComponentProps } from "../interface/drawerComponentProps";
 
 const DrawerComponent: React.FC<DrawerComponentProps> = ({
@@ -22,7 +137,16 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
   handleDrawerToggle,
   onMenuItemClick,
 }) => {
-  const { selectedPage } = useDashboard();
+  const pathname = usePathname();
+
+  const isItemSelected = (item: MenuItem) => {
+    if (item.matchStartsWith) {
+      return pathname.startsWith(item.matchStartsWith);
+    }
+
+    return pathname === item.route;
+  };
+
   return (
     <Box
       sx={{
@@ -35,25 +159,28 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
       }}
     >
       <Divider sx={{ bgcolor: "primary.light" }} />
+
       <List sx={{ flexGrow: 1 }}>
         {open && (
           <Typography
             variant="h6"
             noWrap
-            sx={{ color: "#FFC83D", fontWeight: 700 }}
+            sx={{ color: "#E0A800", fontWeight: 700 }}
           >
             {" "}
           </Typography>
         )}
+
         <IconButton
           onClick={handleDrawerToggle}
           sx={{
-            color: "#FFC83D",
+            color: "#E0A800",
             display: { xs: "none", md: "flex", justifyContent: "right" },
           }}
         >
           {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
         </IconButton>
+
         {menuItems.map((item: MenuItem) => (
           <Tooltip
             key={item.text}
@@ -61,8 +188,8 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
             placement="right"
           >
             <ListItemButton
-              onClick={() => onMenuItemClick(item.key)}
-              selected={selectedPage === item.key}
+              onClick={() => onMenuItemClick(item.route)}
+              selected={isItemSelected(item)}
               sx={{
                 minHeight: 48,
                 justifyContent: "center",
@@ -74,10 +201,10 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
                     color: "#1A2B42",
                   },
                   "& .MuiListItemText-root": {
-                    color: "#1A2B42", 
+                    color: "#1A2B42",
                     "& .MuiTypography-root": {
-                      color: "#1A2B42", 
-                      fontWeight: 600, 
+                      color: "#1A2B42",
+                      fontWeight: 600,
                     },
                   },
                 },
@@ -94,6 +221,7 @@ const DrawerComponent: React.FC<DrawerComponentProps> = ({
               >
                 {item.icon}
               </ListItemIcon>
+
               <ListItemText
                 primary={item.text}
                 sx={{

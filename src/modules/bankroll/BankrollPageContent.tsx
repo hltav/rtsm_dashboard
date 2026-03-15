@@ -19,7 +19,6 @@ import {
 } from "@/modules/bankroll/hook/useBankrolls";
 import { AlertConfirmDialog } from "@/utils/AlertConfirmDialog";
 import BankrollEditModal from "./components/BankrollEditModal";
-import BankrollInfoModal from "./components/BankrollInfoModal";
 import { BankrollFormModal } from "./components/BankrollFormModal";
 
 // Definimos um tipo local para o formulário de criação (sem IDs)
@@ -28,13 +27,10 @@ type CreateFormData = Omit<BankrollDto, "id" | "userId">;
 const BankrollPageContent = () => {
   const { showNotification } = useNotification();
   const { mode } = useThemeMode();
-
   // Estados para modais
   const [openCreateModal, setOpenCreateModal] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [infoOpen, setInfoOpen] = useState(false);
   const [alertOpen, setAlertOpen] = useState(false);
-
   // Limpeza: removido userId do estado inicial
   const [newBankroll, setNewBankroll] = useState<CreateFormData>({
     name: "",
@@ -52,10 +48,6 @@ const BankrollPageContent = () => {
     null,
   );
 
-  /** * Limpeza nos Hooks:
-   * Agora os hooks não recebem mais o userId.
-   * Eles usarão internamente o bankrollApi que já pega tudo via Cookie.
-   */
   const { data: bankrolls = [], isLoading: loading } = useBankrolls();
   const createBankroll = useCreateBankroll();
   const deleteBankroll = useDeleteBankroll();
@@ -68,7 +60,6 @@ const BankrollPageContent = () => {
 
   const handleViewDetailsClick = (bankroll: BankrollDto) => {
     setSelectedBankroll(bankroll);
-    setInfoOpen(true);
   };
 
   // Handlers para criação
@@ -81,7 +72,13 @@ const BankrollPageContent = () => {
       showNotification("Banca criada com sucesso!", "success", 2000);
       setOpenCreateModal(false);
       // Opcional: Resetar o formulário
-      setNewBankroll({ name: "", balance: 0,initialBalance: 0,  unidValue: 0, bookmaker: "" });
+      setNewBankroll({
+        name: "",
+        balance: 0,
+        initialBalance: 0,
+        unidValue: 0,
+        bookmaker: "",
+      });
     } catch {
       showNotification("Erro ao criar banca. Tente novamente!", "error", 3000);
     }
@@ -132,7 +129,7 @@ const BankrollPageContent = () => {
           width: "100%",
         }}
       >
-        <Container maxWidth={false}>
+        <Container maxWidth={false} disableGutters sx={{ p: 0 }}>
           <Box
             sx={{
               display: "flex",
@@ -201,11 +198,6 @@ const BankrollPageContent = () => {
             open={editOpen}
             onClose={() => setEditOpen(false)}
             bankroll={selectedBankroll}
-          />
-          <BankrollInfoModal
-            open={infoOpen}
-            onClose={() => setInfoOpen(false)}
-            bankrollModal={selectedBankroll}
           />
         </>
       )}

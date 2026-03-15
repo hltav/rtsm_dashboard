@@ -3,7 +3,7 @@ import React from "react";
 import { NotificationProvider } from "./NotificationSnackbar";
 import { ThemeRegistry } from "./ThemeRegistry";
 import { AuthProvider } from "./AuthContext";
-import { DashboardProvider } from "./DashboardContext";
+// import { DashboardProvider } from "./DashboardContext";
 import { CacheProvider } from "@emotion/react";
 import createCache from "@emotion/cache";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -49,9 +49,7 @@ export function AppProviders({ children, nonce }: AppProvidersProps) {
           <NotificationProvider>
             <AuthProvider>
               <EventsProvider>
-                <BankrollProvider>
-                  <DashboardProvider>{children} </DashboardProvider>
-                </BankrollProvider>
+                <BankrollProvider>{children}</BankrollProvider>
               </EventsProvider>
             </AuthProvider>
           </NotificationProvider>

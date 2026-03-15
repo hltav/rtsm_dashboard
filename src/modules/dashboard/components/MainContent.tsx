@@ -1,48 +1,48 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import { Box, Container, Typography, Tabs, Tab } from "@mui/material";
-import ZoomLineChart from "../charts/ZoomLineChart";
+import { Box, Container, Typography } from "@mui/material";
+import { useRouter, usePathname } from "next/navigation";
+import { useEffect, useMemo, useState } from "react";
 import { useBankrollContext } from "@/components/Providers/BankrollContext";
-import { useSearchParams, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
 import DashboardMainPage from "./main/DashboardMain";
-import MonthlyPLChart from "../charts/main/MonthlyPLChart";
+import { AppTabs } from "@/modules/ui/DisplayTab";
+// import MonthlyPLChart from "../charts/main/MonthlyPLChart";
+// import ZoomLineChart from "../charts/ZoomLineChart";
+
+type DashboardMainTab = "overview" | "other_data";
+
+const DASHBOARD_MAIN_TABS: Array<{ label: string; value: DashboardMainTab }> = [
+  { label: "Visão Geral", value: "overview" },
+  { label: "Outros Dados", value: "other_data" },
+];
+
+const DEFAULT_TAB: DashboardMainTab = "overview";
+
+const isDashboardMainTab = (v: string | null): v is DashboardMainTab =>
+  v === "overview" || v === "other_data";
 
 const MainContent: React.FC = () => {
   const { isLoading } = useBankrollContext();
 
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const pathname = usePathname();
 
- const initialTab = searchParams.get("tab") || "evolution";
-  const [tab, setTab] = useState(initialTab);
+  const tabFromUrl = useMemo<DashboardMainTab>(() => {
+    const segments = pathname.split("/").filter(Boolean);
+    const currentTab = segments[2] ?? null;
+
+    return isDashboardMainTab(currentTab) ? currentTab : DEFAULT_TAB;
+  }, [pathname]);
+
+  const [tab, setTab] = useState<DashboardMainTab>(tabFromUrl);
 
   useEffect(() => {
-    setTab(searchParams.get("tab") || "evolution");
-  }, [searchParams]);
+    setTab(tabFromUrl);
+  }, [tabFromUrl]);
 
-  const handleChange = (_: unknown, newValue: string) => {
-    setTab(newValue);
-    router.push(`/dashboard?page=main&tab=${newValue}`);
+  const handleTabChange = (newTab: DashboardMainTab) => {
+    setTab(newTab);
+    router.push(`/dashboard/main/${newTab}`);
   };
-
-  if (isLoading) {
-    return (
-      <Box
-        sx={{
-          minHeight: "100vh",
-          bgcolor: "background.default",
-          color: "text.primary",
-          p: { xs: 2, sm: 4 },
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Typography>Carregando bancas...</Typography>
-      </Box>
-    );
-  }
 
   return (
     <Box
@@ -50,79 +50,59 @@ const MainContent: React.FC = () => {
         minHeight: "100vh",
         bgcolor: "background.default",
         color: "text.primary",
-        p: { xs: 2, sm: 4 },
       }}
     >
-      <Container maxWidth={false} sx={{ p: 0 }}>
-        <Typography variant="h4" component="h1" fontWeight="bold" mb={2}>
-          Dashboard
-        </Typography>
-
-        <Tabs
-          value={tab}
-          onChange={handleChange}
-          sx={(theme) => ({
-            mb: 4,
-            "& .MuiTab-root": {
-              color: theme.palette.text.primary,
-            },
-            "& .Mui-selected": {
-              color: theme.palette.secondary.contrastText + " !important",
-            },
-            "& .MuiTabs-indicator": {
-              backgroundColor: theme.palette.secondary.contrastText,
-            },
-          })}
-          variant="scrollable"
-          scrollButtons="auto"
-        >
-          <Tab label="Evolução da Banca" value="evolution"/>
-          <Tab label="Outros Dados" value="other_data"/>
-        </Tabs>
-
-        {tab === "evolution" && (
+      <Container
+        maxWidth={false}
+        disableGutters
+        sx={{ p: 0, overflowX: "hidden", minHeight: "100%" }}
+      >
+        {isLoading ? (
           <Box
             sx={{
+              minHeight: "70vh",
               display: "flex",
-              flexDirection: { xs: "column", md: "row" },
-              gap: 4,
-              mt: 4,
-              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <DashboardMainPage />
+            <Typography>Carregando bancas...</Typography>
           </Box>
+        ) : (
+          <>
+            <Typography variant="h4" component="h1" fontWeight="bold" mb={2}>
+              Dashboard
+            </Typography>
+
+            <AppTabs<DashboardMainTab>
+              value={tab}
+              onChange={handleTabChange}
+              tabs={DASHBOARD_MAIN_TABS}
+              scrollable
+              sx={{ minWidth: "83.8vw", width: "100%" }}
+            />
+
+            {tab === "overview" && (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", md: "row" },
+                  gap: 4,
+                  mt: 4,
+                  width: "100%",
+                }}
+              >
+                <DashboardMainPage />
+              </Box>
+            )}
+
+            {tab === "other_data" && (
+              <Typography color="text.secondary" sx={{ mt: 4 }}>
+                Em breve
+              </Typography>
+            )}
+          </>
         )}
-
-        {/* {tab === "other_data" && (
-          <Box sx={{ mt: 4 }}>
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: { xs: "column", md: "row" },
-                gap: 4,
-                mt: 4,
-                width: "100%",
-              }}
-            >
-              <Box
-                sx={{
-                  flex: { xs: "1 1 100%", md: "1 1 50%" },
-                }}
-              >
-                <MonthlyPLChart />
-              </Box>
-
-              <Box
-                sx={{
-                  flex: { xs: "1 1 100%", md: "1 1 50%" },
-                }}
-              >
-                <ZoomLineChart />
-              </Box>
-            </Box>
-          </Box>
-        )} */}
       </Container>
     </Box>
   );

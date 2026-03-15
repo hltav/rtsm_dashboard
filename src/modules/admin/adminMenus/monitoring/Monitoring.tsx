@@ -1,15 +1,15 @@
 "use client";
 import React, { useState } from "react";
 import { Box, Container, Grid } from "@mui/material";
-import CriticalErrors from "./components/CriticalErrors";
+import CriticalErrors from "./components/monitoring/CriticalErrors";
 import DashboardFooter from "./components/DashboardFooter";
-import DatabaseMetrics from "./components/DbMetrics";
-import PerformanceReport from "./components/PerformanceReport";
-import RecentRequests from "./components/RecentRequests";
+import DatabaseMetrics from "./components/monitoring/DbMetrics";
+import PerformanceReport from "./components/monitoring/PerformanceReport";
+import RecentRequests from "./components/monitoring/RecentRequests";
 import { useErrorMetrics } from "../../hooks/useErrorMetrics.hook";
 import { useDatabaseMetrics } from "../../hooks/useDatabaseMetrics.hook";
 import { useRequestMetrics } from "../../hooks/useRequestMetrics.hook";
-import MonitorHeader from "./components/MonitorHeader";
+import MonitorHeader from "./components/monitoring/MonitorHeader";
 
 const Monitoring = () => {
   const [period, setPeriod] = useState("24h");
@@ -20,8 +20,8 @@ const Monitoring = () => {
   const { data: errorMetrics } = useErrorMetrics(300000);
 
   return (
-    <Box sx={{ width: "100%", minHeight: "100vh", py: 4 }}>
-      <Container maxWidth="xl">
+    <Box sx={{ width: "100%", minHeight: "100vh" }}>
+      <Container maxWidth={false} disableGutters sx={{ p: 0 }}>
         <MonitorHeader
           period={period}
           setPeriod={setPeriod}

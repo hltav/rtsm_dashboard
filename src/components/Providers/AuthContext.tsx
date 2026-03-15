@@ -80,37 +80,6 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   };
 
-  // const logout = async () => {
-  //   try {
-  //     await logoutService(); // Backend limpa o cookie (expira ele)
-  //     setUser(null);
-  //     setHasIncompleteProfile(false);
-  //     router.push("/login");
-  //   } catch {
-  //     setUser(null);
-  //     router.push("/login");
-  //   }
-  // };
-
-  // const logout = async () => {
-  //   // 1. Limpa o estado local imediatamente (UI responde na hora)
-  //   setUser(null);
-  //   setHasIncompleteProfile(false);
-
-  //   try {
-  //     // 2. Avisa o servidor em "segundo plano"
-  //     await logoutService();
-  //   } catch {
-  //     // Se der 403 ou 500, não importa, o usuário já foi limpo no front
-  //     console.warn(
-  //       "Servidor não processou o logout, mas a sessão local foi encerrada.",
-  //     );
-  //   } finally {
-  //     // 3. Redireciona
-  //     router.push("/login");
-  //   }
-  // };
-
   const logout = async () => {
     try {
       // 1) chama backend e AGUARDA apagar cookie
