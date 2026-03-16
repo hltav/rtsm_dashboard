@@ -1,5 +1,5 @@
 import React, { useMemo, useState } from "react";
-import { BarChart } from "@mui/x-charts";
+import { BarChart } from "@mui/x-charts/BarChart";
 import {
   Card,
   CardContent,
@@ -8,8 +8,12 @@ import {
   CircularProgress,
   Select,
   MenuItem,
+  FormControl,
+  InputLabel,
+  Stack,
+  Chip,
 } from "@mui/material";
-import { useTheme } from "@mui/material";
+import { useTheme, alpha } from "@mui/material/styles";
 import { axisClasses } from "@mui/x-charts/ChartsAxis";
 import { useEvents } from "@/modules/events/hooks/useEvents";
 import { colors } from "../interface/colors.interface";
@@ -18,74 +22,123 @@ interface ModalityBarChartProps {
   selectedBankrollId: number | null;
 }
 
+type GroupLevel = "category" | "market" | "selection";
+
 const ModalityBarChart: React.FC<ModalityBarChartProps> = ({
   selectedBankrollId,
 }) => {
   const theme = useTheme();
   const { events, loading } = useEvents();
-  const chartHeight = 300;
 
-  // Estados para seleção hierárquica
   const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedMarket, setSelectedMarket] = useState<string | null>(null);
-  const [selectedSelection, setSelectedSelection] = useState<string | null>(
-    null,
+  const [selectedMarket, setSelectedMarket] = useState("all");
+  const [topLimit, setTopLimit] = useState(8);
+
+  const filteredEvents = useMemo(() => {
+    let list =
+      selectedBankrollId === null
+        ? events
+        : events.filter((e) => e.bankrollId === selectedBankrollId);
+
+    if (selectedCategory !== "all") {
+      list = list.filter((e) => e.marketCategory === selectedCategory);
+    }
+
+    if (selectedMarket !== "all") {
+      list = list.filter((e) => e.market === selectedMarket);
+    }
+
+    return list;
+  }, [events, selectedBankrollId, selectedCategory, selectedMarket]);
+
+  const categories = useMemo(
+    () =>
+      [...new Set(events.map((e) => e.marketCategory).filter(Boolean))].sort(),
+    [events],
   );
 
-  // Filtra eventos pelo bankroll
-  const filteredEvents = useMemo(() => {
-    if (selectedBankrollId === null) return events;
-    return events.filter((e) => e.bankrollId === selectedBankrollId);
-  }, [events, selectedBankrollId]);
+  const markets = useMemo(() => {
+    const base =
+      selectedCategory === "all"
+        ? events
+        : events.filter((e) => e.marketCategory === selectedCategory);
 
-  // Gera dados do gráfico conforme seleção
-  const modalityChartData = useMemo(() => {
-    const map: { [key: string]: number } = {};
+    return [...new Set(base.map((e) => e.market).filter(Boolean))].sort();
+  }, [events, selectedCategory]);
+
+  const groupLevel: GroupLevel = useMemo(() => {
+    if (selectedMarket !== "all") return "selection";
+    if (selectedCategory !== "all") return "market";
+    return "category";
+  }, [selectedCategory, selectedMarket]);
+
+  const chartData = useMemo(() => {
+    const map: Record<string, number> = {};
 
     filteredEvents.forEach((event) => {
-      let key = "Sem aposta";
+      let key = "Não informado";
 
-      if (selectedCategory === "all") {
+      if (groupLevel === "category")
         key = event.marketCategory || "Sem categoria";
-      } else if (selectedMarket === null) {
-        if (event.marketCategory === selectedCategory) {
-          key = event.market || "Sem mercado";
-        }
-      } else if (selectedSelection === null) {
-        if (event.market === selectedMarket) {
-          key = event.selection || "Sem opção";
-        }
-      } else {
-        if (event.selection === selectedSelection) {
-          key = event.selection;
-        }
-      }
+      else if (groupLevel === "market") key = event.market || "Sem mercado";
+      else key = event.selection || "Sem opção";
 
-      if (!map[key]) map[key] = 0;
-      map[key]++;
+      map[key] = (map[key] || 0) + 1;
     });
 
-    return Object.keys(map)
-      .map((mod) => ({
-        name: mod,
-        wagers: map[mod],
+    return Object.entries(map)
+      .map(([label, value], index) => ({
+        label,
+        value,
+        color: colors[index % colors.length],
       }))
-      .sort((a, b) => b.wagers - a.wagers);
-  }, [filteredEvents, selectedCategory, selectedMarket, selectedSelection]);
+      .sort((a, b) => b.value - a.value)
+      .slice(0, topLimit);
+  }, [filteredEvents, groupLevel, topLimit]);
 
-  const barSeries = modalityChartData.map((d, index) => ({
-    label: d.name,
-    data: [d.wagers], // apenas um valor por série
-    color: colors[index % colors.length], // cor única por série
-    barWidth: 8,
-  }));
+  const total = chartData.reduce((acc, item) => acc + item.value, 0);
+
+  const titleMap: Record<GroupLevel, string> = {
+    category: "Distribuição por tipo de mercado",
+    market: "Distribuição por mercado",
+    selection: "Distribuição por opção de aposta",
+  };
+
+  const subtitleMap: Record<GroupLevel, string> = {
+    category: "Visão geral das categorias mais utilizadas",
+    market: "Mercados mais usados dentro da categoria selecionada",
+    selection: "Opções mais usadas dentro do mercado selecionado",
+  };
+
+  const chartHeight = useMemo(() => {
+    if (chartData.length <= 1) return 320;
+    if (chartData.length === 2) return 320;
+    if (chartData.length === 3) return 320;
+    return Math.max(320, chartData.length * 52);
+  }, [chartData.length]);
+
+  const categoryGapRatio = useMemo(() => {
+    if (chartData.length <= 1) return 0.85;
+    if (chartData.length === 2) return 0.65;
+    if (chartData.length === 3) return 0.45;
+    if (chartData.length <= 6) return 0.3;
+    return 0.2;
+  }, [chartData.length]);
 
   if (loading) {
     return (
-      <Card sx={{ height: "100%" }}>
+      <Card
+        elevation={0}
+        sx={{
+          height: "100%",
+          border: `1px solid ${alpha(theme.palette.divider, 0.8)}`,
+          borderRadius: 4,
+          background: theme.palette.background.paper,
+        }}
+      >
         <CardContent
           sx={{
-            height: 350,
+            minHeight: 380,
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
@@ -97,126 +150,198 @@ const ModalityBarChart: React.FC<ModalityBarChartProps> = ({
     );
   }
 
-  // Opções únicas para cada nível
-  const categories = [...new Set(events.map((e) => e.marketCategory))];
-  const markets =
-    selectedCategory !== "all"
-      ? [
-          ...new Set(
-            events
-              .filter((e) => e.marketCategory === selectedCategory)
-              .map((e) => e.market),
-          ),
-        ]
-      : [];
-  const selections =
-    selectedMarket !== null
-      ? [
-          ...new Set(
-            events
-              .filter((e) => e.market === selectedMarket)
-              .map((e) => e.selection),
-          ),
-        ]
-      : [];
-
   return (
-    <Card sx={{ height: "100%" }} elevation={0}>
-      <CardContent>
-        {/* Selects hierárquicos */}
-        <Box sx={{ display: "flex", gap: 2, mb: 2 }}>
-          <Select
-            value={selectedCategory}
-            onChange={(e) => {
-              setSelectedCategory(e.target.value);
-              setSelectedMarket(null);
-              setSelectedSelection(null);
-            }}
+    <Card
+      elevation={0}
+      sx={{
+        height: "100%",
+        borderRadius: 4,
+        background: `linear-gradient(180deg, ${alpha(
+          theme.palette.background.paper,
+          1,
+        )} 0%, ${alpha(theme.palette.background.paper, 0.96)} 100%)`,
+      }}
+    >
+      <CardContent sx={{ p: 3 }}>
+        <Stack spacing={2.5}>
+          <Box>
+            <Typography variant="h6" fontWeight={700}>
+              {titleMap[groupLevel]}
+            </Typography>
+            <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
+              {subtitleMap[groupLevel]}
+            </Typography>
+          </Box>
+
+          <Stack
+            direction={{ xs: "column", md: "row" }}
+            spacing={1.5}
+            useFlexGap
+            flexWrap="wrap"
           >
-            <MenuItem value="all">Todos os tipos</MenuItem>
-            {categories.map((cat) => (
-              <MenuItem key={cat} value={cat}>
-                {cat}
-              </MenuItem>
-            ))}
-          </Select>
+            <FormControl size="small" sx={{ minWidth: 180 }}>
+              <InputLabel>Categoria</InputLabel>
+              <Select
+                value={selectedCategory}
+                label="Categoria"
+                onChange={(e) => {
+                  setSelectedCategory(e.target.value);
+                  setSelectedMarket("all");
+                }}
+              >
+                <MenuItem value="all">Todas</MenuItem>
+                {categories.map((cat) => (
+                  <MenuItem key={cat} value={cat}>
+                    {cat}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          {selectedCategory !== "all" && (
-            <Select
-              value={selectedMarket || ""}
-              displayEmpty
-              onChange={(e) => {
-                setSelectedMarket(e.target.value);
-                setSelectedSelection(null);
-              }}
+            <FormControl
+              size="small"
+              sx={{ minWidth: 200 }}
+              disabled={selectedCategory === "all"}
             >
-              <MenuItem value="">Todos os mercados</MenuItem>
-              {markets.map((mkt) => (
-                <MenuItem key={mkt} value={mkt}>
-                  {mkt}
-                </MenuItem>
-              ))}
-            </Select>
-          )}
+              <InputLabel>Mercado</InputLabel>
+              <Select
+                value={selectedMarket}
+                label="Mercado"
+                onChange={(e) => setSelectedMarket(e.target.value)}
+              >
+                <MenuItem value="all">Todos</MenuItem>
+                {markets.map((market) => (
+                  <MenuItem key={market} value={market}>
+                    {market}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
 
-          {selectedMarket && (
-            <Select
-              value={selectedSelection || ""}
-              displayEmpty
-              onChange={(e) => setSelectedSelection(e.target.value)}
-            >
-              <MenuItem value="">Todas as opções</MenuItem>
-              {selections.map((sel) => (
-                <MenuItem key={sel} value={sel}>
-                  {sel}
-                </MenuItem>
-              ))}
-            </Select>
-          )}
-        </Box>
+            <FormControl size="small" sx={{ minWidth: 120 }}>
+              <InputLabel>Top</InputLabel>
+              <Select
+                value={String(topLimit)}
+                label="Top"
+                onChange={(e) => setTopLimit(Number(e.target.value))}
+              >
+                <MenuItem value="5">Top 5</MenuItem>
+                <MenuItem value="8">Top 8</MenuItem>
+                <MenuItem value="10">Top 10</MenuItem>
+                <MenuItem value="15">Top 15</MenuItem>
+              </Select>
+            </FormControl>
+          </Stack>
 
-        {/* Gráfico */}
-        <Box sx={{ height: chartHeight, width: "100%" }}>
-          {modalityChartData.length > 0 ? (
-            <BarChart
-              height={chartHeight}
-              series={barSeries}
-              xAxis={[
-                {
-                  data: modalityChartData.map((d) => d.name),
-                  scaleType: "band",
-                  categoryGapRatio: 0.93,
-                },
-              ]}
-              yAxis={[{ label: "Qtd. Apostas" }]}
-              margin={{ top: 20, right: 30, left: 30, bottom: 40 }}
-              grid={{ horizontal: true }}
-              sx={{
-                [`& .${axisClasses.left} .${axisClasses.tickLabel}`]: {
-                  fill: theme.palette.text.secondary,
-                },
-                [`& .${axisClasses.bottom} .${axisClasses.tickLabel}`]: {
-                  fill: theme.palette.text.secondary,
-                  transform: "rotate(-45deg)",
-                  textAnchor: "end",
-                },
-              }}
+          <Stack direction="row" spacing={1} flexWrap="wrap" useFlexGap>
+            <Chip
+              size="small"
+              label={`Total exibido: ${total}`}
+              variant="outlined"
             />
+            <Chip
+              size="small"
+              label={`Itens: ${chartData.length}`}
+              variant="outlined"
+            />
+            {selectedCategory !== "all" && (
+              <Chip size="small" label={`Categoria: ${selectedCategory}`} />
+            )}
+            {selectedMarket !== "all" && (
+              <Chip size="small" label={`Mercado: ${selectedMarket}`} />
+            )}
+          </Stack>
+
+          {chartData.length > 0 ? (
+            <Box
+              sx={{
+                height: chartHeight,
+                width: "100%",
+              }}
+            >
+              <BarChart
+                dataset={chartData}
+                layout="horizontal"
+                yAxis={[
+                  {
+                    scaleType: "band",
+                    dataKey: "label",
+                    width: 160,
+                    categoryGapRatio,
+                    valueFormatter: (value) => String(value ?? ""),
+                    colorMap: {
+                      type: "ordinal",
+                      values: chartData.map((item) => item.label),
+                      colors: chartData.map(
+                        (_, i) => colors[i % colors.length],
+                      ),
+                    },
+                  },
+                ]}
+                xAxis={[
+                  {
+                    label: "Qtd. de apostas",
+                  },
+                ]}
+                series={[
+                  {
+                    dataKey: "value",
+                    label: "Apostas",
+                    valueFormatter: (value) =>
+                      `${value} aposta${value !== 1 ? "s" : ""}`,
+                  },
+                ]}
+                margin={{ top: 10, right: 48, bottom: 40, left: 20 }}
+                borderRadius={8}
+                grid={{ vertical: true }}
+                barLabel={(item) => `${item.value}`}
+                sx={{
+                  [`& .${axisClasses.left} .${axisClasses.tickLabel}`]: {
+                    fill: theme.palette.text.primary,
+                    fontSize: 12,
+                  },
+                  [`& .${axisClasses.bottom} .${axisClasses.tickLabel}`]: {
+                    fill: theme.palette.text.secondary,
+                    fontSize: 12,
+                  },
+                  [`& .${axisClasses.bottom} .${axisClasses.label}`]: {
+                    fill: theme.palette.text.secondary,
+                  },
+                  "& .MuiChartsGrid-line": {
+                    stroke: alpha(theme.palette.common.white, 0.08),
+                  },
+                  "& .MuiBarElement-root:hover": {
+                    filter: "brightness(1.12)",
+                    cursor: "pointer",
+                  },
+                  "& .MuiChartsAxis-line, & .MuiChartsAxis-tick": {
+                    stroke: alpha(theme.palette.common.white, 0.18),
+                  },
+                  "& .MuiBarLabel-root": {
+                    fill: theme.palette.common.white,
+                    fontSize: 11,
+                    fontWeight: 600,
+                  },
+                }}
+              />
+            </Box>
           ) : (
             <Box
               sx={{
-                height: 300,
+                minHeight: 280,
                 display: "flex",
-                justifyContent: "center",
                 alignItems: "center",
+                justifyContent: "center",
+                borderRadius: 3,
+                border: `1px dashed ${alpha(theme.palette.divider, 0.8)}`,
               }}
             >
               <Typography color="text.secondary">
-                Nenhuma aposta cadastrada para exibir.
+                Nenhuma aposta encontrada para os filtros selecionados.
               </Typography>
             </Box>
           )}
-        </Box>
+        </Stack>
       </CardContent>
     </Card>
   );

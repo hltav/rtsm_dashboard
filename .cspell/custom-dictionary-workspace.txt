@@ -8,6 +8,7 @@ ACERTO
 acertos
 acessibilidade
 acionado
+acomodar
 acontecendo
 Aconteceu
 Acreano
@@ -251,6 +252,7 @@ Cearense
 CECAFA
 célula
 células
+centralizadas
 centralizado
 Chamada
 chamadas
@@ -359,6 +361,7 @@ correspondentes
 corretamente
 correto
 Corrige
+cortar
 COSAFA
 crescimento
 criação
@@ -636,6 +639,7 @@ Filtros
 finais
 Finalização
 finalizados
+finas
 Finlandesa
 Finlândia
 fixo
@@ -768,11 +772,13 @@ incondicional
 Incrementa
 independente
 indicadora
+índice
 individualmente
 Indonésia
 inferidos
 Inferimos
 informação
+informado
 Informe
 Inglaterra
 Inglês
@@ -841,6 +847,7 @@ Kosovan
 lançado
 lançamos
 lançando
+largas
 Latência
 legenda
 lerá
@@ -1030,6 +1037,7 @@ objetos
 obrigatória
 Ocidental
 Ocorreu
+ocorria
 oculta
 ocultadas
 ocultados
@@ -1235,6 +1243,7 @@ Recursos
 Redefination
 redimensionamento
 redirecionamos
+Reduzido
 reenviar
 Reexecuta
 referência
@@ -1298,6 +1307,8 @@ robusta
 robusto
 roda
 Romena
+Rotação
+rotacionados
 Rótulo
 Roxo
 rtsportsmanager
@@ -1331,6 +1342,7 @@ Segundas
 segura
 seguro
 sejam
+selecionados
 selecionar
 Seletor
 Senegalesa
@@ -1487,10 +1499,12 @@ Uruguai
 Uruguaia
 Úrvalsdeild
 usada
+usadas
 usados
 usarão
 úteis
 útil
+utilizadas
 Uzbequistão
 válida
 Validações

@@ -190,10 +190,14 @@ const DashboardMainPage: React.FC = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          minHeight: "100vh",
+          height: "70vh",
+          width: "80vw",
+          bgcolor: "background.default",
+          color: "text.primary",
         }}
       >
         <CircularProgress />
+        <p style={{ marginLeft: 16 }}>Carregando bancas...</p>
       </Box>
     );
   }

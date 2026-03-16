@@ -1,5 +1,5 @@
 "use client";
-import { Box, Container, Typography } from "@mui/material";
+import { Box, CircularProgress, Container, Typography } from "@mui/material";
 import { useRouter, usePathname } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import { useBankrollContext } from "@/components/Providers/BankrollContext";
@@ -60,13 +60,17 @@ const MainContent: React.FC = () => {
         {isLoading ? (
           <Box
             sx={{
-              minHeight: "70vh",
               display: "flex",
-              alignItems: "center",
               justifyContent: "center",
+              alignItems: "center",
+              height: "80vh",
+              width: "80vw",
+              bgcolor: "background.default",
+              color: "text.primary",
             }}
           >
-            <Typography>Carregando bancas...</Typography>
+            <CircularProgress />
+            <p style={{ marginLeft: 16 }}>Carregando bancas...</p>
           </Box>
         ) : (
           <>
